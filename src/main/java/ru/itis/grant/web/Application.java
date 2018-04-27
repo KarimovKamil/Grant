@@ -13,20 +13,18 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.io.IOException;
-
 @Controller
 @ComponentScan(basePackages = "ru.itis.grant")
 @EnableAutoConfiguration
 @EnableSwagger2
 public class Application {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
     @Bean
-    public Docket api() throws IOException {
+    public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("ru.itis.grant.web.controllers"))

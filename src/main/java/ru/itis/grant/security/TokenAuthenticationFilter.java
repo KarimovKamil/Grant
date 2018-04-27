@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 
 public class TokenAuthenticationFilter extends GenericFilterBean {
 
@@ -39,19 +40,32 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException, AuthenticationException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
+
+        Enumeration<String> headerNames = request.getHeaderNames();
+
+/*        if (headerNames != null) {
+            while (headerNames.hasMoreElements()) {
+                String name = headerNames.nextElement();
+                System.out.println("Header name: " + name + "; Value: " + request.getHeader(name));
+            }
+        }*/
         String token = request.getHeader("Auth-Token");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
         System.out.println("time: " + simpleDateFormat.format(new Date()) + " token: " + token);
-        if (!isSecuredMethod(request)) {
+        boolean isSecured = isSecuredMethod(request);
+        System.out.println("Защищенный? " + isSecured);
+        String uri = request.getRequestURI();
+        System.out.println(uri);
+        if (!isSecured) {
             filterChain.doFilter(request, response);
         } else {
-            permissionEntryPoint.commence(request, response, new PermissionException("Permissions"));
+            permissionEntryPoint.commence(request, response, new PermissionException("Not enough permissions"));
         }
     }
 
     private boolean isSecuredMethod(HttpServletRequest request) {
         return !(request.getRequestURI().contains("/login") || request.getRequestURI().contains("/registration")
-        || request.getRequestURI().equals("/v2/api-docs"));
+                || isSwagger(request));
     }
 
     private boolean isExpertMethod(HttpServletRequest request) {
@@ -66,5 +80,10 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
         Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isSwagger(HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        return (uri.equals("/v2/api-docs") || uri.contains("swagger"));
     }
 }

@@ -11,6 +11,6 @@ import java.io.IOException;
 public class PermissionEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "You do not have permissions for this");
+        httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
     }
 }
