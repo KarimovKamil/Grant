@@ -20,8 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Enumeration;
+import java.util.*;
 
 public class TokenAuthenticationFilter extends GenericFilterBean {
 
@@ -41,14 +40,6 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        Enumeration<String> headerNames = request.getHeaderNames();
-
-/*        if (headerNames != null) {
-            while (headerNames.hasMoreElements()) {
-                String name = headerNames.nextElement();
-                System.out.println("Header name: " + name + "; Value: " + request.getHeader(name));
-            }
-        }*/
         String token = request.getHeader("Auth-Token");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
         System.out.println("time: " + simpleDateFormat.format(new Date()) + " token: " + token);
@@ -85,5 +76,19 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
     private boolean isSwagger(HttpServletRequest request) {
         String uri = request.getRequestURI();
         return (uri.equals("/v2/api-docs") || uri.contains("swagger"));
+    }
+
+    private Map<String, String> getHeaders(HttpServletRequest request) {
+        Enumeration<String> headerNames = request.getHeaderNames();
+        Map<String, String> headersMap = new HashMap<>();
+        if (headerNames != null) {
+            while (headerNames.hasMoreElements()) {
+                String name = headerNames.nextElement();
+                String value = request.getHeader(name);
+                System.out.println("Header name: " + name + "; Value: " + value);
+                headersMap.put(name, value);
+            }
+        }
+        return headersMap;
     }
 }
