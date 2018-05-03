@@ -16,7 +16,7 @@ public interface PatternDao {
 
     Pattern getPattern(long id);
 
-    List<Pattern> getUserPatterns(long userId);
+    Pattern getEventPattern(long eventId);
 
     List<Pattern> getAllPatterns();
 

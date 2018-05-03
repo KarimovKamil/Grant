@@ -21,7 +21,7 @@ public class Element {
     private int layoutX;
     @Column(name = "layout_y")
     private int layoutY;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Pattern pattern;
 
     public Element() {

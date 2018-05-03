@@ -2,6 +2,8 @@ package ru.itis.grant.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
@@ -15,8 +17,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Controller
 @ComponentScan(basePackages = "ru.itis.grant")
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
 @EnableSwagger2
+@EntityScan("ru.itis.grant.model")
 public class Application {
 
     public static void main(String[] args) {

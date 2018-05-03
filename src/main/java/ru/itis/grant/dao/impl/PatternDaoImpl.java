@@ -17,26 +17,33 @@ public class PatternDaoImpl implements PatternDao {
 
     @Override
     public void addPattern(Pattern pattern) {
-
+        em.persist(pattern);
     }
 
     @Override
     public void deletePattern(long id) {
-
+        em.createQuery("delete from Pattern p where p.id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 
     @Override
     public void deletePattern(Pattern pattern) {
-
+        em.remove(pattern);
     }
 
     @Override
     public Pattern updatePattern(Pattern pattern) {
-        return null;
+        return em.merge(pattern);
     }
 
     @Override
     public Pattern getPattern(long id) {
+        return em.find(Pattern.class, id);
+    }
+
+    @Override
+    public Pattern getEventPattern(long eventId) {
         return null;
     }
 

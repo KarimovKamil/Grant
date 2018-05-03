@@ -15,26 +15,28 @@ public class ElementDaoImpl implements ElementDao {
 
     @Override
     public void addElement(Element element) {
-
+        em.persist(element);
     }
 
     @Override
     public void deleteElement(Element element) {
-
+        em.remove(element);
     }
 
     @Override
     public void deleteElement(long id) {
-
+        em.createQuery("delete from Element e where e.id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 
     @Override
     public Element updateElement(Element element) {
-        return null;
+        return em.merge(element);
     }
 
     @Override
     public Element getElement(long id) {
-        return null;
+        return em.find(Element.class, id);
     }
 }

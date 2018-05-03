@@ -6,6 +6,7 @@ import ru.itis.grant.model.Event;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 public class EventDaoImpl implements EventDao {
@@ -15,26 +16,33 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public void addEvent(Event event) {
-
+        em.persist(event);
     }
 
     @Override
     public void deleteEvent(Event event) {
-
+        em.remove(event);
     }
 
     @Override
     public void deleteEvent(long id) {
-
+        em.createQuery("delete from Event e where e.id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 
     @Override
     public Event updateEvent(Event event) {
-        return null;
+        return em.merge(event);
     }
 
     @Override
     public Event getEvent(long id) {
+        return em.find(Event.class, id);
+    }
+
+    @Override
+    public List<Event> getUserEvents(long userId) {
         return null;
     }
 }

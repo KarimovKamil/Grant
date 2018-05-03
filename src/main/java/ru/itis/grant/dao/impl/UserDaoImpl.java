@@ -16,27 +16,29 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void addUser(User user) {
-
+        em.persist(user);
     }
 
     @Override
     public void deleteUser(User user) {
-
+        em.remove(user);
     }
 
     @Override
     public void deleteUser(long id) {
-
+        em.createQuery("delete from User u where u.id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 
     @Override
     public User updateUser(User user) {
-        return null;
+        return em.merge(user);
     }
 
     @Override
     public User getUser(long id) {
-        return null;
+        return em.find(User.class, id);
     }
 
     @Override

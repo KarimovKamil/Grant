@@ -16,6 +16,8 @@ public class Event {
     private String siteUrl;
     @ManyToOne
     private User owner;
+    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Pattern pattern;
 
     public Event() {
 
@@ -26,6 +28,7 @@ public class Event {
         this.name = builder.name;
         this.siteUrl = builder.siteUrl;
         this.owner = builder.owner;
+        this.pattern = builder.pattern;
     }
 
     public long getId() {
@@ -60,11 +63,20 @@ public class Event {
         this.owner = owner;
     }
 
+    public Pattern getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(Pattern pattern) {
+        this.pattern = pattern;
+    }
+
     public static class Builder {
         private long id;
         private String name;
         private String siteUrl;
         private User owner;
+        private Pattern pattern;
 
         public Builder id(long arg) {
             this.id = arg;
@@ -83,6 +95,11 @@ public class Event {
 
         public Builder owner(User arg) {
             this.owner = arg;
+            return this;
+        }
+
+        public Builder pattern(Pattern arg) {
+            this.pattern = arg;
             return this;
         }
 
