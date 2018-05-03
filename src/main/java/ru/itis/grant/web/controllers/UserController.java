@@ -58,7 +58,7 @@ public class UserController {
     public ResponseEntity<PatternDto> eventPatternById(
             @PathVariable(value = "eventId") long eventId,
             @PathVariable(value = "patternId") long patternId) {
-        PatternDto patternDto = userService.getPattern(eventId, patternId);
+        PatternDto patternDto = userService.getEventPattern(eventId, patternId);
         return ResponseEntity.ok(patternDto);
     }
 
@@ -74,7 +74,7 @@ public class UserController {
     @GetMapping(value = "/my/bids")
     public ResponseEntity<List<BidDto>> userBids(
             @RequestParam(value = "Auth-Token") String token) {
-        List<BidDto> bids = userService.getBids(token);
+        List<BidDto> bids = userService.getUserBids(token);
         return ResponseEntity.ok(bids);
     }
 

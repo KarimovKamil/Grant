@@ -28,4 +28,6 @@ public interface EventDao {
     List<Event> getUserEvents(long userId);
 
     boolean eventExistenceById(long id);
+
+    boolean verifyEventPatternExistence(long eventId);
 }

@@ -74,8 +74,19 @@ public class BidDaoImpl implements BidDao {
 
     @Override
     public boolean bidExistenceById(long id) {
-        return !em.createQuery("SELECT b.id FROM Bid b WHERE b.id = :id")
+        return !em.createQuery("select b.id from Bid b where b.id = :id")
                 .setParameter("id", id)
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
+
+    @Override
+    public boolean userBidExistence(String token, long bidId) {
+        return !em.createQuery("select b.id from Bid b where b.id = :bidId " +
+                "and b.user.token = :token")
+                .setParameter("token", token)
+                .setParameter("bidId", bidId)
                 .setMaxResults(1)
                 .getResultList()
                 .isEmpty();

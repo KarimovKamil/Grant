@@ -10,6 +10,7 @@ import ru.itis.grant.dto.AuthDto;
 import ru.itis.grant.dto.BidDto;
 import ru.itis.grant.dto.EventDto;
 import ru.itis.grant.dto.PatternDto;
+import ru.itis.grant.model.Bid;
 import ru.itis.grant.model.Event;
 import ru.itis.grant.model.Pattern;
 import ru.itis.grant.service.interfaces.UserService;
@@ -61,13 +62,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<EventDto> getActiveEventsWithPattern() {
+        List<Event> events = eventDao.getActiveEventsWithPattern(new Date(System.currentTimeMillis()));
+        return null;
+    }
+
+    @Override
     public EventDto getEvent(long eventId) {
+        verification.verifyEventExistenceById(eventId);
         Event event = eventDao.getEvent(eventId);
         return null;
     }
 
     @Override
-    public PatternDto getPattern(long eventId) {
+    public PatternDto getEventPattern(long eventId) {
+        verification.verifyEventExistenceById(eventId);
+        verification.verifyEventPatternExistence(eventId);
         Pattern pattern = patternDao.getEventPattern(eventId);
         return null;
     }
@@ -78,12 +88,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<BidDto> getBids(String token) {
+    public List<BidDto> getUserBids(String token) {
+        verification.verifyTokenExistence(token);
+        List<Bid> bids = bidDao.getUserBids(token);
         return null;
     }
 
     @Override
     public BidDto getBid(String token, long bidId) {
+        verification.verifyTokenExistence(token);
+        verification.verifyUserBidExistence(token, bidId);
+        Bid bid = bidDao.getBidById(bidId);
         return null;
     }
 

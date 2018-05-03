@@ -25,4 +25,6 @@ public interface BidDao {
     List<Bid> getAllBids();
 
     boolean bidExistenceById(long id);
+
+    boolean userBidExistence(String token, long bidId);
 }
