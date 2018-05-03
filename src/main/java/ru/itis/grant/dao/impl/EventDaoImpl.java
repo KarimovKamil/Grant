@@ -6,6 +6,7 @@ import ru.itis.grant.model.Event;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -42,7 +43,50 @@ public class EventDaoImpl implements EventDao {
     }
 
     @Override
+    public List<Event> getEvents() {
+        List<Event> events = em.createQuery("from Event")
+                .getResultList();
+        return events;
+    }
+
+    @Override
+    public List<Event> getActiveEvents(Date date) {
+        List<Event> events = em.createQuery("from Event e where e.pattern.endDate < :date")
+                .setParameter("date", date)
+                .getResultList();
+        return events;
+    }
+
+    @Override
+    public List<Event> getEventsWithPattern() {
+        List<Event> events = em.createQuery("from Event e where e.pattern != null")
+                .getResultList();
+        return events;
+    }
+
+    @Override
+    public List<Event> getActiveEventsWithPattern(Date date) {
+        List<Event> events = em.createQuery("from Event e where e.pattern != null " +
+                "and e.pattern.endDate < :date")
+                .setParameter("date", date)
+                .getResultList();
+        return events;
+    }
+
+    @Override
     public List<Event> getUserEvents(long userId) {
-        return null;
+        List<Event> events = em.createQuery("from Event e where e.owner.id = :userId")
+                .setParameter("userId", userId)
+                .getResultList();
+        return events;
+    }
+
+    @Override
+    public boolean eventExistenceById(long id) {
+        return !em.createQuery("SELECT e.id FROM Event e WHERE e.id = :id")
+                .setParameter("id", id)
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
     }
 }

@@ -44,21 +44,16 @@ public class PatternDaoImpl implements PatternDao {
 
     @Override
     public Pattern getEventPattern(long eventId) {
-        return null;
-    }
-
-    @Override
-    public List<Pattern> getUserPatterns(long userId) {
-        return null;
+        Pattern pattern = (Pattern) em.createQuery("from Pattern p where p.event.id = :eventId")
+                .setParameter("eventId", eventId)
+                .getSingleResult();
+        return pattern;
     }
 
     @Override
     public List<Pattern> getAllPatterns() {
-        return null;
-    }
-
-    @Override
-    public List<Pattern> getActivePattern() {
-        return null;
+        List<Pattern> patterns = em.createQuery("from Pattern")
+                .getResultList();
+        return patterns;
     }
 }

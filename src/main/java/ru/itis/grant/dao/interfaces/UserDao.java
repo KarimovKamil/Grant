@@ -14,7 +14,11 @@ public interface UserDao {
 
     User updateUser(User user);
 
-    User getUser(long id);
+    User getUserById(long id);
+
+    User getUserByToken(String token);
 
     List<User> getAllUsers();
+
+    boolean userExistenceByToken(String token);
 }

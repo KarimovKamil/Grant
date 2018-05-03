@@ -16,11 +16,9 @@ public interface UserService {
 
     EventDto getEvent(long eventId);
 
-    List<PatternDto> getEventsPatterns(long eventId);
+    PatternDto getPattern(long eventId);
 
-    PatternDto getPattern(long eventId, long patternId);
-
-    BidDto createBid(long eventId, long patternId, BidDto bidDto);
+    BidDto createBid(String token, long patternId, BidDto bidDto);
 
     List<BidDto> getBids(String token);
 

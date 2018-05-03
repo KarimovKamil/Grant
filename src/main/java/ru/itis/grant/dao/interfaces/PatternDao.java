@@ -19,6 +19,4 @@ public interface PatternDao {
     Pattern getEventPattern(long eventId);
 
     List<Pattern> getAllPatterns();
-
-    List<Pattern> getActivePattern();
 }

@@ -37,12 +37,31 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUser(long id) {
+    public User getUserById(long id) {
         return em.find(User.class, id);
     }
 
     @Override
+    public User getUserByToken(String token) {
+        User user = (User) em.createQuery("from User u where u.token = :token")
+                .setParameter("token", token)
+                .getSingleResult();
+        return user;
+    }
+
+    @Override
     public List<User> getAllUsers() {
-        return null;
+        List<User> users = em.createQuery("from User")
+                .getResultList();
+        return users;
+    }
+
+    @Override
+    public boolean userExistenceByToken(String token) {
+        return !em.createQuery("SELECT u.id FROM User u WHERE u.token = :token")
+                .setParameter("token", token)
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
     }
 }

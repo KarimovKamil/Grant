@@ -2,6 +2,7 @@ package ru.itis.grant.dao.interfaces;
 
 import ru.itis.grant.model.Event;
 
+import java.util.Date;
 import java.util.List;
 
 public interface EventDao {
@@ -16,5 +17,15 @@ public interface EventDao {
 
     Event getEvent(long id);
 
+    List<Event> getEvents();
+
+    List<Event> getActiveEvents(Date date);
+
+    List<Event> getEventsWithPattern();
+
+    List<Event> getActiveEventsWithPattern(Date date);
+
     List<Event> getUserEvents(long userId);
+
+    boolean eventExistenceById(long id);
 }

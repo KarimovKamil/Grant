@@ -18,5 +18,11 @@ public interface BidDao {
 
     List<Bid> getUserBids(long userId);
 
+    List<Bid> getUserBids(String token);
+
+    List<Bid> getEventBids(long eventId);
+
     List<Bid> getAllBids();
+
+    boolean bidExistenceById(long id);
 }

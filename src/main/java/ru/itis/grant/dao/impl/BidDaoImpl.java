@@ -43,11 +43,41 @@ public class BidDaoImpl implements BidDao {
 
     @Override
     public List<Bid> getUserBids(long userId) {
-        return null;
+        List<Bid> bids = em.createQuery("from Bid b where b.user.id = :userId")
+                .setParameter("userId", userId)
+                .getResultList();
+        return bids;
+    }
+
+    @Override
+    public List<Bid> getUserBids(String token) {
+        List<Bid> bids = em.createQuery("from Bid b where b.user.token = :token")
+                .setParameter("token", token)
+                .getResultList();
+        return bids;
+    }
+
+    @Override
+    public List<Bid> getEventBids(long eventId) {
+        List<Bid> bids = em.createQuery("from Bid b where b.pattern.event.id = :eventId")
+                .setParameter("eventId", eventId)
+                .getResultList();
+        return bids;
     }
 
     @Override
     public List<Bid> getAllBids() {
-        return null;
+        List<Bid> bids = em.createQuery("from Bid")
+                .getResultList();
+        return bids;
+    }
+
+    @Override
+    public boolean bidExistenceById(long id) {
+        return !em.createQuery("SELECT b.id FROM Bid b WHERE b.id = :id")
+                .setParameter("id", id)
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
     }
 }
