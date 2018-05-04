@@ -2,14 +2,17 @@ package ru.itis.grant.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.itis.grant.dao.interfaces.BidDao;
 import ru.itis.grant.dao.interfaces.EventDao;
 import ru.itis.grant.dao.interfaces.PatternDao;
 import ru.itis.grant.dao.interfaces.UserDao;
-import ru.itis.grant.dto.AuthDto;
-import ru.itis.grant.dto.BidDto;
-import ru.itis.grant.dto.EventDto;
-import ru.itis.grant.dto.PatternDto;
+import ru.itis.grant.dto.request.AuthDto;
+import ru.itis.grant.dto.request.RequestBidDto;
+import ru.itis.grant.dto.request.RequestUserDto;
+import ru.itis.grant.dto.response.ResponseBidDto;
+import ru.itis.grant.dto.response.ResponseEventDto;
+import ru.itis.grant.dto.response.ResponsePatternDto;
 import ru.itis.grant.model.Bid;
 import ru.itis.grant.model.Event;
 import ru.itis.grant.model.Pattern;
@@ -21,6 +24,7 @@ import ru.itis.grant.validation.verification.Verification;
 import java.util.Date;
 import java.util.List;
 
+@Transactional
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -45,37 +49,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String register(AuthDto authDto) {
+    public String register(RequestUserDto authDto) {
         return null;
     }
 
     @Override
-    public List<EventDto> getEvents() {
+    public List<ResponseEventDto> getEvents() {
         List<Event> events = eventDao.getEvents();
         return null;
     }
 
     @Override
-    public List<EventDto> getActiveEvents() {
+    public List<ResponseEventDto> getActiveEvents() {
         List<Event> events = eventDao.getActiveEvents(new Date(System.currentTimeMillis()));
         return null;
     }
 
     @Override
-    public List<EventDto> getActiveEventsWithPattern() {
+    public List<ResponseEventDto> getActiveEventsWithPattern() {
         List<Event> events = eventDao.getActiveEventsWithPattern(new Date(System.currentTimeMillis()));
         return null;
     }
 
     @Override
-    public EventDto getEvent(long eventId) {
+    public ResponseEventDto getEvent(long eventId) {
         verification.verifyEventExistenceById(eventId);
         Event event = eventDao.getEvent(eventId);
         return null;
     }
 
     @Override
-    public PatternDto getEventPattern(long eventId) {
+    public ResponsePatternDto getEventPattern(long eventId) {
         verification.verifyEventExistenceById(eventId);
         verification.verifyEventPatternExistence(eventId);
         Pattern pattern = patternDao.getEventPattern(eventId);
@@ -83,19 +87,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BidDto createBid(String token, long patternId, BidDto bidDto) {
+    public ResponseBidDto createBid(String token, RequestBidDto requestBidDto) {
         return null;
     }
 
     @Override
-    public List<BidDto> getUserBids(String token) {
+    public List<ResponseBidDto> getUserBids(String token) {
         verification.verifyTokenExistence(token);
         List<Bid> bids = bidDao.getUserBids(token);
         return null;
     }
 
     @Override
-    public BidDto getBid(String token, long bidId) {
+    public ResponseBidDto getBid(String token, long bidId) {
         verification.verifyTokenExistence(token);
         verification.verifyUserBidExistence(token, bidId);
         Bid bid = bidDao.getBidById(bidId);
@@ -103,7 +107,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BidDto updateBid(String token, BidDto bidDto) {
+    public ResponseBidDto updateBid(String token, RequestBidDto requestBidDto) {
         return null;
     }
 

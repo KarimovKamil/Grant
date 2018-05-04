@@ -27,6 +27,6 @@ public class Bid {
     private Pattern pattern;
     @DateTimeFormat
     @Column(name = "bid_date")
-    private Date applicationDate;
+    private Date bidDate;
     private String status;
 }

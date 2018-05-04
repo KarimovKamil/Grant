@@ -1,4 +1,4 @@
-package ru.itis.grant.dto;
+package ru.itis.grant.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ValidateDto {
+public class ResponseElementValueDto {
     private long id;
+    private ResponseElementDto element;
+    private String filledValue;
 }

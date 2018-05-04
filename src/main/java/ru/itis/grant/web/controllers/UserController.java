@@ -3,10 +3,12 @@ package ru.itis.grant.web.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.itis.grant.dto.AuthDto;
-import ru.itis.grant.dto.BidDto;
-import ru.itis.grant.dto.EventDto;
-import ru.itis.grant.dto.PatternDto;
+import ru.itis.grant.dto.request.AuthDto;
+import ru.itis.grant.dto.request.RequestBidDto;
+import ru.itis.grant.dto.request.RequestUserDto;
+import ru.itis.grant.dto.response.ResponseBidDto;
+import ru.itis.grant.dto.response.ResponseEventDto;
+import ru.itis.grant.dto.response.ResponsePatternDto;
 import ru.itis.grant.service.interfaces.UserService;
 
 import java.util.List;
@@ -25,77 +27,74 @@ public class UserController {
     }
 
     @PostMapping(value = "/registration")
-    public ResponseEntity<String> registration(@RequestBody AuthDto authDto) {
-        String token = userService.register(authDto);
+    public ResponseEntity<String> registration(@RequestBody RequestUserDto requestUserDto) {
+        String token = userService.register(requestUserDto);
         return ResponseEntity.ok(token);
     }
 
-    @GetMapping(value = "events")
-    public ResponseEntity<List<EventDto>> events() {
-        List<EventDto> eventDto = userService.getEvents();
-        return ResponseEntity.ok(eventDto);
+    @GetMapping(value = "/events")
+    public ResponseEntity<List<ResponseEventDto>> events() {
+        List<ResponseEventDto> requestEventDto = userService.getEvents();
+        return ResponseEntity.ok(requestEventDto);
     }
 
-    @GetMapping(value = "events/active")
-    public ResponseEntity<List<EventDto>> activeEvents() {
-        List<EventDto> eventDto = userService.getActiveEvents();
-        return ResponseEntity.ok(eventDto);
+    @GetMapping(value = "/events/active")
+    public ResponseEntity<List<ResponseEventDto>> activeEvents() {
+        List<ResponseEventDto> requestEventDto = userService.getActiveEvents();
+        return ResponseEntity.ok(requestEventDto);
     }
 
-    @GetMapping(value = "events/{id}")
-    public ResponseEntity<EventDto> eventById(@PathVariable(value = "id") long id) {
-        EventDto eventDto = userService.getEvent(id);
-        return ResponseEntity.ok(eventDto);
+    @GetMapping(value = "/events/activeWithPattern")
+    public ResponseEntity<List<ResponseEventDto>> activeEventsWithPattern() {
+        List<ResponseEventDto> requestEventDto = userService.getActiveEventsWithPattern();
+        return ResponseEntity.ok(requestEventDto);
     }
 
-    @GetMapping(value = "events/{id}/patterns")
-    public ResponseEntity<List<PatternDto>> eventPatternsById(@PathVariable(value = "id") long id) {
-        List<PatternDto> patternDto = userService.getEventsPatterns(id);
+    @GetMapping(value = "/events/{id}")
+    public ResponseEntity<ResponseEventDto> eventById(@PathVariable(value = "id") long id) {
+        ResponseEventDto requestEventDto = userService.getEvent(id);
+        return ResponseEntity.ok(requestEventDto);
+    }
+
+    @GetMapping(value = "/events/{eventId}/pattern")
+    public ResponseEntity<ResponsePatternDto> eventPattern(
+            @PathVariable(value = "eventId") long eventId) {
+        ResponsePatternDto patternDto = userService.getEventPattern(eventId);
         return ResponseEntity.ok(patternDto);
     }
 
-    @GetMapping(value = "events/{eventId}/patterns/{patternId}")
-    public ResponseEntity<PatternDto> eventPatternById(
-            @PathVariable(value = "eventId") long eventId,
-            @PathVariable(value = "patternId") long patternId) {
-        PatternDto patternDto = userService.getEventPattern(eventId, patternId);
-        return ResponseEntity.ok(patternDto);
-    }
-
-    @PostMapping(value = "events/{eventId}/patterns/{patternId}/create")
-    public ResponseEntity<BidDto> createBid(
-            @PathVariable(value = "eventId") long eventId,
-            @PathVariable(value = "patternId") long patternId,
-            @RequestBody BidDto bidDto) {
-        BidDto createdBid = userService.createBid(eventId, patternId, bidDto);
+    @PostMapping(value = "/my/bids/add")
+    public ResponseEntity<ResponseBidDto> createBid(
+            @RequestParam(value = "Auth-Token") String token,
+            @RequestBody RequestBidDto requestBidDto) {
+        ResponseBidDto createdBid = userService.createBid(token, requestBidDto);
         return ResponseEntity.ok(createdBid);
     }
 
     @GetMapping(value = "/my/bids")
-    public ResponseEntity<List<BidDto>> userBids(
+    public ResponseEntity<List<ResponseBidDto>> userBids(
             @RequestParam(value = "Auth-Token") String token) {
-        List<BidDto> bids = userService.getUserBids(token);
+        List<ResponseBidDto> bids = userService.getUserBids(token);
         return ResponseEntity.ok(bids);
     }
 
-
     @GetMapping(value = "/my/bids/{id}")
-    public ResponseEntity<BidDto> userBid(
+    public ResponseEntity<ResponseBidDto> userBid(
             @RequestParam(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id) {
-        BidDto bid = userService.getBid(token, id);
+        ResponseBidDto bid = userService.getBid(token, id);
         return ResponseEntity.ok(bid);
     }
-
-    @PostMapping(value = "/my/bids/{id}/update")
-    public ResponseEntity<BidDto> updateBid(
-            @RequestParam(value = "Auth-Token") String token,
-            @PathVariable(value = "id") long id,
-            @RequestBody BidDto bidDto) {
-        bidDto.setId(id);
-        BidDto updatedBid = userService.updateBid(token, bidDto);
-        return ResponseEntity.ok(updatedBid);
-    }
+//
+//    @PostMapping(value = "/my/bids/{id}/update")
+//    public ResponseEntity<RequestBidDto> updateBid(
+//            @RequestParam(value = "Auth-Token") String token,
+//            @PathVariable(value = "id") long id,
+//            @RequestBody RequestBidDto requestBidDto) {
+//        requestBidDto.setId(id);
+//        RequestBidDto updatedBid = userService.updateBid(token, requestBidDto);
+//        return ResponseEntity.ok(updatedBid);
+//    }
 
     @PostMapping(value = "/my/bids/{id}/delete")
     public ResponseEntity<Boolean> deleteBid(

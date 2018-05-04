@@ -1,34 +1,37 @@
 package ru.itis.grant.service.interfaces;
 
-import ru.itis.grant.dto.*;
-import ru.itis.grant.model.Event;
+import ru.itis.grant.dto.request.AuthDto;
+import ru.itis.grant.dto.request.RequestBidDto;
+import ru.itis.grant.dto.request.RequestUserDto;
+import ru.itis.grant.dto.response.ResponseBidDto;
+import ru.itis.grant.dto.response.ResponseEventDto;
+import ru.itis.grant.dto.response.ResponsePatternDto;
 
-import java.util.Date;
 import java.util.List;
 
 public interface UserService {
 
     String login(AuthDto authDto);
 
-    String register(AuthDto authDto);
+    String register(RequestUserDto authDto);
 
-    List<EventDto> getEvents();
+    List<ResponseEventDto> getEvents();
 
-    List<EventDto> getActiveEvents();
+    List<ResponseEventDto> getActiveEvents();
 
-    List<EventDto> getActiveEventsWithPattern();
+    List<ResponseEventDto> getActiveEventsWithPattern();
 
-    EventDto getEvent(long eventId);
+    ResponseEventDto getEvent(long eventId);
 
-    PatternDto getEventPattern(long eventId);
+    ResponsePatternDto getEventPattern(long eventId);
 
-    BidDto createBid(String token, long patternId, BidDto bidDto);
+    ResponseBidDto createBid(String token, RequestBidDto requestBidDto);
 
-    List<BidDto> getUserBids(String token);
+    List<ResponseBidDto> getUserBids(String token);
 
-    BidDto getBid(String token, long bidId);
+    ResponseBidDto getBid(String token, long bidId);
 
-    BidDto updateBid(String token, BidDto bidDto);
+    ResponseBidDto updateBid(String token, RequestBidDto requestBidDto);
 
     boolean deleteBid(String token, long bidId);
 }

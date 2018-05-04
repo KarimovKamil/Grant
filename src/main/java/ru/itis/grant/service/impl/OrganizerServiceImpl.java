@@ -2,24 +2,25 @@ package ru.itis.grant.service.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.itis.grant.dto.ValidateDto;
 import ru.itis.grant.dto.request.AuthDto;
+import ru.itis.grant.dto.request.RequestPatternDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.dto.response.ResponsePatternDto;
-import ru.itis.grant.service.interfaces.ExpertService;
+import ru.itis.grant.model.Pattern;
+import ru.itis.grant.service.interfaces.OrganizerService;
 
 import java.util.List;
 
 @Transactional
 @Service
-public class ExpertServiceImpl implements ExpertService {
+public class OrganizerServiceImpl implements OrganizerService {
     @Override
     public String login(AuthDto authDto) {
         return null;
     }
 
     @Override
-    public List<ResponseEventDto> getEvents() {
+    public List<ResponseEventDto> getUserEvents(String token) {
         return null;
     }
 
@@ -34,17 +35,27 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public List<ResponsePatternDto> getEventsPatterns(long eventId) {
+    public ResponsePatternDto createPattern(RequestPatternDto patternDto) {
         return null;
     }
 
     @Override
-    public ResponsePatternDto getPattern(long eventId, long patternId) {
+    public List<ResponsePatternDto> getPatterns(String token) {
         return null;
     }
 
     @Override
-    public boolean validatePattern(long eventId, long patternId, ValidateDto validateDto) {
+    public ResponsePatternDto getPattern(String token, long patternId) {
+        return null;
+    }
+
+    @Override
+    public ResponsePatternDto updatePattern(String token, RequestPatternDto pattern) {
+        return null;
+    }
+
+    @Override
+    public boolean deletePattern(String token, long patternId) {
         return false;
     }
 }
