@@ -29,9 +29,9 @@ public class RequestPatternDtoToPatternConverter {
         Event event = Event.builder()
                 .id(requestPatternDto.getEventId())
                 .build();
-        List<Element> elements = new ArrayList<>();
+        List<Element> elementList = new ArrayList<>();
         for (RequestElementDto requestElementDto : requestPatternDto.getElements()) {
-            elements.add(RequestElementDtoToElementConverter.getInstance().convert(requestElementDto));
+            elementList.add(RequestElementDtoToElementConverter.getInstance().convert(requestElementDto));
         }
         return Pattern.builder()
                 .bidName(requestPatternDto.getBidName())
@@ -39,7 +39,7 @@ public class RequestPatternDtoToPatternConverter {
                 .endDate(requestPatternDto.getEndDate())
                 .startDate(requestPatternDto.getStartDate())
                 .event(event)
-                .elements(elements)
+                .elements(elementList)
                 .build();
     }
 }

@@ -2,7 +2,9 @@ package ru.itis.grant.conversion;
 
 import org.springframework.stereotype.Component;
 import ru.itis.grant.conversion.request.*;
+import ru.itis.grant.conversion.response.*;
 import ru.itis.grant.dto.request.*;
+import ru.itis.grant.dto.response.*;
 import ru.itis.grant.model.*;
 
 @Component
@@ -36,5 +38,35 @@ public class ConversionResultFactory {
     public Bid requestBidDtoToBid(RequestBidDto requestBidDto) {
         Bid bid = RequestBidDtoToBidConverter.getInstance().convert(requestBidDto);
         return bid;
+    }
+
+    public ResponseUserDto userToResponseUserDto(User user) {
+        ResponseUserDto responseUserDto = UserToResponseUserDtoConverter.getInstance().convert(user);
+        return responseUserDto;
+    }
+
+    public ResponsePatternDto patternToResponsePatternDto(Pattern pattern) {
+        ResponsePatternDto responsePatternDto = PatternToResponsePatternDtoConverter.getInstance().convert(pattern);
+        return responsePatternDto;
+    }
+
+    public ResponseEventDto eventToResponseEventDto(Event event) {
+        ResponseEventDto responseEventDto = EventToResponseEventDtoConverter.getInstance().convert(event);
+        return responseEventDto;
+    }
+
+    public ResponseElementValueDto elementValueToResponseElementValueDto(ElementValue elementValue) {
+        ResponseElementValueDto responseElementValueDto = ElementValueToResponseElementValueDtoConverter.getInstance().convert(elementValue);
+        return responseElementValueDto;
+    }
+
+    public ResponseElementDto elementToResponseElementDto(Element element) {
+        ResponseElementDto responseElementDto = ElementToResponseElementDtoConverter.getInstance().convert(element);
+        return responseElementDto;
+    }
+
+    public ResponseBidDto bidToResponseBidDto(Bid bid) {
+        ResponseBidDto responseBidDto = BidToResponseBidDtoConverter.getInstance().convert(bid);
+        return responseBidDto;
     }
 }
