@@ -15,14 +15,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "element")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "selectable", discriminatorType = DiscriminatorType.STRING)
 public class Element {
     @Id
     @GenericGenerator(name="el_id" , strategy="increment")
     @GeneratedValue(generator="el_id")
     private long id;
     private String name;
-    @Column(insertable = false, updatable = false)
     private String type;
     private String description;
     @Column(name = "layout_x")

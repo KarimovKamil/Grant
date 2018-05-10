@@ -50,6 +50,14 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User getUserByEmail(String email) {
+        User user = (User) em.createQuery("from User u where u.email = :email")
+                .setParameter("email", email)
+                .getSingleResult();
+        return user;
+    }
+
+    @Override
     public List<User> getAllUsers() {
         List<User> users = em.createQuery("from User")
                 .getResultList();
@@ -60,6 +68,15 @@ public class UserDaoImpl implements UserDao {
     public boolean userExistenceByToken(String token) {
         return !em.createQuery("SELECT u.id FROM User u WHERE u.token = :token")
                 .setParameter("token", token)
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
+
+    @Override
+    public boolean userExistenceByEmail(String email) {
+        return !em.createQuery("SELECT u.id FROM User u WHERE u.email = :email")
+                .setParameter("email", email)
                 .setMaxResults(1)
                 .getResultList()
                 .isEmpty();

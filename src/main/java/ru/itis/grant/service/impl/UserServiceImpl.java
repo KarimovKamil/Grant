@@ -3,6 +3,7 @@ package ru.itis.grant.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.itis.grant.conversion.ConversionResultFactory;
 import ru.itis.grant.dao.interfaces.BidDao;
 import ru.itis.grant.dao.interfaces.EventDao;
 import ru.itis.grant.dao.interfaces.PatternDao;
@@ -16,6 +17,8 @@ import ru.itis.grant.dto.response.ResponsePatternDto;
 import ru.itis.grant.model.Bid;
 import ru.itis.grant.model.Event;
 import ru.itis.grant.model.Pattern;
+import ru.itis.grant.model.User;
+import ru.itis.grant.security.exception.IncorrectDataException;
 import ru.itis.grant.service.interfaces.UserService;
 import ru.itis.grant.service.utils.generators.HashGenerator;
 import ru.itis.grant.service.utils.generators.TokenGenerator;
@@ -31,6 +34,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     Verification verification;
     @Autowired
+    ConversionResultFactory conversionFactory;
+    @Autowired
     HashGenerator hashGenerator;
     @Autowired
     TokenGenerator tokenGenerator;
@@ -45,12 +50,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(AuthDto authDto) {
-        return null;
+        verification.verifyEmailExistence(authDto.getEmail());
+        User userFromDB = userDao.getUserByEmail(authDto.getEmail());
+        if (hashGenerator.match(authDto.getPassword(), userFromDB.getHashPassword())) {
+            String token = tokenGenerator.generateToken();
+            userFromDB.setToken(token);
+            userDao.updateUser(userFromDB);
+            return token;
+        } else {
+            throw new IncorrectDataException("email and password", "Неверный email или пароль");
+        }
     }
 
     @Override
-    public String register(RequestUserDto authDto) {
-        return null;
+    public String register(RequestUserDto userDto) {
+        verification.verifyEmailUnique(userDto.getEmail());
+        User user = conversionFactory.requestUserDtoToUser(
+                tokenGenerator.generateToken(),
+                hashGenerator.encode(userDto.getPassword()),
+                userDto);
+        userDao.addUser(user);
+        return user.getToken();
     }
 
     @Override
@@ -75,7 +95,8 @@ public class UserServiceImpl implements UserService {
     public ResponseEventDto getEvent(long eventId) {
         verification.verifyEventExistenceById(eventId);
         Event event = eventDao.getEvent(eventId);
-        return null;
+        ResponseEventDto responseEventDto = conversionFactory.eventToResponseEventDto(event);
+        return responseEventDto;
     }
 
     @Override
@@ -83,12 +104,19 @@ public class UserServiceImpl implements UserService {
         verification.verifyEventExistenceById(eventId);
         verification.verifyEventPatternExistence(eventId);
         Pattern pattern = patternDao.getEventPattern(eventId);
-        return null;
+        ResponsePatternDto responsePatternDto = conversionFactory.patternToResponsePatternDto(pattern);
+        return responsePatternDto;
     }
 
     @Override
     public ResponseBidDto createBid(String token, RequestBidDto requestBidDto) {
-        return null;
+        verification.verifyTokenExistence(token);
+        verification.verifyPatternExistence(requestBidDto.getPatternId());
+        verification.verifyBidDto(requestBidDto, patternDao.getPattern(requestBidDto.getPatternId()));
+        Bid bid = conversionFactory.requestBidDtoToBid(requestBidDto);
+        bidDao.addBid(bid);
+        ResponseBidDto responseBidDto = conversionFactory.bidToResponseBidDto(bid);
+        return responseBidDto;
     }
 
     @Override
@@ -103,7 +131,8 @@ public class UserServiceImpl implements UserService {
         verification.verifyTokenExistence(token);
         verification.verifyUserBidExistence(token, bidId);
         Bid bid = bidDao.getBidById(bidId);
-        return null;
+        ResponseBidDto responseBidDto = conversionFactory.bidToResponseBidDto(bid);
+        return responseBidDto;
     }
 
     @Override
@@ -116,6 +145,6 @@ public class UserServiceImpl implements UserService {
         verification.verifyTokenExistence(token);
         verification.verifyBidExistenceById(bidId);
         bidDao.deleteBid(bidId);
-        return false;
+        return true;
     }
 }

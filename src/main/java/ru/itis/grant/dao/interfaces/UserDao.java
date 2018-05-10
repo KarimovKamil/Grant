@@ -18,7 +18,11 @@ public interface UserDao {
 
     User getUserByToken(String token);
 
+    User getUserByEmail(String email);
+
     List<User> getAllUsers();
 
     boolean userExistenceByToken(String token);
+
+    boolean userExistenceByEmail(String email);
 }

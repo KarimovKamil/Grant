@@ -52,7 +52,7 @@ public class OrganizerController {
             @RequestParam(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id,
             @RequestBody RequestPatternDto patternDto) {
-        patternDto.setId(id);
+//        patternDto.setId(id);
         ResponsePatternDto updatedBid = organizerService.updatePattern(token, patternDto);
         return ResponseEntity.ok(updatedBid);
     }

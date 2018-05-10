@@ -56,4 +56,13 @@ public class PatternDaoImpl implements PatternDao {
                 .getResultList();
         return patterns;
     }
+
+    @Override
+    public boolean patternExistence(long id) {
+        return !em.createQuery("SELECT p.id FROM Pattern p WHERE p.id = :id")
+                .setParameter("id", id)
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
 }

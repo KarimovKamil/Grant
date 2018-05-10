@@ -19,4 +19,6 @@ public interface PatternDao {
     Pattern getEventPattern(long eventId);
 
     List<Pattern> getAllPatterns();
+
+    boolean patternExistence(long id);
 }

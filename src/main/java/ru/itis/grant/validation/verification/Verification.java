@@ -4,8 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.itis.grant.dao.interfaces.BidDao;
 import ru.itis.grant.dao.interfaces.EventDao;
+import ru.itis.grant.dao.interfaces.PatternDao;
 import ru.itis.grant.dao.interfaces.UserDao;
+import ru.itis.grant.dto.request.RequestBidDto;
+import ru.itis.grant.dto.request.RequestElementValueDto;
+import ru.itis.grant.model.Element;
+import ru.itis.grant.model.Pattern;
 import ru.itis.grant.security.exception.IncorrectDataException;
+import ru.itis.grant.validation.dto.ElementValueDtoValidator;
 
 @Component
 public class Verification {
@@ -16,6 +22,8 @@ public class Verification {
     BidDao bidDao;
     @Autowired
     EventDao eventDao;
+    @Autowired
+    PatternDao patternDao;
 
     public void verifyTokenExistence(String token) {
         if (!userDao.userExistenceByToken(token)) {
@@ -23,9 +31,27 @@ public class Verification {
         }
     }
 
+    public void verifyEmailExistence(String email) {
+        if (!userDao.userExistenceByEmail(email)) {
+            throw new IncorrectDataException("email", "Неверный email");
+        }
+    }
+
+    public void verifyEmailUnique(String email) {
+        if (userDao.userExistenceByEmail(email)) {
+            throw new IncorrectDataException("email", "Пользователь с таким email уже существует");
+        }
+    }
+
     public void verifyBidExistenceById(long id) {
         if (!bidDao.bidExistenceById(id)) {
             throw new IncorrectDataException("id", "Неверный id заявки");
+        }
+    }
+
+    public void verifyPatternExistence(long id) {
+        if (!patternDao.patternExistence(id)) {
+            throw new IncorrectDataException("id", "Неверный id шаблона");
         }
     }
 
@@ -45,6 +71,27 @@ public class Verification {
     public void verifyUserBidExistence(String token, long bidId) {
         if (!bidDao.userBidExistence(token, bidId)) {
             throw new IncorrectDataException("id", "Заявка с таким id не найдена");
+        }
+    }
+
+    public void verifyElementValueDto(RequestElementValueDto elementValueDto, Element element) {
+        if(!ElementValueDtoValidator.getInstance().verify(elementValueDto, element)) {
+            throw new IncorrectDataException("values", "Неверно введены значения");
+        }
+    }
+
+    public void verifyBidDto(RequestBidDto bidDto, Pattern pattern) {
+        int correctCount = 0;
+        for (RequestElementValueDto elementValueDto : bidDto.getValues()) {
+            for (Element element : pattern.getElements()) {
+                if (elementValueDto.getElementId() == element.getId()) {
+                    correctCount++;
+                    verifyElementValueDto(elementValueDto, element);
+                }
+            }
+        }
+        if (correctCount != bidDto.getValues().size()) {
+            throw new IncorrectDataException("values", "Неверно введены значения");
         }
     }
 }
