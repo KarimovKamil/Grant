@@ -15,4 +15,5 @@ public class RequestElementDto {
     private String description;
     private int layoutX;
     private int layoutY;
+    private String[] selectableValue;
 }

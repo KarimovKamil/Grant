@@ -2,7 +2,6 @@ package ru.itis.grant.validation.dto;
 
 import ru.itis.grant.dto.request.RequestElementValueDto;
 import ru.itis.grant.model.Element;
-import ru.itis.grant.model.SelectableElement;
 
 public class ElementValueDtoValidator {
     private static volatile ElementValueDtoValidator instance;
