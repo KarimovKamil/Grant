@@ -111,7 +111,7 @@ public class EventDaoImpl implements EventDao {
     @Override
     public boolean expertEventExistence(String token, long eventId) {
         return !em.createQuery("select e.id from Event e where e.id = :eventId " +
-                "(select u from User u where u.token = :token) in e.experts")
+                "and (select u from User u where u.token = :token) in e.experts")
                 .setParameter("token", token)
                 .setParameter("eventId", eventId)
                 .setMaxResults(1)
