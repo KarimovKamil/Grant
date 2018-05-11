@@ -14,4 +14,21 @@ import javax.persistence.Entity;
 @DiscriminatorValue("Selectable")
 public class SelectableElement extends Element {
     private String[] selectableValue;
+
+    public SelectableElement(Builder builder) {
+        this.selectableValue = builder.selectableValue;
+    }
+
+    public static class Builder {
+        private String[] selectableValue;
+
+        public Builder selectableValue(String[] arg) {
+            this.selectableValue = arg;
+            return this;
+        }
+
+        public SelectableElement build() {
+            return new SelectableElement(this);
+        }
+    }
 }
