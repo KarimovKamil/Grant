@@ -3,6 +3,7 @@ package ru.itis.grant.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.itis.grant.conversion.ConversionListResultFactory;
 import ru.itis.grant.conversion.ConversionResultFactory;
 import ru.itis.grant.dao.interfaces.BidDao;
 import ru.itis.grant.dao.interfaces.EventDao;
@@ -35,6 +36,8 @@ public class UserServiceImpl implements UserService {
     Verification verification;
     @Autowired
     ConversionResultFactory conversionFactory;
+    @Autowired
+    ConversionListResultFactory conversionListFactory;
     @Autowired
     HashGenerator hashGenerator;
     @Autowired
@@ -76,19 +79,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<ResponseEventDto> getEvents() {
         List<Event> events = eventDao.getEvents();
-        return null;
+        List<ResponseEventDto> eventDtoList = conversionListFactory.eventsToResponseEventDtos(events);
+        return eventDtoList;
     }
 
     @Override
     public List<ResponseEventDto> getActiveEvents() {
         List<Event> events = eventDao.getActiveEvents(new Date(System.currentTimeMillis()));
-        return null;
+        List<ResponseEventDto> eventDtoList = conversionListFactory.eventsToResponseEventDtos(events);
+        return eventDtoList;
     }
 
     @Override
     public List<ResponseEventDto> getActiveEventsWithPattern() {
         List<Event> events = eventDao.getActiveEventsWithPattern(new Date(System.currentTimeMillis()));
-        return null;
+        List<ResponseEventDto> eventDtoList = conversionListFactory.eventsToResponseEventDtos(events);
+        return eventDtoList;
     }
 
     @Override
@@ -123,7 +129,8 @@ public class UserServiceImpl implements UserService {
     public List<ResponseBidDto> getUserBids(String token) {
         verification.verifyTokenExistence(token);
         List<Bid> bids = bidDao.getUserBids(token);
-        return null;
+        List<ResponseBidDto> bidDtoList = conversionListFactory.bidsToResponseBidDtos(bids);
+        return bidDtoList;
     }
 
     @Override
