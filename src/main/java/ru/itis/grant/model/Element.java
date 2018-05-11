@@ -14,8 +14,6 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "element")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "selectable", discriminatorType = DiscriminatorType.STRING)
 public class Element {
     @Id
     @GenericGenerator(name = "el_id", strategy = "increment")
@@ -31,5 +29,6 @@ public class Element {
     @ManyToOne(fetch = FetchType.LAZY)
     private Pattern pattern;
     private boolean required;
+    @Column(name = "selectable_value")
     private String[] selectableValue;
 }
