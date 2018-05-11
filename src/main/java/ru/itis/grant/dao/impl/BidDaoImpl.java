@@ -120,4 +120,15 @@ public class BidDaoImpl implements BidDao {
                 .getResultList()
                 .isEmpty();
     }
+
+    @Override
+    public boolean expertBidExistence(String token, long bidId) {
+        return !em.createQuery("select b.id from Bid b where (select u from User u where u.token = :token) " +
+                "in b.pattern.event.experts and b.id = :bidId and b.status = 'ACTIVE'")
+                .setParameter("token", token)
+                .setParameter("bidId", bidId)
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
 }

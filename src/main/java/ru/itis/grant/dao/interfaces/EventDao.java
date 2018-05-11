@@ -32,4 +32,6 @@ public interface EventDao {
     boolean eventExistenceById(long id);
 
     boolean verifyEventPatternExistence(long eventId);
+
+    boolean expertEventExistence(String token, long eventId);
 }

@@ -34,6 +34,7 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Override
     public List<ResponseEventDto> getExpertEvents(String token) {
+        verification.verifyTokenExistence(token);
         List<Event> events = eventDao.getExpertEvents(token);
         List<ResponseEventDto> responseEventDtos = conversionListResultFactory.eventsToResponseEventDtos(events);
         return responseEventDtos;
@@ -41,6 +42,7 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Override
     public List<ResponseBidDto> getExpertBids(String token) {
+        verification.verifyTokenExistence(token);
         List<Bid> bids = bidDao.getExpertBids(token);
         List<ResponseBidDto> responseBidDtos = conversionListResultFactory.bidsToResponseBidDtos(bids);
         return responseBidDtos;
@@ -48,6 +50,9 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Override
     public List<ResponseBidDto> getExpertEventBids(String token, long eventId) {
+        verification.verifyTokenExistence(token);
+        verification.verifyEventExistenceById(eventId);
+        verification.verifyExpertEventExistence(token, eventId);
         List<Bid> bids = bidDao.getExpertEventBids(token, eventId);
         List<ResponseBidDto> responseBidDtos = conversionListResultFactory.bidsToResponseBidDtos(bids);
         return responseBidDtos;
@@ -55,6 +60,9 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Override
     public ResponseBidDto getExpertBid(String token, long bidId) {
+        verification.verifyTokenExistence(token);
+        verification.verifyBidExistenceById(bidId);
+        verification.verifyExpertBidExistence(token, bidId);
         Bid bid = bidDao.getExpertBid(token, bidId);
         ResponseBidDto responseBidDto = conversionResultFactory.bidToResponseBidDto(bid);
         return responseBidDto;
@@ -62,6 +70,9 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Override
     public ResponseBidDto validate(String token, long bidId, ValidateDto validateDto) {
+        verification.verifyTokenExistence(token);
+        verification.verifyBidExistenceById(bidId);
+        verification.verifyExpertBidExistence(token, bidId);
         Bid bid = bidDao.getBidById(bidId);
         bid.setStatus(validateDto.getStatus());
         bid.setComment(validateDto.getComment());

@@ -33,4 +33,6 @@ public interface BidDao {
     boolean bidExistenceById(long id);
 
     boolean userBidExistence(String token, long bidId);
+
+    boolean expertBidExistence(String token, long bidId);
 }

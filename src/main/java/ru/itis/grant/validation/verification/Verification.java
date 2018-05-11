@@ -74,6 +74,18 @@ public class Verification {
         }
     }
 
+    public void verifyExpertBidExistence(String token, long bidId) {
+        if (!bidDao.expertBidExistence(token, bidId)) {
+            throw new IncorrectDataException("id", "Заявка с таким id не найдена");
+        }
+    }
+
+    public void verifyExpertEventExistence(String token, long eventId) {
+        if (!eventDao.expertEventExistence(token, eventId)) {
+            throw new IncorrectDataException("id", "Конкурс с таким id не найден");
+        }
+    }
+
     public void verifyElementValueDto(RequestElementValueDto elementValueDto, Element element) {
         if (!ElementValueDtoValidator.getInstance().verify(elementValueDto, element)) {
             throw new IncorrectDataException("values", "Неверно введены значения");

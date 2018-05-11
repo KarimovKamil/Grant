@@ -83,7 +83,8 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public List<Event> getExpertEvents(String token) {
-        List<Event> events = em.createQuery("from Expert exp where exp.user.token = :token")
+        List<Event> events = em.createQuery("from Event e where " +
+                "(select u from User u where u.token = :token) in e.experts")
                 .setParameter("token", token)
                 .getResultList();
         return events;
@@ -101,6 +102,17 @@ public class EventDaoImpl implements EventDao {
     @Override
     public boolean verifyEventPatternExistence(long eventId) {
         return !em.createQuery("select e.id from Event e where e.id = :eventId and e.pattern is not null")
+                .setParameter("eventId", eventId)
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
+
+    @Override
+    public boolean expertEventExistence(String token, long eventId) {
+        return !em.createQuery("select e.id from Event e where e.id = :eventId " +
+                "(select u from User u where u.token = :token) in e.experts")
+                .setParameter("token", token)
                 .setParameter("eventId", eventId)
                 .setMaxResults(1)
                 .getResultList()
