@@ -75,23 +75,23 @@ public class Verification {
     }
 
     public void verifyElementValueDto(RequestElementValueDto elementValueDto, Element element) {
-        if(!ElementValueDtoValidator.getInstance().verify(elementValueDto, element)) {
+        if (!ElementValueDtoValidator.getInstance().verify(elementValueDto, element)) {
             throw new IncorrectDataException("values", "Неверно введены значения");
         }
     }
 
     public void verifyBidDto(RequestBidDto bidDto, Pattern pattern) {
-        int correctCount = 0;
-        for (RequestElementValueDto elementValueDto : bidDto.getValues()) {
-            for (Element element : pattern.getElements()) {
-                if (elementValueDto.getElementId() == element.getId()) {
-                    correctCount++;
-                    verifyElementValueDto(elementValueDto, element);
+        next:
+        for (Element element : pattern.getElements()) {
+            for (RequestElementValueDto value : bidDto.getValues()) {
+                if (value.getElementId() == element.getId()) {
+                    verifyElementValueDto(value, element);
+                    continue next;
                 }
             }
-        }
-        if (correctCount != bidDto.getValues().size()) {
-            throw new IncorrectDataException("values", "Неверно введены значения");
+            if (element.isRequired()) {
+                throw new IncorrectDataException("values", "Неверно введены значения");
+            }
         }
     }
 }
