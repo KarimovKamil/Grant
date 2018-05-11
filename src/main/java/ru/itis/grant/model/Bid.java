@@ -29,4 +29,5 @@ public class Bid {
     @Column(name = "bid_date")
     private Date bidDate;
     private String status;
+    private String comment;
 }

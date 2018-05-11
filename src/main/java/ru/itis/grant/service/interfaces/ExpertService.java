@@ -16,5 +16,9 @@ public interface ExpertService {
 
     ResponseBidDto getExpertBid(String token, long bidId);
 
-    ResponseBidDto validate(String token, long eventId, long bidId, ValidateDto validateDto);
+    ResponseBidDto validate(String token, long bidId, ValidateDto validateDto);
+
+    ResponseBidDto banUser(String token, long bidId);
+
+    ResponseBidDto unbanUser(String token, long bidId);
 }

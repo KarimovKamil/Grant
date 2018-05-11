@@ -37,6 +37,7 @@ public class BidToResponseBidDtoConverter {
                 .bidDate(bid.getBidDate())
                 .status(bid.getStatus())
                 .values(responseElementValueDtoList)
+                .comment(bid.getComment())
                 .build();
     }
 }

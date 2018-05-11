@@ -74,7 +74,8 @@ public class BidDaoImpl implements BidDao {
 
     @Override
     public List<Bid> getExpertBids(String token) {
-        List<Bid> bids = em.createQuery("from Bid b where b.pattern.event.expert.user.token = :token")
+        List<Bid> bids = em.createQuery("from Bid b where (select u from User u where u.token = :token) " +
+                "in b.pattern.event.experts")
                 .setParameter("token", token)
                 .getResultList();
         return bids;
@@ -82,7 +83,12 @@ public class BidDaoImpl implements BidDao {
 
     @Override
     public Bid getExpertBid(String token, long bidId) {
-        return null;
+        Bid bid = (Bid) em.createQuery("from Bid b where (select u from User u where u.token = :token) " +
+                "in b.pattern.event.experts and b.id = :id")
+                .setParameter("token", token)
+                .setParameter("id", bidId)
+                .getSingleResult();
+        return bid;
     }
 
     @Override

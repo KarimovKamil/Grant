@@ -19,4 +19,5 @@ public class ResponseBidDto {
     private Date bidDate;
     private String status;
     private List<ResponseElementValueDto> values;
+    private String comment;
 }
