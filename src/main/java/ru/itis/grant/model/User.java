@@ -8,7 +8,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.util.Date;
 import java.util.List;
 
@@ -20,8 +19,8 @@ import java.util.List;
 @Table(name = "g_user")
 public class User {
     @Id
-    @GenericGenerator(name="us_id" , strategy="increment")
-    @GeneratedValue(generator="us_id")
+    @GenericGenerator(name = "us_id", strategy = "increment")
+    @GeneratedValue(generator = "us_id")
     private long id;
     @Column(nullable = false, unique = true)
     private String email;

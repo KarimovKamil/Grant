@@ -18,8 +18,8 @@ import java.util.List;
 @Table(name = "g_event")
 public class Event {
     @Id
-    @GenericGenerator(name="ev_id" , strategy="increment")
-    @GeneratedValue(generator="ev_id")
+    @GenericGenerator(name = "ev_id", strategy = "increment")
+    @GeneratedValue(generator = "ev_id")
     private long id;
     private String name;
     @Type(type = "text")

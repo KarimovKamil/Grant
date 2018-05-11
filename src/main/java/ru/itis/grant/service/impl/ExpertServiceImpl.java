@@ -8,13 +8,12 @@ import ru.itis.grant.conversion.ConversionResultFactory;
 import ru.itis.grant.dao.interfaces.BidDao;
 import ru.itis.grant.dao.interfaces.EventDao;
 import ru.itis.grant.dto.ValidateDto;
-import ru.itis.grant.dto.request.AuthDto;
 import ru.itis.grant.dto.response.ResponseBidDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
-import ru.itis.grant.dto.response.ResponsePatternDto;
 import ru.itis.grant.model.Bid;
 import ru.itis.grant.model.Event;
 import ru.itis.grant.service.interfaces.ExpertService;
+import ru.itis.grant.validation.verification.Verification;
 
 import java.util.List;
 
@@ -30,6 +29,8 @@ public class ExpertServiceImpl implements ExpertService {
     ConversionResultFactory conversionResultFactory;
     @Autowired
     ConversionListResultFactory conversionListResultFactory;
+    @Autowired
+    Verification verification;
 
     @Override
     public List<ResponseEventDto> getExpertEvents(String token) {
@@ -41,6 +42,13 @@ public class ExpertServiceImpl implements ExpertService {
     @Override
     public List<ResponseBidDto> getExpertBids(String token) {
         List<Bid> bids = bidDao.getExpertBids(token);
+        List<ResponseBidDto> responseBidDtos = conversionListResultFactory.bidsToResponseBidDtos(bids);
+        return responseBidDtos;
+    }
+
+    @Override
+    public List<ResponseBidDto> getExpertEventBids(String token, long eventId) {
+        List<Bid> bids = bidDao.getExpertEventBids(token, eventId);
         List<ResponseBidDto> responseBidDtos = conversionListResultFactory.bidsToResponseBidDtos(bids);
         return responseBidDtos;
     }

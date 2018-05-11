@@ -8,7 +8,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,8 +19,8 @@ import java.util.List;
 @Table
 public class Pattern {
     @Id
-    @GenericGenerator(name="pt_id" , strategy="increment")
-    @GeneratedValue(generator="pt_id")
+    @GenericGenerator(name = "pt_id", strategy = "increment")
+    @GeneratedValue(generator = "pt_id")
     private long id;
     @Column(name = "bid_name")
     private String bidName;

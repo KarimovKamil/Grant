@@ -6,7 +6,6 @@ import ru.itis.grant.dto.request.AuthDto;
 import ru.itis.grant.dto.request.RequestPatternDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.dto.response.ResponsePatternDto;
-import ru.itis.grant.model.Pattern;
 import ru.itis.grant.service.interfaces.OrganizerService;
 
 import java.util.List;

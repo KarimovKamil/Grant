@@ -42,6 +42,16 @@ public class BidDaoImpl implements BidDao {
     }
 
     @Override
+    public Bid getExpertBid(String token, long bidId) {
+        Bid bid = (Bid) em.createQuery("from Bid b where (select u from User u where u.token = :token) " +
+                "in b.pattern.event.experts and b.id = :id and b.status = 'ACTIVE'")
+                .setParameter("token", token)
+                .setParameter("id", bidId)
+                .getSingleResult();
+        return bid;
+    }
+
+    @Override
     public List<Bid> getUserBids(long userId) {
         List<Bid> bids = em.createQuery("from Bid b where b.user.id = :userId")
                 .setParameter("userId", userId)
@@ -75,20 +85,20 @@ public class BidDaoImpl implements BidDao {
     @Override
     public List<Bid> getExpertBids(String token) {
         List<Bid> bids = em.createQuery("from Bid b where (select u from User u where u.token = :token) " +
-                "in b.pattern.event.experts")
+                "in b.pattern.event.experts and b.status = 'ACTIVE'")
                 .setParameter("token", token)
                 .getResultList();
         return bids;
     }
 
     @Override
-    public Bid getExpertBid(String token, long bidId) {
-        Bid bid = (Bid) em.createQuery("from Bid b where (select u from User u where u.token = :token) " +
-                "in b.pattern.event.experts and b.id = :id")
+    public List<Bid> getExpertEventBids(String token, long eventId) {
+        List<Bid> bids = em.createQuery("from Bid b where (select u from User u where u.token = :token) " +
+                "in b.pattern.event.experts and b.status = 'ACTIVE' and b.pattern.event.id = :eventId")
                 .setParameter("token", token)
-                .setParameter("id", bidId)
-                .getSingleResult();
-        return bid;
+                .setParameter("eventId", eventId)
+                .getResultList();
+        return bids;
     }
 
     @Override

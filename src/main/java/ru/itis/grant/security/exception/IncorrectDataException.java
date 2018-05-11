@@ -3,7 +3,7 @@ package ru.itis.grant.security.exception;
 public class IncorrectDataException extends RuntimeException {
     private String fieldName;
 
-    public IncorrectDataException(String fieldName, String string){
+    public IncorrectDataException(String fieldName, String string) {
         super(string);
         this.fieldName = fieldName;
     }

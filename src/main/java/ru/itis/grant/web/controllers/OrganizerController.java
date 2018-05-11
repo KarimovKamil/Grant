@@ -46,7 +46,7 @@ public class OrganizerController {
         ResponsePatternDto pattern = organizerService.getPattern(token, id);
         return ResponseEntity.ok(pattern);
     }
-    
+
     @PostMapping(value = "/my/patterns/{id}/update")
     public ResponseEntity<ResponsePatternDto> updatePattern(
             @RequestParam(value = "Auth-Token") String token,

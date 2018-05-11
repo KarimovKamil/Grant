@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface EventDao {
-    
+
     void addEvent(Event event);
 
     void deleteEvent(Event event);
@@ -26,7 +26,7 @@ public interface EventDao {
     List<Event> getActiveEventsWithPattern(Date date);
 
     List<Event> getUserEvents(long userId);
-    
+
     List<Event> getExpertEvents(String token);
 
     boolean eventExistenceById(long id);

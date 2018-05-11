@@ -2,7 +2,6 @@ package ru.itis.grant.dao.impl;
 
 import org.springframework.stereotype.Repository;
 import ru.itis.grant.dao.interfaces.PatternDao;
-import ru.itis.grant.model.Element;
 import ru.itis.grant.model.Pattern;
 
 import javax.persistence.EntityManager;
