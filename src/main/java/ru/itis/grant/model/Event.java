@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -29,4 +30,6 @@ public class Event {
     private User owner;
     @OneToOne(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Pattern pattern;
+    @ManyToMany(mappedBy = "exEvents", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<User> experts;
 }

@@ -82,6 +82,14 @@ public class EventDaoImpl implements EventDao {
     }
 
     @Override
+    public List<Event> getExpertEvents(String token) {
+        List<Event> events = em.createQuery("from Expert exp where exp.user.token = :token")
+                .setParameter("token", token)
+                .getResultList();
+        return events;
+    }
+
+    @Override
     public boolean eventExistenceById(long id) {
         return !em.createQuery("select e.id from Event e where e.id = :id")
                 .setParameter("id", id)

@@ -14,18 +14,12 @@ public class ExpertController {
     @Autowired
     ExpertService expertService;
 
-    @PostMapping(value = "/login")
-    public ResponseEntity<String> login(@RequestBody AuthDto authDto) {
-        String token = expertService.login(authDto);
-        return ResponseEntity.ok(token);
-    }
-
-    @PostMapping(value = "events/{eventId}/patterns/{patternId}/validate")
-    public ResponseEntity<Boolean> validatePatternOK(
-            @PathVariable(value = "eventId") long eventId,
-            @PathVariable(value = "patternId") long patternId,
-            @RequestBody ValidateDto validateDto) {
-        boolean success = expertService.validatePattern(eventId, patternId, validateDto);
-        return ResponseEntity.ok(success);
-    }
+//    @PostMapping(value = "events/{eventId}/patterns/{patternId}/validate")
+//    public ResponseEntity<Boolean> validatePatternOK(
+//            @PathVariable(value = "eventId") long eventId,
+//            @PathVariable(value = "patternId") long patternId,
+//            @RequestBody ValidateDto validateDto) {
+//        boolean success = expertService.validatePattern(eventId, patternId, validateDto);
+//        return ResponseEntity.ok(success);
+//    }
 }

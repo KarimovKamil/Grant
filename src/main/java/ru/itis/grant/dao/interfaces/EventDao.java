@@ -26,6 +26,8 @@ public interface EventDao {
     List<Event> getActiveEventsWithPattern(Date date);
 
     List<Event> getUserEvents(long userId);
+    
+    List<Event> getExpertEvents(String token);
 
     boolean eventExistenceById(long id);
 

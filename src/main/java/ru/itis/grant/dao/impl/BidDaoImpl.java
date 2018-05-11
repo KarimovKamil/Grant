@@ -73,6 +73,19 @@ public class BidDaoImpl implements BidDao {
     }
 
     @Override
+    public List<Bid> getExpertBids(String token) {
+        List<Bid> bids = em.createQuery("from Bid b where b.pattern.event.expert.user.token = :token")
+                .setParameter("token", token)
+                .getResultList();
+        return bids;
+    }
+
+    @Override
+    public Bid getExpertBid(String token, long bidId) {
+        return null;
+    }
+
+    @Override
     public boolean bidExistenceById(long id) {
         return !em.createQuery("select b.id from Bid b where b.id = :id")
                 .setParameter("id", id)
