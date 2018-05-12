@@ -5,20 +5,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.itis.grant.conversion.ConversionListResultFactory;
 import ru.itis.grant.conversion.ConversionResultFactory;
-import ru.itis.grant.dao.interfaces.BidDao;
-import ru.itis.grant.dao.interfaces.EventDao;
-import ru.itis.grant.dao.interfaces.PatternDao;
-import ru.itis.grant.dao.interfaces.UserDao;
+import ru.itis.grant.dao.interfaces.*;
 import ru.itis.grant.dto.request.AuthDto;
 import ru.itis.grant.dto.request.RequestBidDto;
 import ru.itis.grant.dto.request.RequestUserDto;
 import ru.itis.grant.dto.response.ResponseBidDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.dto.response.ResponsePatternDto;
-import ru.itis.grant.model.Bid;
-import ru.itis.grant.model.Event;
-import ru.itis.grant.model.Pattern;
-import ru.itis.grant.model.User;
+import ru.itis.grant.model.*;
 import ru.itis.grant.security.exception.IncorrectDataException;
 import ru.itis.grant.service.interfaces.UserService;
 import ru.itis.grant.service.utils.generators.HashGenerator;
@@ -50,6 +44,8 @@ public class UserServiceImpl implements UserService {
     PatternDao patternDao;
     @Autowired
     BidDao bidDao;
+    @Autowired
+    ElementValueDao elementValueDao;
 
     @Override
     public String login(AuthDto authDto) {
@@ -72,6 +68,7 @@ public class UserServiceImpl implements UserService {
                 tokenGenerator.generateToken(),
                 hashGenerator.encode(userDto.getPassword()),
                 userDto);
+        user.setRole("USER");
         userDao.addUser(user);
         return user.getToken();
     }
@@ -116,12 +113,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseBidDto createBid(String token, RequestBidDto requestBidDto) {
+        Date currentDate = new Date(System.currentTimeMillis());
         verification.verifyTokenExistence(token);
         verification.verifyPatternExistence(requestBidDto.getPatternId());
-        verification.verifyBidDto(requestBidDto, patternDao.getPattern(requestBidDto.getPatternId()));
+        verification.verifyPatternTimeLimit(requestBidDto.getPatternId(), currentDate);
+        Pattern pattern = patternDao.getPattern(requestBidDto.getPatternId());
+        verification.verifyBidDto(requestBidDto, pattern);
         Bid bid = conversionFactory.requestBidDtoToBid(requestBidDto);
+        User user = userDao.getUserByToken(token);
+        bid.setBidDate(currentDate);
+        bid.setStatus("ACTIVE");
+        bid.setUser(user);
+        bid.setPattern(pattern);
         bidDao.addBid(bid);
-        ResponseBidDto responseBidDto = conversionFactory.bidToResponseBidDto(bid);
+        Bid bidFromDB = bidDao.getBidById(bid.getId());
+        ResponseBidDto responseBidDto = conversionFactory.bidToResponseBidDto(bidFromDB);
         return responseBidDto;
     }
 
@@ -143,14 +149,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseBidDto updateBid(String token, RequestBidDto requestBidDto) {
-        return null;
+    public ResponseBidDto updateBid(long id, String token, RequestBidDto requestBidDto) {
+        Date currentDate = new Date(System.currentTimeMillis());
+        verification.verifyTokenExistence(token);
+        verification.verifyUserBidExistenceById(token, id);
+        Bid bid = bidDao.getBidById(id);
+        verification.verifyPatternTimeLimit(bid.getPattern().getId(), currentDate);
+        verification.verifyBidDto(requestBidDto, bid.getPattern());
+        bid.setBidDate(currentDate);
+        bid.setStatus("ACTIVE");
+        //TODO: конвертор из requestValues в values
+//        bid.setValueList();
+        bidDao.updateBid(bid);
+        ResponseBidDto responseBidDto = conversionFactory.bidToResponseBidDto(bid);
+        return responseBidDto;
     }
 
     @Override
     public boolean deleteBid(String token, long bidId) {
         verification.verifyTokenExistence(token);
-        verification.verifyBidExistenceById(bidId);
+        verification.verifyUserBidExistenceById(token, bidId);
         bidDao.deleteBid(bidId);
         return true;
     }

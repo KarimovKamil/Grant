@@ -13,6 +13,8 @@ import ru.itis.grant.model.Pattern;
 import ru.itis.grant.security.exception.IncorrectDataException;
 import ru.itis.grant.validation.dto.ElementValueDtoValidator;
 
+import java.util.Date;
+
 @Component
 public class Verification {
 
@@ -45,6 +47,12 @@ public class Verification {
 
     public void verifyBidExistenceById(long id) {
         if (!bidDao.bidExistenceById(id)) {
+            throw new IncorrectDataException("id", "Неверный id заявки");
+        }
+    }
+
+    public void verifyUserBidExistenceById(String token, long id) {
+        if (!bidDao.userBidExistence(token, id)) {
             throw new IncorrectDataException("id", "Неверный id заявки");
         }
     }
@@ -83,6 +91,13 @@ public class Verification {
     public void verifyExpertEventExistence(String token, long eventId) {
         if (!eventDao.expertEventExistence(token, eventId)) {
             throw new IncorrectDataException("id", "Конкурс с таким id не найден");
+        }
+    }
+
+    public void verifyPatternTimeLimit(long patternId, Date date) {
+        if (!patternDao.patternTimeCorrect(patternId, date)) {
+            throw new IncorrectDataException("date",
+                    "Заявка с таким id не существует либо некорректное время подачи заявки");
         }
     }
 

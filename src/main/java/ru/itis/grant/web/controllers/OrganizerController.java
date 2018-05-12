@@ -34,14 +34,14 @@ public class OrganizerController {
 
     @GetMapping(value = "/my/events")
     public ResponseEntity<List<ResponseEventDto>> organizerEvents(
-            @RequestParam(value = "Auth-Token") String token) {
+            @RequestHeader(value = "Auth-Token") String token) {
         List<ResponseEventDto> patterns = organizerService.getUserEvents(token);
         return ResponseEntity.ok(patterns);
     }
 
     @GetMapping(value = "/my/patterns/{id}")
     public ResponseEntity<ResponsePatternDto> organizerPattern(
-            @RequestParam(value = "Auth-Token") String token,
+            @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id) {
         ResponsePatternDto pattern = organizerService.getPattern(token, id);
         return ResponseEntity.ok(pattern);
@@ -49,7 +49,7 @@ public class OrganizerController {
 
     @PostMapping(value = "/my/patterns/{id}/update")
     public ResponseEntity<ResponsePatternDto> updatePattern(
-            @RequestParam(value = "Auth-Token") String token,
+            @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id,
             @RequestBody RequestPatternDto patternDto) {
 //        patternDto.setId(id);
@@ -59,7 +59,7 @@ public class OrganizerController {
 
     @PostMapping(value = "/my/patterns/{id}/delete")
     public ResponseEntity<Boolean> deletePattern(
-            @RequestParam(value = "Auth-Token") String token,
+            @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id) {
         boolean success = organizerService.deletePattern(token, id);
         return ResponseEntity.ok(success);
@@ -67,7 +67,7 @@ public class OrganizerController {
 
     @PostMapping(value = "/my/events/{id}/update")
     public ResponseEntity<ResponsePatternDto> updateEvent(
-            @RequestParam(value = "Auth-Token") String token,
+            @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id,
             @RequestBody RequestEventDto requestEventDto) {
         return null;
@@ -75,7 +75,7 @@ public class OrganizerController {
 
     @PostMapping(value = "/my/events/{id}/delete")
     public ResponseEntity<Boolean> deleteEvent(
-            @RequestParam(value = "Auth-Token") String token,
+            @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id) {
         return null;
     }

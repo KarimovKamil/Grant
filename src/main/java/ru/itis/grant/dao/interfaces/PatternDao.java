@@ -2,6 +2,7 @@ package ru.itis.grant.dao.interfaces;
 
 import ru.itis.grant.model.Pattern;
 
+import java.util.Date;
 import java.util.List;
 
 public interface PatternDao {
@@ -21,4 +22,6 @@ public interface PatternDao {
     List<Pattern> getAllPatterns();
 
     boolean patternExistence(long id);
+
+    boolean patternTimeCorrect(long id, Date date);
 }

@@ -17,6 +17,7 @@ public class BidDaoImpl implements BidDao {
     @Override
     public void addBid(Bid bid) {
         em.persist(bid);
+        em.flush();
     }
 
     @Override

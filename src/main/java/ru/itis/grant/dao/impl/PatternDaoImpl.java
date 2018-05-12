@@ -6,6 +6,7 @@ import ru.itis.grant.model.Pattern;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -58,8 +59,19 @@ public class PatternDaoImpl implements PatternDao {
 
     @Override
     public boolean patternExistence(long id) {
-        return !em.createQuery("SELECT p.id FROM Pattern p WHERE p.id = :id")
+        return !em.createQuery("select p.id from Pattern p where p.id = :id")
                 .setParameter("id", id)
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
+
+    @Override
+    public boolean patternTimeCorrect(long id, Date date) {
+        return !em.createQuery("select p.id from Pattern p where p.id = :id and" +
+                " p.startDate < :date and p.endDate > :date")
+                .setParameter("id", id)
+                .setParameter("date", date)
                 .setMaxResults(1)
                 .getResultList()
                 .isEmpty();

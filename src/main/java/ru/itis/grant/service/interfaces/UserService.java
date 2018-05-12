@@ -31,7 +31,7 @@ public interface UserService {
 
     ResponseBidDto getBid(String token, long bidId);
 
-    ResponseBidDto updateBid(String token, RequestBidDto requestBidDto);
+    ResponseBidDto updateBid(long id, String token, RequestBidDto requestBidDto);
 
     boolean deleteBid(String token, long bidId);
 }

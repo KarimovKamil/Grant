@@ -65,7 +65,7 @@ public class UserController {
 
     @PostMapping(value = "/my/bids/add")
     public ResponseEntity<ResponseBidDto> createBid(
-            @RequestParam(value = "Auth-Token") String token,
+            @RequestHeader(value = "Auth-Token") String token,
             @RequestBody RequestBidDto requestBidDto) {
         ResponseBidDto createdBid = userService.createBid(token, requestBidDto);
         return ResponseEntity.ok(createdBid);
@@ -73,32 +73,31 @@ public class UserController {
 
     @GetMapping(value = "/my/bids")
     public ResponseEntity<List<ResponseBidDto>> userBids(
-            @RequestParam(value = "Auth-Token") String token) {
+            @RequestHeader(value = "Auth-Token") String token) {
         List<ResponseBidDto> bids = userService.getUserBids(token);
         return ResponseEntity.ok(bids);
     }
 
     @GetMapping(value = "/my/bids/{id}")
     public ResponseEntity<ResponseBidDto> userBid(
-            @RequestParam(value = "Auth-Token") String token,
+            @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id) {
         ResponseBidDto bid = userService.getBid(token, id);
         return ResponseEntity.ok(bid);
     }
-//
-//    @PostMapping(value = "/my/bids/{id}/update")
-//    public ResponseEntity<RequestBidDto> updateBid(
-//            @RequestParam(value = "Auth-Token") String token,
-//            @PathVariable(value = "id") long id,
-//            @RequestBody RequestBidDto requestBidDto) {
-//        requestBidDto.setId(id);
-//        RequestBidDto updatedBid = userService.updateBid(token, requestBidDto);
-//        return ResponseEntity.ok(updatedBid);
-//    }
+
+    @PostMapping(value = "/my/bids/{id}/update")
+    public ResponseEntity<ResponseBidDto> updateBid(
+            @RequestHeader(value = "Auth-Token") String token,
+            @PathVariable(value = "id") long id,
+            @RequestBody RequestBidDto requestBidDto) {
+        ResponseBidDto updatedBid = userService.updateBid(id, token, requestBidDto);
+        return ResponseEntity.ok(updatedBid);
+    }
 
     @PostMapping(value = "/my/bids/{id}/delete")
     public ResponseEntity<Boolean> deleteBid(
-            @RequestParam(value = "Auth-Token") String token,
+            @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id) {
         boolean success = userService.deleteBid(token, id);
         return ResponseEntity.ok(success);
