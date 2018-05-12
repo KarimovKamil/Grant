@@ -16,8 +16,6 @@ public interface BidDao {
 
     Bid getBidById(long id);
 
-    Bid getExpertBid(String token, long bidId);
-
     List<Bid> getUserBids(long userId);
 
     List<Bid> getUserBids(String token);

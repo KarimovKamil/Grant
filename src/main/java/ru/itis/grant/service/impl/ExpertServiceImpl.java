@@ -61,7 +61,7 @@ public class ExpertServiceImpl implements ExpertService {
     public ResponseBidDto getExpertBid(String token, long bidId) {
         verification.verifyTokenExistence(token);
         verification.verifyExpertBidExistence(token, bidId);
-        Bid bid = bidDao.getExpertBid(token, bidId);
+        Bid bid = bidDao.getBidById(bidId);
         ResponseBidDto responseBidDto = conversionResultFactory.bidToResponseBidDto(bid);
         return responseBidDto;
     }

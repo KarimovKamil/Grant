@@ -3,9 +3,11 @@ package ru.itis.grant.dao.impl;
 import org.springframework.stereotype.Repository;
 import ru.itis.grant.dao.interfaces.EventDao;
 import ru.itis.grant.model.Event;
+import ru.itis.grant.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -83,8 +85,9 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public List<Event> getExpertEvents(String token) {
-        List<Event> events = em.createQuery("from Event e where " +
-                "(select u from User u where u.token = :token) in e.experts")
+        List<Event> events = em.createNativeQuery("SELECT * FROM g_event WHERE id IN " +
+                "(SELECT ex.ex_events_id FROM (SELECT id FROM g_user WHERE token = :token) u " +
+                "INNER JOIN g_user_ex_events ex ON ex.experts_id = u.id)", Event.class)
                 .setParameter("token", token)
                 .getResultList();
         return events;
@@ -110,8 +113,9 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public boolean expertEventExistence(String token, long eventId) {
-        return !em.createQuery("select e.id from Event e where e.id = :eventId " +
-                "and (select u from User u where u.token = :token) in e.experts")
+        return !em.createNativeQuery("SELECT ex_events_id FROM g_user_ex_events " +
+                "WHERE ex_events_id = :eventId AND experts_id = " +
+                "(SELECT id FROM g_user WHERE token = :token)", Long.class)
                 .setParameter("token", token)
                 .setParameter("eventId", eventId)
                 .setMaxResults(1)
