@@ -115,7 +115,7 @@ public class EventDaoImpl implements EventDao {
     public boolean expertEventExistence(String token, long eventId) {
         return !em.createNativeQuery("SELECT ex_events_id FROM g_user_ex_events " +
                 "WHERE ex_events_id = :eventId AND experts_id = " +
-                "(SELECT id FROM g_user WHERE token = :token)", Long.class)
+                "(SELECT id FROM g_user WHERE token = :token)")
                 .setParameter("token", token)
                 .setParameter("eventId", eventId)
                 .setMaxResults(1)
