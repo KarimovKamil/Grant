@@ -6,12 +6,14 @@ import ru.itis.grant.dao.interfaces.BidDao;
 import ru.itis.grant.dao.interfaces.EventDao;
 import ru.itis.grant.dao.interfaces.PatternDao;
 import ru.itis.grant.dao.interfaces.UserDao;
-import ru.itis.grant.dto.request.RequestBidDto;
-import ru.itis.grant.dto.request.RequestElementValueDto;
+import ru.itis.grant.dto.request.*;
 import ru.itis.grant.model.Element;
 import ru.itis.grant.model.Pattern;
 import ru.itis.grant.security.exception.IncorrectDataException;
 import ru.itis.grant.validation.dto.ElementValueDtoValidator;
+
+import java.util.Arrays;
+import java.util.List;
 
 import java.util.Date;
 
@@ -121,4 +123,58 @@ public class Verification {
             }
         }
     }
+
+    public void verifyEventDto(RequestEventDto eventDto) {
+        if (null != eventDto.getName() && null != eventDto.getDescription()
+                && null != eventDto.getSiteUrl()) {
+        } else {
+            throw new IncorrectDataException("values", "Неверно введены значения");
+        }
+    }
+
+    public void verifyPatternDto(RequestPatternDto patternDto) {
+        if (null != patternDto.getBidName() && null != patternDto.getDescription()
+                && null != patternDto.getElements() && null != patternDto.getEndDate()
+                && null != patternDto.getStartDate() && 0 != patternDto.getEventId()) {
+            List<RequestElementDto> elementDtos = patternDto.getElements();
+            for (RequestElementDto elementDto : elementDtos) {
+                String type = elementDto.getType();
+                List<String> existantTypes = Arrays.asList("TEXT", "COMBOBOX",
+                        "CHECKBOX", "RADIOBUTTON", "MULTISELECT");
+                if (!existantTypes.contains(type)) {
+                    throw new IncorrectDataException("values", "Неверны значения массива элементов");
+                } else {
+                    List<String> moreThanTwo = Arrays.asList("COMBOBOX",
+                            "RADIOBUTTON", "MULTISELECT");
+                    if (moreThanTwo.contains(type)) {
+                        if (null == elementDto.getSelectableValue() || elementDto.getSelectableValue().length < 2) {
+                            throw new IncorrectDataException("values", "Неверны значения массива элементов");
+                        }
+                    }
+                }
+            }
+        } else {
+            throw new IncorrectDataException("values", "Неверно введены значения");
+        }
+    }
+
+    public void verifyOrganizerEventExistence(long eventId, String token) {
+        if (!eventDao.organizerEventExistence(eventId, token)) {
+            throw new IncorrectDataException("id", "Пользователь не является собственником события");
+        }
+    }
+
+    public void verifyUserIdExistence(long id) {
+        if (!userDao.userExistenceById(id)) {
+            throw new IncorrectDataException("id", "Неверный идентификатор");
+        }
+    }
+
+    public void verifyEventExpertExistence(long eventId, long expertId) {
+        if (!eventDao.eventExpertExistence(eventId, expertId)) {
+            throw new IncorrectDataException("id", "Эксперт не принадлежит событию");
+        }
+    }
+
+
 }

@@ -1,60 +1,110 @@
 package ru.itis.grant.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.itis.grant.dto.request.AuthDto;
+import ru.itis.grant.conversion.ConversionListResultFactory;
+import ru.itis.grant.conversion.ConversionResultFactory;
+import ru.itis.grant.dao.interfaces.BidDao;
+import ru.itis.grant.dao.interfaces.EventDao;
+import ru.itis.grant.dao.interfaces.PatternDao;
+import ru.itis.grant.dao.interfaces.UserDao;
+import ru.itis.grant.dto.request.RequestEventDto;
 import ru.itis.grant.dto.request.RequestPatternDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.dto.response.ResponsePatternDto;
+import ru.itis.grant.model.Event;
+import ru.itis.grant.model.Pattern;
 import ru.itis.grant.service.interfaces.OrganizerService;
+import ru.itis.grant.service.utils.generators.HashGenerator;
+import ru.itis.grant.service.utils.generators.TokenGenerator;
+import ru.itis.grant.validation.verification.Verification;
 
 import java.util.List;
 
 @Transactional
 @Service
 public class OrganizerServiceImpl implements OrganizerService {
+
+    @Autowired
+    Verification verification;
+    @Autowired
+    ConversionResultFactory conversionFactory;
+    @Autowired
+    ConversionListResultFactory conversionListFactory;
+    @Autowired
+    HashGenerator hashGenerator;
+    @Autowired
+    TokenGenerator tokenGenerator;
+    @Autowired
+    UserDao userDao;
+    @Autowired
+    EventDao eventDao;
+    @Autowired
+    PatternDao patternDao;
+    @Autowired
+    BidDao bidDao;
+
     @Override
-    public String login(AuthDto authDto) {
-        return null;
+    public ResponseEventDto createEvent(RequestEventDto eventDto, String token) {
+        verification.verifyTokenExistence(token);
+        verification.verifyEventDto(eventDto);
+        Event event = conversionFactory.requestEventDtoToEvent(eventDto);
+        eventDao.addEvent(event);
+        return conversionFactory.eventToResponseEventDto(event);
     }
 
     @Override
-    public List<ResponseEventDto> getUserEvents(String token) {
-        return null;
+    public ResponsePatternDto createPattern(RequestPatternDto patternDto, String token) {
+        verification.verifyTokenExistence(token);
+        verification.verifyPatternDto(patternDto);
+        verification.verifyOrganizerEventExistence(patternDto.getEventId(), token);
+        Pattern pattern = conversionFactory.requestPatternDtoToPattern(patternDto);
+        patternDao.addPattern(pattern);
+        return conversionFactory.patternToResponsePatternDto(pattern);
     }
 
     @Override
-    public List<ResponseEventDto> getActiveEvents() {
-        return null;
+    public List<ResponseEventDto> getOrganizerEvents(String token) {
+        verification.verifyTokenExistence(token);
+        List<Event> events = eventDao.getOrganizerEvents(token);
+        return conversionListFactory.eventsToResponseEventDtos(events);
     }
 
     @Override
-    public ResponseEventDto getEvent(long eventId) {
-        return null;
+    public ResponseEventDto updateEvent(RequestEventDto eventDto, long id, String token) {
+        verification.verifyTokenExistence(token);
+        verification.verifyOrganizerEventExistence(id, token);
+        verification.verifyEventDto(eventDto);
+        Event event = eventDao.getEvent(id);
+        event.setDescription(eventDto.getDescription());
+        event.setName(eventDto.getName());
+        event.setSiteUrl(eventDto.getSiteUrl());
+        eventDao.updateEvent(event);
+        return conversionFactory.eventToResponseEventDto(event);
     }
 
     @Override
-    public ResponsePatternDto createPattern(RequestPatternDto patternDto) {
-        return null;
+    public void deleteEvent(long id, String token) {
+        verification.verifyTokenExistence(token);
+        verification.verifyOrganizerEventExistence(id, token);
+        eventDao.deleteEvent(id);
     }
 
     @Override
-    public List<ResponsePatternDto> getPatterns(String token) {
-        return null;
+    public void addExpertToEvent(long expertId, long eventId, String token) {
+        verification.verifyTokenExistence(token);
+        verification.verifyOrganizerEventExistence(eventId, token);
+        verification.verifyUserIdExistence(expertId);
+        eventDao.addExpertToEvent(eventId, expertId);
     }
 
     @Override
-    public ResponsePatternDto getPattern(String token, long patternId) {
-        return null;
-    }
-
-    @Override
-    public ResponsePatternDto updatePattern(String token, RequestPatternDto pattern) {
-        return null;
-    }
-
-    @Override
-    public boolean deletePattern(String token, long patternId) {
-        return false;
+    public void deleteExpertFromEvent(long expertId, long eventId, String token) {
+        verification.verifyTokenExistence(token);
+        verification.verifyOrganizerEventExistence(eventId, token);
+        verification.verifyUserIdExistence(expertId);
+        verification.verifyEventExpertExistence(eventId, expertId);
+        eventDao.deleteEvent(eventId);
     }
 }

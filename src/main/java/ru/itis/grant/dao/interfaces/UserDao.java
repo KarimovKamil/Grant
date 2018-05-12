@@ -25,4 +25,6 @@ public interface UserDao {
     boolean userExistenceByToken(String token);
 
     boolean userExistenceByEmail(String email);
+
+    boolean userExistenceById(long id);
 }

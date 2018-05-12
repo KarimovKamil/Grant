@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 import java.util.List;
@@ -25,6 +26,7 @@ public class Event {
     @Type(type = "text")
     private String description;
     @Column(name = "site_url")
+    @URL
     private String siteUrl;
     @ManyToOne
     private User owner;

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,10 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class TokenAuthenticationFilter extends GenericFilterBean {
 
@@ -53,6 +51,18 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
         if (!isSecured) {
             filterChain.doFilter(request, response);
         } else {
+            if (null == token || "".equals(token)) {
+                permissionEntryPoint.commence(request, response, new PermissionException("Not enough permissions"));
+            } else {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(token);
+                ArrayList<GrantedAuthority> grantedAuthorities = (ArrayList<GrantedAuthority>) userDetails.getAuthorities();
+                if (grantedAuthorities.get(0).toString().equals("USER")) {
+                    filterChain.doFilter(request, response);
+                } else {
+                    //TODO: добавить другие роли
+                    permissionEntryPoint.commence(request, response, new PermissionException("Not enough permissions"));
+                }
+            }
             permissionEntryPoint.commence(request, response, new PermissionException("Not enough permissions"));
         }
     }

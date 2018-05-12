@@ -81,4 +81,13 @@ public class UserDaoImpl implements UserDao {
                 .getResultList()
                 .isEmpty();
     }
+
+    @Override
+    public boolean userExistenceById(long id) {
+        return !em.createQuery("SELECT u.id FROM User u WHERE u.id = :id")
+                .setParameter("id", id)
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
 }

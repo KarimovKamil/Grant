@@ -118,4 +118,43 @@ public class EventDaoImpl implements EventDao {
                 .getResultList()
                 .isEmpty();
     }
+
+    @Override
+    public boolean organizerEventExistence(long eventId, String token) {
+        return !em.createQuery("select e.id from Event e where e.id = :eventId " +
+                "and e.owner.token = :token")
+                .setParameter("eventId", eventId)
+                .setParameter("token", token)
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
+
+    @Override
+    public List<Event> getOrganizerEvents(String token) {
+        List<Event> events = em.createQuery("from Event e where e.owner.token = :token")
+                .setParameter("token", token)
+                .getResultList();
+        return events;
+    }
+
+    @Override
+    public void addExpertToEvent(long eventId, long expertId) {
+        em.createNativeQuery("INSERT INTO g_user_ex_events (experts_id, ex_events_id)" +
+                " VALUES (:expertId, :eventId);")
+                .setParameter("expertId", expertId)
+                .setParameter("eventId", eventId)
+                .executeUpdate();
+    }
+
+    @Override
+    public boolean eventExpertExistence(long eventId, long expertId) {
+        return (boolean) em.createNativeQuery("SELECT CASE WHEN EXISTS " +
+                "(SELECT 1 FROM g_user_ex_events g WHERE" +
+                "g.ex_events_id = :eventId AND g.experts_id = :expertId)" +
+                "THEN TRUE ELSE FALSE END;", boolean.class)
+                .setParameter("expertId", expertId)
+                .setParameter("eventId", eventId)
+                .getSingleResult();
+    }
 }
