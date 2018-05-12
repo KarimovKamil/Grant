@@ -9,9 +9,11 @@ import ru.itis.grant.dao.interfaces.*;
 import ru.itis.grant.dto.request.AuthDto;
 import ru.itis.grant.dto.request.RequestBidDto;
 import ru.itis.grant.dto.request.RequestUserDto;
+import ru.itis.grant.dto.request.UserUpdateDto;
 import ru.itis.grant.dto.response.ResponseBidDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.dto.response.ResponsePatternDto;
+import ru.itis.grant.dto.response.ResponseUserDto;
 import ru.itis.grant.model.*;
 import ru.itis.grant.security.exception.IncorrectDataException;
 import ru.itis.grant.service.interfaces.UserService;
@@ -71,6 +73,27 @@ public class UserServiceImpl implements UserService {
         user.setRole("USER");
         userDao.addUser(user);
         return user.getToken();
+    }
+
+    @Override
+    public ResponseUserDto userInfo(String token) {
+        verification.verifyTokenExistence(token);
+        User user = userDao.getUserByToken(token);
+        ResponseUserDto responseUserDto = conversionFactory.userToResponseUserDto(user);
+        return responseUserDto;
+    }
+
+    @Override
+    public ResponseUserDto updateUserInfo(String token, UserUpdateDto userUpdateDto) {
+        verification.verifyTokenExistence(token);
+        User user = userDao.getUserByToken(token);
+        user.setFirstName(userUpdateDto.getFirstName());
+        user.setSecondName(userUpdateDto.getSecondName());
+        user.setMiddleName(userUpdateDto.getMiddleName());
+        user.setEmail(userUpdateDto.getEmail());
+        userDao.updateUser(user);
+        ResponseUserDto responseUserDto = conversionFactory.userToResponseUserDto(user);
+        return responseUserDto;
     }
 
     @Override

@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.*;
 import ru.itis.grant.dto.request.AuthDto;
 import ru.itis.grant.dto.request.RequestBidDto;
 import ru.itis.grant.dto.request.RequestUserDto;
+import ru.itis.grant.dto.request.UserUpdateDto;
 import ru.itis.grant.dto.response.ResponseBidDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.dto.response.ResponsePatternDto;
+import ru.itis.grant.dto.response.ResponseUserDto;
 import ru.itis.grant.service.interfaces.UserService;
 
 import java.util.List;
@@ -30,6 +32,21 @@ public class UserController {
     public ResponseEntity<String> registration(@RequestBody RequestUserDto requestUserDto) {
         String token = userService.register(requestUserDto);
         return ResponseEntity.ok(token);
+    }
+
+    @GetMapping(value = "/my/profile")
+    public ResponseEntity<ResponseUserDto> profile(
+            @RequestHeader(value = "Auth-Token") String token) {
+        ResponseUserDto responseUserDto = userService.userInfo(token);
+        return ResponseEntity.ok(responseUserDto);
+    }
+
+    @PostMapping(value = "/my/profile/update")
+    public ResponseEntity<ResponseUserDto> createBid(
+            @RequestHeader(value = "Auth-Token") String token,
+            @RequestBody UserUpdateDto userUpdateDto) {
+        ResponseUserDto responseUserDto = userService.updateUserInfo(token, userUpdateDto);
+        return ResponseEntity.ok(responseUserDto);
     }
 
     @GetMapping(value = "/events")
