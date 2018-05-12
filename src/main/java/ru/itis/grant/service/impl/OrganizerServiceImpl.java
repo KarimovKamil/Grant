@@ -15,6 +15,7 @@ import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.dto.response.ResponsePatternDto;
 import ru.itis.grant.model.Event;
 import ru.itis.grant.model.Pattern;
+import ru.itis.grant.model.User;
 import ru.itis.grant.service.interfaces.OrganizerService;
 import ru.itis.grant.service.utils.generators.HashGenerator;
 import ru.itis.grant.service.utils.generators.TokenGenerator;
@@ -50,6 +51,8 @@ public class OrganizerServiceImpl implements OrganizerService {
         verification.verifyTokenExistence(token);
         verification.verifyEventDto(eventDto);
         Event event = conversionFactory.requestEventDtoToEvent(eventDto);
+        User user = userDao.getUserByToken(token);
+        event.setOwner(user);
         eventDao.addEvent(event);
         return conversionFactory.eventToResponseEventDto(event);
     }
@@ -60,6 +63,7 @@ public class OrganizerServiceImpl implements OrganizerService {
         verification.verifyPatternDto(patternDto);
         verification.verifyOrganizerEventExistence(patternDto.getEventId(), token);
         Pattern pattern = conversionFactory.requestPatternDtoToPattern(patternDto);
+        pattern.setEvent(eventDao.getEvent(patternDto.getEventId()));
         patternDao.addPattern(pattern);
         return conversionFactory.patternToResponsePatternDto(pattern);
     }
