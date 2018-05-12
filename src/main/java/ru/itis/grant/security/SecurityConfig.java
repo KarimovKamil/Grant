@@ -12,8 +12,8 @@ import ru.itis.grant.security.user.UserDetailsServiceImpl;
 
 import javax.servlet.Filter;
 
-@Configuration
-@EnableWebSecurity
+//@Configuration
+//@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
