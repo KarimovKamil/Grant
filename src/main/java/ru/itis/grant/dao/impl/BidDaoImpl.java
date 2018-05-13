@@ -76,10 +76,11 @@ public class BidDaoImpl implements BidDao {
     @Override
     public List<Bid> getExpertBids(String token) {
         List<Bid> bids = em.createNativeQuery("SELECT b.* FROM " +
-                "(SELECT ex.ex_events_id FROM (SELECT id FROM g_user WHERE token = :token) u " +
-                "INNER JOIN g_user_ex_events ex ON ex.experts_id = u.id) e " +
-                "INNER JOIN pattern p ON e.ex_events_id = p.event_id " +
-                "INNER JOIN bid b ON b.pattern_id = p.id WHERE b.status = 'ACTIVE'", Bid.class)
+                "(SELECT ex.ex_events_id FROM (SELECT id FROM g_user WHERE token = :token) u INNER JOIN " +
+                "g_user_ex_events ex ON ex.experts_id = u.id) e " +
+                "INNER JOIN pattern p ON p.event_id = e.ex_events_id " +
+                "INNER JOIN (SELECT * FROM bid WHERE status = 'ACTIVE') b ON b.pattern_id = p.id " +
+                "ORDER BY (b.id)", Bid.class)
                 .setParameter("token", token)
                 .getResultList();
         return bids;
@@ -88,11 +89,11 @@ public class BidDaoImpl implements BidDao {
     @Override
     public List<Bid> getExpertEventBids(String token, long eventId) {
         List<Bid> bids = em.createNativeQuery("SELECT b.* FROM " +
-                "(SELECT ex.ex_events_id FROM (SELECT id FROM g_user WHERE token = :token) u " +
-                "INNER JOIN g_user_ex_events ex ON ex.experts_id = u.id) e " +
-                "INNER JOIN pattern p ON e.ex_events_id = p.event_id " +
-                "INNER JOIN bid b ON b.pattern_id = p.id WHERE e.ex_events_id = :eventId AND " +
-                "b.status = 'ACTIVE'", Bid.class)
+                "(SELECT ex.ex_events_id FROM (SELECT id FROM g_user WHERE token = :token) u INNER JOIN " +
+                "(SELECT * FROM g_user_ex_events WHERE ex_events_id = :eventId) ex ON ex.experts_id = u.id) e " +
+                "INNER JOIN pattern p ON p.event_id = e.ex_events_id " +
+                "INNER JOIN (SELECT * FROM bid WHERE status = 'ACTIVE') b ON b.pattern_id = p.id " +
+                "ORDER BY (b.id)", Bid.class)
                 .setParameter("token", token)
                 .setParameter("eventId", eventId)
                 .getResultList();
@@ -121,11 +122,11 @@ public class BidDaoImpl implements BidDao {
 
     @Override
     public boolean expertBidExistence(String token, long bidId) {
-        return !em.createNativeQuery("SELECT b.* FROM " +
-                "(SELECT ex.ex_events_id FROM (SELECT id FROM g_user WHERE token = :token) u " +
-                "INNER JOIN g_user_ex_events ex ON ex.experts_id = u.id) e " +
-                "INNER JOIN pattern p ON e.ex_events_id = p.event_id " +
-                "INNER JOIN bid b ON b.pattern_id = p.id WHERE b.id = :bidId AND b.status = 'ACTIVE'", Bid.class)
+        return !em.createNativeQuery("SELECT 1 FROM " +
+                "(SELECT ex.ex_events_id FROM (SELECT id FROM g_user WHERE token = :token) u INNER JOIN " +
+                "g_user_ex_events ex ON ex.experts_id = u.id) e " +
+                "INNER JOIN pattern p ON p.event_id = e.ex_events_id " +
+                "INNER JOIN (SELECT * FROM bid WHERE id = :bidId AND status = 'ACTIVE') b ON b.pattern_id = p.id")
                 .setParameter("token", token)
                 .setParameter("bidId", bidId)
                 .setMaxResults(1)
