@@ -1,5 +1,6 @@
 package ru.itis.grant.dao.interfaces;
 
+import ru.itis.grant.model.Ban;
 import ru.itis.grant.model.User;
 
 import java.util.List;
@@ -27,4 +28,10 @@ public interface UserDao {
     boolean userExistenceByEmail(String email);
 
     boolean userExistenceById(long id);
+
+    User getUserByBidId(long bidId);
+
+    void banUser(Ban ban);
+
+    List<User> getBannedUsers(String token);
 }

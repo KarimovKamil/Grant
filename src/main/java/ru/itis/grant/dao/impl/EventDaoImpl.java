@@ -3,11 +3,9 @@ package ru.itis.grant.dao.impl;
 import org.springframework.stereotype.Repository;
 import ru.itis.grant.dao.interfaces.EventDao;
 import ru.itis.grant.model.Event;
-import ru.itis.grant.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -160,5 +158,16 @@ public class EventDaoImpl implements EventDao {
                 .setParameter("expertId", expertId)
                 .setParameter("eventId", eventId)
                 .getSingleResult();
+    }
+
+    @Override
+    public Event getEventByBidId(long bidId) {
+        Event event = (Event) em.createNativeQuery("SELECT e.* FROM g_event e " +
+                "INNER JOIN (SELECT p.* FROM pattern p INNER JOIN " +
+                "(SELECT * FROM bid WHERE id = :bidId) b ON b.pattern_id = p.id) pb " +
+                "ON pb.event_id = e.id", Event.class)
+                .setParameter("bidId", bidId)
+                .getSingleResult();
+        return event;
     }
 }

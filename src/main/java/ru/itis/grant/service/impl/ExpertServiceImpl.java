@@ -7,11 +7,15 @@ import ru.itis.grant.conversion.ConversionListResultFactory;
 import ru.itis.grant.conversion.ConversionResultFactory;
 import ru.itis.grant.dao.interfaces.BidDao;
 import ru.itis.grant.dao.interfaces.EventDao;
+import ru.itis.grant.dao.interfaces.UserDao;
 import ru.itis.grant.dto.ValidateDto;
 import ru.itis.grant.dto.response.ResponseBidDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
+import ru.itis.grant.dto.response.ResponseUserDto;
+import ru.itis.grant.model.Ban;
 import ru.itis.grant.model.Bid;
 import ru.itis.grant.model.Event;
+import ru.itis.grant.model.User;
 import ru.itis.grant.service.interfaces.ExpertService;
 import ru.itis.grant.validation.verification.Verification;
 
@@ -21,6 +25,8 @@ import java.util.List;
 @Service
 public class ExpertServiceImpl implements ExpertService {
 
+    @Autowired
+    UserDao userDao;
     @Autowired
     BidDao bidDao;
     @Autowired
@@ -79,12 +85,31 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public ResponseBidDto banUser(String token, long bidId) {
-        return null;
+    public void banUser(String token, long bidId, String comment) {
+        verification.verifyTokenExistence(token);
+        verification.verifyExpertBidExistence(token, bidId);
+        Event event = eventDao.getEventByBidId(bidId);
+        User expert = userDao.getUserByToken(token);
+        User user = userDao.getUserByBidId(bidId);
+        Ban ban = Ban.builder()
+                .event(event)
+                .expert(expert)
+                .user(user)
+                .comment(comment)
+                .build();
+        userDao.banUser(ban);
+        bidDao.deleteBid(bidId);
     }
 
     @Override
-    public ResponseBidDto unbanUser(String token, long bidId) {
-        return null;
+    public void unbanUser(String token) {
+    }
+
+    @Override
+    public List<ResponseUserDto> getBannedUsers(String token) {
+        verification.verifyTokenExistence(token);
+        List<User> users = userDao.getBannedUsers(token);
+        List<ResponseUserDto> responseUserDtos = conversionListResultFactory.usersToResponseUserDtos(users);
+        return responseUserDtos;
     }
 }

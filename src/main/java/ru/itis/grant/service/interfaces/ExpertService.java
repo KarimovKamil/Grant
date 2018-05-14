@@ -3,6 +3,7 @@ package ru.itis.grant.service.interfaces;
 import ru.itis.grant.dto.ValidateDto;
 import ru.itis.grant.dto.response.ResponseBidDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
+import ru.itis.grant.dto.response.ResponseUserDto;
 
 import java.util.List;
 
@@ -18,7 +19,9 @@ public interface ExpertService {
 
     ResponseBidDto validate(String token, long bidId, ValidateDto validateDto);
 
-    ResponseBidDto banUser(String token, long bidId);
+    void banUser(String token, long bidId, String comment);
 
-    ResponseBidDto unbanUser(String token, long bidId);
+    void unbanUser(String token);
+
+    List<ResponseUserDto> getBannedUsers(String token);
 }

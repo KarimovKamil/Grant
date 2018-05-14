@@ -13,9 +13,8 @@ import ru.itis.grant.security.exception.IncorrectDataException;
 import ru.itis.grant.validation.dto.ElementValueDtoValidator;
 
 import java.util.Arrays;
-import java.util.List;
-
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class Verification {

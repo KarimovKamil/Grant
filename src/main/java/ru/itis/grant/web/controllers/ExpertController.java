@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.itis.grant.dto.ValidateDto;
 import ru.itis.grant.dto.response.ResponseBidDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
+import ru.itis.grant.dto.response.ResponseUserDto;
 import ru.itis.grant.service.interfaces.ExpertService;
 
 import java.util.List;
@@ -30,8 +31,8 @@ public class ExpertController {
     }
 
     @GetMapping(value = "/bids/{bidId}")
-    public ResponseEntity<ResponseBidDto> getExpertBids(@RequestHeader("Auth-token") String token,
-                                                        @PathVariable("bidId") long bidId) {
+    public ResponseEntity<ResponseBidDto> getExpertBid(@RequestHeader("Auth-token") String token,
+                                                       @PathVariable("bidId") long bidId) {
         ResponseBidDto responseBidDto = expertService.getExpertBid(token, bidId);
         return ResponseEntity.ok(responseBidDto);
     }
@@ -49,5 +50,19 @@ public class ExpertController {
                                                    @RequestBody ValidateDto validateDto) {
         ResponseBidDto responseBidDto = expertService.validate(token, bidId, validateDto);
         return ResponseEntity.ok(responseBidDto);
+    }
+
+    @PostMapping(value = "/bids/{bidId}/ban")
+    public ResponseEntity<Boolean> banUser(@RequestHeader("Auth-token") String token,
+                                           @PathVariable("bidId") long bidId,
+                                           @RequestParam("comment") String comment) {
+        expertService.banUser(token, bidId, comment);
+        return ResponseEntity.ok(true);
+    }
+
+    @GetMapping(value = "/users")
+    public ResponseEntity<List<ResponseUserDto>> getBannedUsers(@RequestHeader("Auth-token") String token) {
+        List<ResponseUserDto> users = expertService.getBannedUsers(token);
+        return ResponseEntity.ok(users);
     }
 }

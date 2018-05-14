@@ -42,4 +42,6 @@ public interface EventDao {
     void addExpertToEvent(long eventId, long expertId);
 
     boolean eventExpertExistence(long eventId, long expertId);
+
+    Event getEventByBidId(long bidId);
 }

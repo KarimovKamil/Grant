@@ -2,6 +2,7 @@ package ru.itis.grant.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.itis.grant.dto.request.RequestElementValueDto;
 import ru.itis.grant.dto.response.*;
 import ru.itis.grant.model.*;
 
@@ -67,5 +68,14 @@ public class ConversionListResultFactory {
             responseUserDtos.add(responseUserDto);
         }
         return responseUserDtos;
+    }
+
+    public List<ElementValue> requestElementValueDtosToElementValues(List<RequestElementValueDto> values) {
+        List<ElementValue> elementValues = new ArrayList<>();
+        for (RequestElementValueDto value : values) {
+            ElementValue elementValue = conversionResultFactory.requestElementValueDtoToElementValue(value);
+            elementValues.add(elementValue);
+        }
+        return elementValues;
     }
 }

@@ -2,6 +2,7 @@ package ru.itis.grant.dao.impl;
 
 import org.springframework.stereotype.Repository;
 import ru.itis.grant.dao.interfaces.UserDao;
+import ru.itis.grant.model.Ban;
 import ru.itis.grant.model.User;
 
 import javax.persistence.EntityManager;
@@ -89,5 +90,29 @@ public class UserDaoImpl implements UserDao {
                 .setMaxResults(1)
                 .getResultList()
                 .isEmpty();
+    }
+
+    @Override
+    public User getUserByBidId(long bidId) {
+        User user = (User) em.createNativeQuery("SELECT u.* FROM g_user u " +
+                "INNER JOIN (SELECT * FROM bid WHERE id = :bidId) b ON b.user_id = u.id", User.class)
+                .setParameter("bidId", bidId)
+                .getSingleResult();
+        return user;
+    }
+
+    @Override
+    public void banUser(Ban ban) {
+        em.persist(ban);
+    }
+
+    @Override
+    public List<User> getBannedUsers(String token) {
+        List<User> users = em.createNativeQuery("SELECT us.* FROM " +
+                "(SELECT * FROM g_user WHERE token = :token) u " +
+                "INNER JOIN ban b ON b.expert_id = u.id INNER JOIN g_user us ON b.user_id = us.id", User.class)
+                .setParameter("token", token)
+                .getResultList();
+        return users;
     }
 }
