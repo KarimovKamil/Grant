@@ -184,8 +184,7 @@ public class UserServiceImpl implements UserService {
         verification.verifyBidDto(requestBidDto, bid.getPattern());
         bid.setBidDate(currentDate);
         bid.setStatus("ACTIVE");
-        //TODO: конвертер из requestValues в values
-//        bid.setValueList();
+        bid.setValueList(conversionListFactory.requestElementValueDtosToElementValues(requestBidDto.getValues()));
         bidDao.updateBid(bid);
         ResponseBidDto responseBidDto = conversionFactory.bidToResponseBidDto(bid);
         return responseBidDto;

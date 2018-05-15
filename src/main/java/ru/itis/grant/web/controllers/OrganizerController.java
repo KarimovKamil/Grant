@@ -34,14 +34,14 @@ public class OrganizerController {
         return ResponseEntity.ok(createdPattern);
     }
 
-    @GetMapping(value = "/my/events")
+    @GetMapping(value = "/events")
     public ResponseEntity<List<ResponseEventDto>> organizerEvents(
             @RequestHeader(value = "Auth-Token") String token) {
         List<ResponseEventDto> patterns = organizerService.getOrganizerEvents(token);
         return ResponseEntity.ok(patterns);
     }
 
-    @PostMapping(value = "/my/events/{id}/update")
+    @PostMapping(value = "/events/{id}/update")
     public ResponseEntity<ResponseEventDto> updateEvent(
             @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id,
@@ -50,7 +50,7 @@ public class OrganizerController {
         return ResponseEntity.ok(responseEventDto);
     }
 
-    @PostMapping(value = "/my/events/{id}/delete")
+    @PostMapping(value = "/events/{id}/delete")
     public ResponseEntity<Boolean> deleteEvent(
             @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id) {

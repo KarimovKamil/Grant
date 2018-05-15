@@ -23,25 +23,27 @@ public class UserController {
     UserService userService;
 
     @PostMapping(value = "/login")
-    public ResponseEntity<String> login(@RequestBody AuthDto authDto) {
+    public ResponseEntity<String> login(
+            @RequestBody AuthDto authDto) {
         String token = userService.login(authDto);
         return ResponseEntity.ok(token);
     }
 
     @PostMapping(value = "/registration")
-    public ResponseEntity<String> registration(@RequestBody RequestUserDto requestUserDto) {
+    public ResponseEntity<String> registration(
+            @RequestBody RequestUserDto requestUserDto) {
         String token = userService.register(requestUserDto);
         return ResponseEntity.ok(token);
     }
 
-    @GetMapping(value = "/my/profile")
+    @GetMapping(value = "/profile")
     public ResponseEntity<ResponseUserDto> profile(
             @RequestHeader(value = "Auth-Token") String token) {
         ResponseUserDto responseUserDto = userService.userInfo(token);
         return ResponseEntity.ok(responseUserDto);
     }
 
-    @PostMapping(value = "/my/profile/update")
+    @PostMapping(value = "/profile/update")
     public ResponseEntity<ResponseUserDto> createBid(
             @RequestHeader(value = "Auth-Token") String token,
             @RequestBody UserUpdateDto userUpdateDto) {
@@ -80,7 +82,7 @@ public class UserController {
         return ResponseEntity.ok(patternDto);
     }
 
-    @PostMapping(value = "/my/bids/add")
+    @PostMapping(value = "/bids/add")
     public ResponseEntity<ResponseBidDto> createBid(
             @RequestHeader(value = "Auth-Token") String token,
             @RequestBody RequestBidDto requestBidDto) {
@@ -88,14 +90,14 @@ public class UserController {
         return ResponseEntity.ok(createdBid);
     }
 
-    @GetMapping(value = "/my/bids")
+    @GetMapping(value = "/bids")
     public ResponseEntity<List<ResponseBidDto>> userBids(
             @RequestHeader(value = "Auth-Token") String token) {
         List<ResponseBidDto> bids = userService.getUserBids(token);
         return ResponseEntity.ok(bids);
     }
 
-    @GetMapping(value = "/my/bids/{id}")
+    @GetMapping(value = "/bids/{id}")
     public ResponseEntity<ResponseBidDto> userBid(
             @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id) {
@@ -103,7 +105,7 @@ public class UserController {
         return ResponseEntity.ok(bid);
     }
 
-    @PostMapping(value = "/my/bids/{id}/update")
+    @PostMapping(value = "/bids/{id}/update")
     public ResponseEntity<ResponseBidDto> updateBid(
             @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id,
@@ -112,7 +114,7 @@ public class UserController {
         return ResponseEntity.ok(updatedBid);
     }
 
-    @PostMapping(value = "/my/bids/{id}/delete")
+    @PostMapping(value = "/bids/{id}/delete")
     public ResponseEntity<Boolean> deleteBid(
             @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id) {
