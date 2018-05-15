@@ -78,4 +78,13 @@ public class ConversionListResultFactory {
         }
         return elementValues;
     }
+
+    public List<ResponseBanDto> bansToResponseBanDtos(List<Ban> bans) {
+        List<ResponseBanDto> responseBanDtos = new ArrayList<>();
+        for (Ban ban : bans) {
+            ResponseBanDto responseBanDto = conversionResultFactory.banToResponseBanDto(ban);
+            responseBanDtos.add(responseBanDto);
+        }
+        return responseBanDtos;
+    }
 }

@@ -69,4 +69,9 @@ public class ConversionResultFactory {
         ResponseBidDto responseBidDto = BidToResponseBidDtoConverter.getInstance().convert(bid);
         return responseBidDto;
     }
+
+    public ResponseBanDto banToResponseBanDto(Ban ban) {
+        ResponseBanDto responseBanDto = BanToResponseBanDtoConverter.getInstance().convert(ban);
+        return responseBanDto;
+    }
 }

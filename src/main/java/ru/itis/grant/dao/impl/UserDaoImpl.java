@@ -102,17 +102,24 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void banUser(Ban ban) {
+    public Ban banUser(Ban ban) {
         em.persist(ban);
+        return ban;
     }
 
     @Override
-    public List<User> getBannedUsers(String token) {
-        List<User> users = em.createNativeQuery("SELECT us.* FROM " +
-                "(SELECT * FROM g_user WHERE token = :token) u " +
-                "INNER JOIN ban b ON b.expert_id = u.id INNER JOIN g_user us ON b.user_id = us.id", User.class)
+    public void unbanUser(String token, long userId) {
+        em.createQuery("delete from Ban b where b.user.id = :id and b.expert.token = :token")
+                .setParameter("id", userId)
+                .setParameter("token", token)
+                .executeUpdate();
+    }
+
+    @Override
+    public List<Ban> getBans(String token) {
+        List<Ban> bans = em.createQuery("from Ban b where b.expert.token = :token")
                 .setParameter("token", token)
                 .getResultList();
-        return users;
+        return bans;
     }
 }

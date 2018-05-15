@@ -9,9 +9,9 @@ import ru.itis.grant.dao.interfaces.BidDao;
 import ru.itis.grant.dao.interfaces.EventDao;
 import ru.itis.grant.dao.interfaces.UserDao;
 import ru.itis.grant.dto.ValidateDto;
+import ru.itis.grant.dto.response.ResponseBanDto;
 import ru.itis.grant.dto.response.ResponseBidDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
-import ru.itis.grant.dto.response.ResponseUserDto;
 import ru.itis.grant.model.Ban;
 import ru.itis.grant.model.Bid;
 import ru.itis.grant.model.Event;
@@ -85,7 +85,7 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public void banUser(String token, long bidId, String comment) {
+    public ResponseBanDto banUser(String token, long bidId, String comment) {
         verification.verifyTokenExistence(token);
         verification.verifyExpertBidExistence(token, bidId);
         Event event = eventDao.getEventByBidId(bidId);
@@ -97,19 +97,24 @@ public class ExpertServiceImpl implements ExpertService {
                 .user(user)
                 .comment(comment)
                 .build();
-        userDao.banUser(ban);
+        Ban addedBan = userDao.banUser(ban);
+        ResponseBanDto responseBanDto = conversionResultFactory.banToResponseBanDto(addedBan);
         bidDao.deleteBid(bidId);
+        return responseBanDto;
     }
 
     @Override
-    public void unbanUser(String token) {
-    }
-
-    @Override
-    public List<ResponseUserDto> getBannedUsers(String token) {
+    public void unbanUser(String token, long userId) {
         verification.verifyTokenExistence(token);
-        List<User> users = userDao.getBannedUsers(token);
-        List<ResponseUserDto> responseUserDtos = conversionListResultFactory.usersToResponseUserDtos(users);
-        return responseUserDtos;
+        verification.verifyUserIdExistence(userId);
+        userDao.unbanUser(token, userId);
+    }
+
+    @Override
+    public List<ResponseBanDto> getBans(String token) {
+        verification.verifyTokenExistence(token);
+        List<Ban> bans = userDao.getBans(token);
+        List<ResponseBanDto> responseBanDtos = conversionListResultFactory.bansToResponseBanDtos(bans);
+        return responseBanDtos;
     }
 }

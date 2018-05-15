@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.grant.dto.ValidateDto;
+import ru.itis.grant.dto.response.ResponseBanDto;
 import ru.itis.grant.dto.response.ResponseBidDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
-import ru.itis.grant.dto.response.ResponseUserDto;
 import ru.itis.grant.service.interfaces.ExpertService;
 
 import java.util.List;
@@ -53,16 +53,23 @@ public class ExpertController {
     }
 
     @PostMapping(value = "/bids/{bidId}/ban")
-    public ResponseEntity<Boolean> banUser(@RequestHeader("Auth-token") String token,
-                                           @PathVariable("bidId") long bidId,
-                                           @RequestParam("comment") String comment) {
-        expertService.banUser(token, bidId, comment);
-        return ResponseEntity.ok(true);
+    public ResponseEntity<ResponseBanDto> banUser(@RequestHeader("Auth-token") String token,
+                                                  @PathVariable("bidId") long bidId,
+                                                  @RequestParam("comment") String comment) {
+        ResponseBanDto responseBanDto = expertService.banUser(token, bidId, comment);
+        return ResponseEntity.ok(responseBanDto);
     }
 
     @GetMapping(value = "/users")
-    public ResponseEntity<List<ResponseUserDto>> getBannedUsers(@RequestHeader("Auth-token") String token) {
-        List<ResponseUserDto> users = expertService.getBannedUsers(token);
-        return ResponseEntity.ok(users);
+    public ResponseEntity<List<ResponseBanDto>> getBans(@RequestHeader("Auth-token") String token) {
+        List<ResponseBanDto> bans = expertService.getBans(token);
+        return ResponseEntity.ok(bans);
+    }
+
+    @PostMapping(value = "/users/{userId}/unban")
+    public ResponseEntity<Boolean> unbanUser(@RequestHeader("Auth-token") String token,
+                                             @PathVariable("userId") long userId) {
+        expertService.unbanUser(token, userId);
+        return ResponseEntity.ok(true);
     }
 }

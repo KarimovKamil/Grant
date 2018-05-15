@@ -31,7 +31,9 @@ public interface UserDao {
 
     User getUserByBidId(long bidId);
 
-    void banUser(Ban ban);
+    Ban banUser(Ban ban);
 
-    List<User> getBannedUsers(String token);
+    void unbanUser(String token, long userId);
+
+    List<Ban> getBans(String token);
 }
