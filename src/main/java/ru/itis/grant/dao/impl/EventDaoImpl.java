@@ -162,11 +162,8 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public Event getEventByBidId(long bidId) {
-        Event event = (Event) em.createNativeQuery("SELECT e.* FROM g_event e " +
-                "INNER JOIN (SELECT p.* FROM pattern p INNER JOIN " +
-                "(SELECT * FROM bid WHERE id = :bidId) b ON b.pattern_id = p.id) pb " +
-                "ON pb.event_id = e.id", Event.class)
-                .setParameter("bidId", bidId)
+        Event event = (Event) em.createQuery("select b.pattern.event from Bid b where b.id = :id")
+                .setParameter("id", bidId)
                 .getSingleResult();
         return event;
     }
