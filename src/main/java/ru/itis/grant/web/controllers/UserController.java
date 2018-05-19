@@ -52,20 +52,26 @@ public class UserController {
     }
 
     @GetMapping(value = "/events")
-    public ResponseEntity<List<ResponseEventDto>> events() {
-        List<ResponseEventDto> requestEventDto = userService.getEvents();
+    public ResponseEntity<List<ResponseEventDto>> events(
+            @RequestParam int from,
+            @RequestParam int count) {
+        List<ResponseEventDto> requestEventDto = userService.getEvents(from, count);
         return ResponseEntity.ok(requestEventDto);
     }
 
     @GetMapping(value = "/events/active")
-    public ResponseEntity<List<ResponseEventDto>> activeEvents() {
-        List<ResponseEventDto> requestEventDto = userService.getActiveEvents();
+    public ResponseEntity<List<ResponseEventDto>> activeEvents(
+            @RequestParam int from,
+            @RequestParam int count) {
+        List<ResponseEventDto> requestEventDto = userService.getActiveEvents(from, count);
         return ResponseEntity.ok(requestEventDto);
     }
 
     @GetMapping(value = "/events/activeWithPattern")
-    public ResponseEntity<List<ResponseEventDto>> activeEventsWithPattern() {
-        List<ResponseEventDto> requestEventDto = userService.getActiveEventsWithPattern();
+    public ResponseEntity<List<ResponseEventDto>> activeEventsWithPattern(
+            @RequestParam int from,
+            @RequestParam int count) {
+        List<ResponseEventDto> requestEventDto = userService.getActiveEventsWithPattern(from, count);
         return ResponseEntity.ok(requestEventDto);
     }
 
@@ -92,8 +98,10 @@ public class UserController {
 
     @GetMapping(value = "/bids")
     public ResponseEntity<List<ResponseBidDto>> userBids(
-            @RequestHeader(value = "Auth-Token") String token) {
-        List<ResponseBidDto> bids = userService.getUserBids(token);
+            @RequestHeader(value = "Auth-Token") String token,
+            @RequestParam int from,
+            @RequestParam int count) {
+        List<ResponseBidDto> bids = userService.getUserBids(token, from, count);
         return ResponseEntity.ok(bids);
     }
 

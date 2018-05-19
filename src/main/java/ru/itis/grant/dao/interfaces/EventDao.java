@@ -19,11 +19,15 @@ public interface EventDao {
 
     List<Event> getEvents();
 
+    List<Event> getEvents(int from, int count);
+
     List<Event> getActiveEvents(Date date);
 
-    List<Event> getEventsWithPattern();
+    List<Event> getActiveEvents(Date date, int from, int count);
 
     List<Event> getActiveEventsWithPattern(Date date);
+
+    List<Event> getActiveEventsWithPattern(Date date, int from, int count);
 
     List<Event> getUserEvents(long userId);
 

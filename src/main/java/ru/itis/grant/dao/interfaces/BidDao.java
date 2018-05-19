@@ -20,6 +20,8 @@ public interface BidDao {
 
     List<Bid> getUserBids(String token);
 
+    List<Bid> getUserBids(String token, int from, int count);
+
     List<Bid> getEventBids(long eventId);
 
     List<Bid> getAllBids();
@@ -31,6 +33,8 @@ public interface BidDao {
     boolean bidExistenceById(long id);
 
     boolean userBidExistence(String token, long bidId);
+
+    boolean userPatternBidExistence(String token, long bidId);
 
     boolean expertBidExistence(String token, long bidId);
 }

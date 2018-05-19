@@ -7,10 +7,10 @@ import ru.itis.grant.dao.interfaces.EventDao;
 import ru.itis.grant.dao.interfaces.PatternDao;
 import ru.itis.grant.dao.interfaces.UserDao;
 import ru.itis.grant.dto.request.*;
-import ru.itis.grant.model.Element;
 import ru.itis.grant.model.Pattern;
 import ru.itis.grant.security.exception.IncorrectDataException;
-import ru.itis.grant.validation.dto.ElementValueDtoValidator;
+import ru.itis.grant.validation.dto.BidDtoValidator;
+import ru.itis.grant.validation.dto.UserDtoValidator;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -64,6 +64,12 @@ public class Verification {
         }
     }
 
+    public void verifyUserPatternBidExistence(String token, long patternId) {
+        if (bidDao.userPatternBidExistence(token, patternId)) {
+            throw new IncorrectDataException("id", "Вы уже подали заявку на это мероприятие");
+        }
+    }
+
     public void verifyEventExistenceById(long id) {
         if (!eventDao.eventExistenceById(id)) {
             throw new IncorrectDataException("id", "Неверный id конкурса");
@@ -102,24 +108,15 @@ public class Verification {
         }
     }
 
-    public void verifyElementValueDto(RequestElementValueDto elementValueDto, Element element) {
-        if (!ElementValueDtoValidator.getInstance().verify(elementValueDto, element)) {
-            throw new IncorrectDataException("values", "Неверно введены значения");
+    public void verifyUserDto(RequestUserDto userDto) {
+        if (!UserDtoValidator.getInstance().verify(userDto)) {
+            throw new IncorrectDataException("userDto", "Неверно введены значения");
         }
     }
 
     public void verifyBidDto(RequestBidDto bidDto, Pattern pattern) {
-        next:
-        for (Element element : pattern.getElements()) {
-            for (RequestElementValueDto value : bidDto.getValues()) {
-                if (value.getElementId() == element.getId()) {
-                    verifyElementValueDto(value, element);
-                    continue next;
-                }
-            }
-            if (element.isRequired()) {
-                throw new IncorrectDataException("values", "Неверно введены значения");
-            }
+        if (!BidDtoValidator.getInstance().verify(bidDto, pattern)) {
+            throw new IncorrectDataException("values", "Неверно введены значения");
         }
     }
 

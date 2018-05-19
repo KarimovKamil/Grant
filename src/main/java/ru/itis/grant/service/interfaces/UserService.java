@@ -23,9 +23,15 @@ public interface UserService {
 
     List<ResponseEventDto> getEvents();
 
+    List<ResponseEventDto> getEvents(int from, int count);
+
     List<ResponseEventDto> getActiveEvents();
 
+    List<ResponseEventDto> getActiveEvents(int from, int count);
+
     List<ResponseEventDto> getActiveEventsWithPattern();
+
+    List<ResponseEventDto> getActiveEventsWithPattern(int from, int count);
 
     ResponseEventDto getEvent(long eventId);
 
@@ -34,6 +40,8 @@ public interface UserService {
     ResponseBidDto createBid(String token, RequestBidDto requestBidDto);
 
     List<ResponseBidDto> getUserBids(String token);
+
+    List<ResponseBidDto> getUserBids(String token, int from, int count);
 
     ResponseBidDto getBid(String token, long bidId);
 

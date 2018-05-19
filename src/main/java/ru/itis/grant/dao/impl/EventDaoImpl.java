@@ -50,6 +50,15 @@ public class EventDaoImpl implements EventDao {
     }
 
     @Override
+    public List<Event> getEvents(int from, int count) {
+        List<Event> events = em.createQuery("from Event")
+                .setFirstResult(from)
+                .setMaxResults(count)
+                .getResultList();
+        return events;
+    }
+
+    @Override
     public List<Event> getActiveEvents(Date date) {
         List<Event> events = em.createQuery("from Event e where e.pattern.endDate > :date")
                 .setParameter("date", date)
@@ -58,8 +67,11 @@ public class EventDaoImpl implements EventDao {
     }
 
     @Override
-    public List<Event> getEventsWithPattern() {
-        List<Event> events = em.createQuery("from Event e where e.pattern != null")
+    public List<Event> getActiveEvents(Date date, int from, int count) {
+        List<Event> events = em.createQuery("from Event e where e.pattern.endDate > :date")
+                .setParameter("date", date)
+                .setFirstResult(from)
+                .setMaxResults(count)
                 .getResultList();
         return events;
     }
@@ -69,6 +81,17 @@ public class EventDaoImpl implements EventDao {
         List<Event> events = em.createQuery("from Event e where e.pattern is not null " +
                 "and e.pattern.endDate > :date")
                 .setParameter("date", date)
+                .getResultList();
+        return events;
+    }
+
+    @Override
+    public List<Event> getActiveEventsWithPattern(Date date, int from, int count) {
+        List<Event> events = em.createQuery("from Event e where e.pattern is not null " +
+                "and e.pattern.endDate > :date")
+                .setParameter("date", date)
+                .setFirstResult(from)
+                .setMaxResults(count)
                 .getResultList();
         return events;
     }

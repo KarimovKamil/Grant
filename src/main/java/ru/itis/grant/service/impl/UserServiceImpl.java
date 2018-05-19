@@ -69,6 +69,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String register(RequestUserDto userDto) {
         verification.verifyEmailUnique(userDto.getEmail());
+        verification.verifyUserDto(userDto);
         User user = conversionFactory.requestUserDtoToUser(
                 tokenGenerator.generateToken(),
                 hashGenerator.encode(userDto.getPassword()),
@@ -107,6 +108,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<ResponseEventDto> getEvents(int from, int count) {
+        List<Event> events = eventDao.getEvents(from, count);
+        List<ResponseEventDto> eventDtoList = conversionListFactory.eventsToResponseEventDtos(events);
+        return eventDtoList;
+    }
+
+    @Override
     public List<ResponseEventDto> getActiveEvents() {
         List<Event> events = eventDao.getActiveEvents(new Date(System.currentTimeMillis()));
         List<ResponseEventDto> eventDtoList = conversionListFactory.eventsToResponseEventDtos(events);
@@ -114,8 +122,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<ResponseEventDto> getActiveEvents(int from, int count) {
+        List<Event> events = eventDao.getActiveEvents(new Date(System.currentTimeMillis()), from, count);
+        List<ResponseEventDto> eventDtoList = conversionListFactory.eventsToResponseEventDtos(events);
+        return eventDtoList;
+    }
+
+    @Override
     public List<ResponseEventDto> getActiveEventsWithPattern() {
         List<Event> events = eventDao.getActiveEventsWithPattern(new Date(System.currentTimeMillis()));
+        List<ResponseEventDto> eventDtoList = conversionListFactory.eventsToResponseEventDtos(events);
+        return eventDtoList;
+    }
+
+    @Override
+    public List<ResponseEventDto> getActiveEventsWithPattern(int from, int count) {
+        List<Event> events = eventDao.getActiveEventsWithPattern(new Date(System.currentTimeMillis()), from, count);
         List<ResponseEventDto> eventDtoList = conversionListFactory.eventsToResponseEventDtos(events);
         return eventDtoList;
     }
@@ -142,6 +164,7 @@ public class UserServiceImpl implements UserService {
         Date currentDate = new Date(System.currentTimeMillis());
         verification.verifyTokenExistence(token);
         verification.verifyPatternExistence(requestBidDto.getPatternId());
+        verification.verifyUserPatternBidExistence(token, requestBidDto.getPatternId());
         verification.verifyPatternTimeLimit(requestBidDto.getPatternId(), currentDate);
         Pattern pattern = patternDao.getPattern(requestBidDto.getPatternId());
         verification.verifyBidDto(requestBidDto, pattern);
@@ -161,6 +184,14 @@ public class UserServiceImpl implements UserService {
     public List<ResponseBidDto> getUserBids(String token) {
         verification.verifyTokenExistence(token);
         List<Bid> bids = bidDao.getUserBids(token);
+        List<ResponseBidDto> bidDtoList = conversionListFactory.bidsToResponseBidDtos(bids);
+        return bidDtoList;
+    }
+
+    @Override
+    public List<ResponseBidDto> getUserBids(String token, int from, int count) {
+        verification.verifyTokenExistence(token);
+        List<Bid> bids = bidDao.getUserBids(token, from, count);
         List<ResponseBidDto> bidDtoList = conversionListFactory.bidsToResponseBidDtos(bids);
         return bidDtoList;
     }

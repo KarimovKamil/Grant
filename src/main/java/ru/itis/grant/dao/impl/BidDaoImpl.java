@@ -59,6 +59,16 @@ public class BidDaoImpl implements BidDao {
     }
 
     @Override
+    public List<Bid> getUserBids(String token, int from, int count) {
+        List<Bid> bids = em.createQuery("from Bid b where b.user.token = :token")
+                .setParameter("token", token)
+                .setFirstResult(from)
+                .setMaxResults(count)
+                .getResultList();
+        return bids;
+    }
+
+    @Override
     public List<Bid> getEventBids(long eventId) {
         List<Bid> bids = em.createQuery("from Bid b where b.pattern.event.id = :eventId")
                 .setParameter("eventId", eventId)
@@ -119,6 +129,17 @@ public class BidDaoImpl implements BidDao {
                 "and b.user.token = :token")
                 .setParameter("token", token)
                 .setParameter("bidId", bidId)
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
+
+    @Override
+    public boolean userPatternBidExistence(String token, long patternId) {
+        return !em.createQuery("select b.id from Bid b where b.pattern.id = :patternId " +
+                "and b.user.token = :token")
+                .setParameter("token", token)
+                .setParameter("patternId", patternId)
                 .setMaxResults(1)
                 .getResultList()
                 .isEmpty();

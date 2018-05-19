@@ -32,8 +32,8 @@ public class Event {
     private User owner;
     @OneToOne(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Pattern pattern;
-    @ManyToMany(mappedBy = "exEvents", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "exEvents", cascade = CascadeType.ALL)
     private List<User> experts;
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    List<Ban> bans;
+    private List<Ban> bans;
 }
