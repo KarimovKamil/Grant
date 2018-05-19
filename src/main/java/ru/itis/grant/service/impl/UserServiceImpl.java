@@ -90,11 +90,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseUserDto updateUserInfo(String token, UserUpdateDto userUpdateDto) {
         verification.verifyTokenExistence(token);
+        verification.verifyEmail(userUpdateDto.getEmail());
         User user = userDao.getUserByToken(token);
         user.setFirstName(userUpdateDto.getFirstName());
         user.setSecondName(userUpdateDto.getSecondName());
         user.setMiddleName(userUpdateDto.getMiddleName());
-        user.setEmail(userUpdateDto.getEmail());
+        if (user.getEmail().intern() != userUpdateDto.getEmail().intern()) {
+            verification.verifyEmailUnique(userUpdateDto.getEmail());
+            user.setEmail(userUpdateDto.getEmail());
+        }
         userDao.updateUser(user);
         ResponseUserDto responseUserDto = conversionFactory.userToResponseUserDto(user);
         return responseUserDto;

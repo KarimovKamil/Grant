@@ -46,6 +46,12 @@ public class Verification {
         }
     }
 
+    public void verifyEmail(String email) {
+        if (!UserDtoValidator.getInstance().verifyEmail(email)) {
+            throw new IncorrectDataException("email", "Неверно введен email");
+        }
+    }
+
     public void verifyBidExistenceById(long id) {
         if (!bidDao.bidExistenceById(id)) {
             throw new IncorrectDataException("id", "Неверный id заявки");
