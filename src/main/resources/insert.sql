@@ -49,31 +49,31 @@ INSERT INTO pattern VALUES (3, 'Bid name 3', 'Pattern desc 3',
 
 -- ELEMENTS
 
-INSERT INTO element VALUES (1, 'Element desc 1', 1, 2, 'Element name 1',
-  'true', '{ONE, TWO, THREE}', 'COMBOBOX', 1);
+INSERT INTO element (id, description, layout_x, layout_y, name, required, type, pattern_id)
+VALUES (1, 'Element desc 1', 1, 2, 'Element name 1', 'true', 'COMBOBOX', 1);
 
-INSERT INTO element VALUES (2, 'Element desc 2', 1, 3, 'Element name 2',
-  'true', null, 'CHECKBOX', 1);
+INSERT INTO element (id, description, layout_x, layout_y, name, required, type, pattern_id)
+VALUES (2, 'Element desc 2', 1, 3, 'Element name 2', 'true', 'CHECKBOX', 1);
 
-INSERT INTO element VALUES (3, 'Element desc 3', 2, 3, 'Element name 3',
-  'true', null, 'TEXT', 1);
+INSERT INTO element (id, description, layout_x, layout_y, name, required, type, pattern_id)
+VALUES (3, 'Element desc 3', 2, 3, 'Element name 3', 'true', 'TEXT', 1);
 
-INSERT INTO element VALUES (4, 'Element desc 4', 6, 2, 'Element name 4',
-  'true', '{ONE, TWO}', 'RADIOBUTTON', 2);
+INSERT INTO element (id, description, layout_x, layout_y, name, required, type, pattern_id)
+VALUES (4, 'Element desc 4', 6, 2, 'Element name 4', 'true', 'RADIOBUTTON', 2);
 
-INSERT INTO element VALUES (5, 'Element desc 5', 4, 3, 'Element name 5',
-  'true', '{ONE, TWO}', 'MULTISELECT', 2);
+INSERT INTO element (id, description, layout_x, layout_y, name, required, type, pattern_id)
+VALUES (5, 'Element desc 5', 4, 3, 'Element name 5', 'true', 'MULTISELECT', 2);
 
-INSERT INTO element VALUES (6, 'Element desc 6', 3, 3, 'Element name 6',
-  'true', null, 'CHECKBOX', 3);
+INSERT INTO element (id, description, layout_x, layout_y, name, required, type, pattern_id)
+VALUES (6, 'Element desc 6', 3, 3, 'Element name 6', 'true', 'CHECKBOX', 3);
 
-INSERT INTO element VALUES (7, 'Element desc 7', 3, 2, 'Element name 7',
-  'true', null, 'TEXT', 3);
+INSERT INTO element (id, description, layout_x, layout_y, name, required, type, pattern_id)
+VALUES (7, 'Element desc 7', 3, 2, 'Element name 7', 'true', 'TEXT', 3);
 
 -- BIDS
 
-INSERT INTO bid VALUES (1, '2018-05-19 13:46:21.174000', 'Comment 1', 'ACTIVE', 1, 1);
+INSERT INTO bid VALUES (1, '2018-05-19 13:46:21.174000', 'Comment 1', 'ACTIVE', 3, 1);
 
-INSERT INTO bid VALUES (2, '2018-04-19 10:46:21.174000', 'Comment 2', 'ACTIVE', 2, 1);
+INSERT INTO el_value (id, bid_id, element_id) VALUES (1, 1, 6);
 
-INSERT INTO bid VALUES (3, '2018-04-10 17:46:21.174000', 'Comment 3', 'ACTIVE', 3, 2);
+INSERT INTO el_value (id, bid_id, element_id) VALUES (2, 1, 7);
