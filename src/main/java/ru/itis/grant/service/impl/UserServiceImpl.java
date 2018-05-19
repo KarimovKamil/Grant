@@ -14,10 +14,7 @@ import ru.itis.grant.dto.response.ResponseBidDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.dto.response.ResponsePatternDto;
 import ru.itis.grant.dto.response.ResponseUserDto;
-import ru.itis.grant.model.Bid;
-import ru.itis.grant.model.Event;
-import ru.itis.grant.model.Pattern;
-import ru.itis.grant.model.User;
+import ru.itis.grant.model.*;
 import ru.itis.grant.security.exception.IncorrectDataException;
 import ru.itis.grant.service.interfaces.UserService;
 import ru.itis.grant.service.utils.generators.HashGenerator;
@@ -179,6 +176,9 @@ public class UserServiceImpl implements UserService {
         bid.setUser(user);
         bid.setPattern(pattern);
         bidDao.addBid(bid);
+        for (ElementValue elementValue : bid.getValueList()) {
+            elementValueDao.addElementValue(elementValue);
+        }
         Bid bidFromDB = bidDao.getBidById(bid.getId());
         ResponseBidDto responseBidDto = conversionFactory.bidToResponseBidDto(bidFromDB);
         return responseBidDto;
