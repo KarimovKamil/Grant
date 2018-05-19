@@ -99,6 +99,7 @@ public class OrganizerServiceImpl implements OrganizerService {
     public void addExpertToEvent(long expertId, long eventId, String token) {
         verification.verifyTokenExistence(token);
         verification.verifyOrganizerEventExistence(eventId, token);
+        verification.verifyEventExpertAddingCase(eventId, expertId);
         verification.verifyUserIdExistence(expertId);
         eventDao.addExpertToEvent(eventId, expertId);
     }
