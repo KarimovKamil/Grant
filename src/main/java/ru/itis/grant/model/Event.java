@@ -30,7 +30,7 @@ public class Event {
     private String siteUrl;
     @ManyToOne
     private User owner;
-    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
     private Pattern pattern;
     @ManyToMany(mappedBy = "exEvents", cascade = CascadeType.ALL)
     private List<User> experts;

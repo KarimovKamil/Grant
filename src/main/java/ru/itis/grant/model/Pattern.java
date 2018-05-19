@@ -35,4 +35,6 @@ public class Pattern {
     private Date startDate;
     @OneToMany(mappedBy = "pattern", cascade = CascadeType.ALL)
     private List<Element> elements;
+    @OneToMany(mappedBy = "pattern", cascade = CascadeType.ALL)
+    private List<Bid> bids;
 }

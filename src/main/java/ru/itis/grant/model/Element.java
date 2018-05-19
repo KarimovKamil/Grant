@@ -26,7 +26,7 @@ public class Element {
     private int layoutX;
     @Column(name = "layout_y")
     private int layoutY;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Pattern pattern;
     private boolean required;
     @Column(name = "selectable_value")
