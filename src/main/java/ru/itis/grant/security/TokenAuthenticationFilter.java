@@ -1,10 +1,10 @@
 package ru.itis.grant.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +12,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.GenericFilterBean;
 import ru.itis.grant.security.entry.PermissionEntryPoint;
 import ru.itis.grant.security.entry.TokenAuthenticationEntryPoint;
+import ru.itis.grant.security.exception.IncorrectDataException;
 import ru.itis.grant.security.exception.PermissionException;
+import ru.itis.grant.validation.verification.Verification;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -32,6 +34,8 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
     private TokenAuthenticationEntryPoint tokenAuthenticationEntryPoint;
     @Autowired
     private PermissionEntryPoint permissionEntryPoint;
+    @Autowired
+    private Verification verification;
 
     public TokenAuthenticationFilter(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -52,25 +56,24 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
         if (!isSecured) {
             filterChain.doFilter(request, response);
         } else {
-            String role = "";
-            SecurityContext context = SecurityContextHolder.getContext();
-            if (Objects.nonNull(context)) {
-                UserDetails userDetails =
-                        (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                ArrayList<GrantedAuthority> authorities = (ArrayList<GrantedAuthority>) userDetails.getAuthorities();
-                role = authorities.get(0).toString();
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (!(auth instanceof AnonymousAuthenticationToken)) {
+                filterChain.doFilter(request, response);
+                return;
             } else {
                 if (null == token || "".equals(token)) {
                     permissionEntryPoint.commence(request, response, new PermissionException("Not enough permissions"));
                 } else {
+                    try {
+                        verification.verifyTokenExistence(token);
+                    } catch (IncorrectDataException e) {
+                        permissionEntryPoint.commence(request, response, new PermissionException("Not enough permissions"));
+                        return;
+                    }
                     UserDetails userDetails = userDetailsService.loadUserByUsername(token);
-                    ArrayList<GrantedAuthority> grantedAuthorities = (ArrayList<GrantedAuthority>) userDetails.getAuthorities();
-                    role = grantedAuthorities.get(0).toString();
+                    authenticateAndFilterChain(userDetails, request, response, filterChain);
+                    return;
                 }
-            }
-            if ("USER".equals(role)) {
-                filterChain.doFilter(request, response);
-                return;
             }
             permissionEntryPoint.commence(request, response, new PermissionException("Not enough permissions"));
         }
