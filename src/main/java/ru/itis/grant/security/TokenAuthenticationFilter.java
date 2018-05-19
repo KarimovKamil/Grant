@@ -5,6 +5,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -51,33 +52,34 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
         if (!isSecured) {
             filterChain.doFilter(request, response);
         } else {
-            if (null == token || "".equals(token)) {
-                permissionEntryPoint.commence(request, response, new PermissionException("Not enough permissions"));
+            String role = "";
+            SecurityContext context = SecurityContextHolder.getContext();
+            if (Objects.nonNull(context)) {
+                UserDetails userDetails =
+                        (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                ArrayList<GrantedAuthority> authorities = (ArrayList<GrantedAuthority>) userDetails.getAuthorities();
+                role = authorities.get(0).toString();
             } else {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(token);
-                ArrayList<GrantedAuthority> grantedAuthorities = (ArrayList<GrantedAuthority>) userDetails.getAuthorities();
-                if (grantedAuthorities.get(0).toString().equals("USER")) {
-                    filterChain.doFilter(request, response);
-                } else {
-                    //TODO: добавить другие роли
+                if (null == token || "".equals(token)) {
                     permissionEntryPoint.commence(request, response, new PermissionException("Not enough permissions"));
+                } else {
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(token);
+                    ArrayList<GrantedAuthority> grantedAuthorities = (ArrayList<GrantedAuthority>) userDetails.getAuthorities();
+                    role = grantedAuthorities.get(0).toString();
                 }
+            }
+            if ("USER".equals(role)) {
+                filterChain.doFilter(request, response);
+                return;
             }
             permissionEntryPoint.commence(request, response, new PermissionException("Not enough permissions"));
         }
     }
 
+
     private boolean isSecuredMethod(HttpServletRequest request) {
         return !(request.getRequestURI().contains("/login") || request.getRequestURI().contains("/registration")
                 || isSwagger(request));
-    }
-
-    private boolean isExpertMethod(HttpServletRequest request) {
-        return (request.getRequestURI().contains("/experts"));
-    }
-
-    private boolean isCreatorMethod(HttpServletRequest request) {
-        return (request.getRequestURI().contains("/creators"));
     }
 
     private void authenticateAndFilterChain(UserDetails user, HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
