@@ -38,7 +38,7 @@ public class User {
     @Column(name = "birth_date")
     private Date birthDate;
     private String role;
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Event> events;
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Event> exEvents;
