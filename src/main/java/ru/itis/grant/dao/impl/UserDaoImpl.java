@@ -108,18 +108,29 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void unbanUser(String token, long userId) {
-        em.createQuery("delete from Ban b where b.user.id = :id and b.expert.token = :token")
-                .setParameter("id", userId)
-                .setParameter("token", token)
+    public void unbanUser(long banId) {
+        em.createQuery("delete from Ban b where b.id = :banId")
+                .setParameter("banId", banId)
                 .executeUpdate();
     }
 
     @Override
-    public List<Ban> getBans(String token) {
+    public List<Ban> getBans(String token, long from, long count) {
         List<Ban> bans = em.createQuery("from Ban b where b.expert.token = :token")
                 .setParameter("token", token)
+                .setFirstResult((int) from)
+                .setMaxResults((int) count)
                 .getResultList();
         return bans;
+    }
+
+    @Override
+    public boolean expertBanExistence(String token, long banId) {
+        return !em.createQuery("select b.id from Ban b where b.id = :banId and b.expert.token = :token")
+                .setParameter("banId", banId)
+                .setParameter("token", token)
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
     }
 }

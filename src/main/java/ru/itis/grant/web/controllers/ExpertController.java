@@ -19,14 +19,18 @@ public class ExpertController {
     ExpertService expertService;
 
     @GetMapping(value = "/events")
-    public ResponseEntity<List<ResponseEventDto>> getExpertEvents(@RequestHeader("Auth-token") String token) {
-        List<ResponseEventDto> responseEventDtos = expertService.getExpertEvents(token);
+    public ResponseEntity<List<ResponseEventDto>> getExpertEvents(@RequestHeader("Auth-token") String token,
+                                                                  @RequestParam(value = "from") long from,
+                                                                  @RequestParam(value = "count") long count) {
+        List<ResponseEventDto> responseEventDtos = expertService.getExpertEvents(token, from, count);
         return ResponseEntity.ok(responseEventDtos);
     }
 
     @GetMapping(value = "/bids")
-    public ResponseEntity<List<ResponseBidDto>> getExpertBids(@RequestHeader("Auth-token") String token) {
-        List<ResponseBidDto> responseBidDtos = expertService.getExpertBids(token);
+    public ResponseEntity<List<ResponseBidDto>> getExpertBids(@RequestHeader("Auth-token") String token,
+                                                              @RequestParam(value = "from") long from,
+                                                              @RequestParam(value = "count") long count) {
+        List<ResponseBidDto> responseBidDtos = expertService.getExpertBids(token, from, count);
         return ResponseEntity.ok(responseBidDtos);
     }
 
@@ -39,8 +43,10 @@ public class ExpertController {
 
     @GetMapping(value = "/events/{eventId}/bids")
     public ResponseEntity<List<ResponseBidDto>> getExpertEventBids(@RequestHeader("Auth-token") String token,
-                                                                   @PathVariable("eventId") long eventId) {
-        List<ResponseBidDto> responseBidDtos = expertService.getExpertEventBids(token, eventId);
+                                                                   @PathVariable("eventId") long eventId,
+                                                                   @RequestParam(value = "from") long from,
+                                                                   @RequestParam(value = "count") long count) {
+        List<ResponseBidDto> responseBidDtos = expertService.getExpertEventBids(token, eventId, from, count);
         return ResponseEntity.ok(responseBidDtos);
     }
 
@@ -61,15 +67,17 @@ public class ExpertController {
     }
 
     @GetMapping(value = "/users")
-    public ResponseEntity<List<ResponseBanDto>> getBans(@RequestHeader("Auth-token") String token) {
-        List<ResponseBanDto> bans = expertService.getBans(token);
+    public ResponseEntity<List<ResponseBanDto>> getBans(@RequestHeader("Auth-token") String token,
+                                                        @RequestParam(value = "from") long from,
+                                                        @RequestParam(value = "count") long count) {
+        List<ResponseBanDto> bans = expertService.getBans(token, from, count);
         return ResponseEntity.ok(bans);
     }
 
-    @PostMapping(value = "/users/{userId}/unban")
+    @PostMapping(value = "/users/{banId}/unban")
     public ResponseEntity<Boolean> unbanUser(@RequestHeader("Auth-token") String token,
-                                             @PathVariable("userId") long userId) {
-        expertService.unbanUser(token, userId);
+                                             @PathVariable("banId") long banId) {
+        expertService.unbanUser(token, banId);
         return ResponseEntity.ok(true);
     }
 }

@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface ExpertService {
 
-    List<ResponseEventDto> getExpertEvents(String token);
+    List<ResponseEventDto> getExpertEvents(String token, long from, long count);
 
-    List<ResponseBidDto> getExpertBids(String token);
+    List<ResponseBidDto> getExpertBids(String token, long from, long count);
 
-    List<ResponseBidDto> getExpertEventBids(String token, long eventId);
+    List<ResponseBidDto> getExpertEventBids(String token, long eventId, long from, long count);
 
     ResponseBidDto getExpertBid(String token, long bidId);
 
@@ -23,5 +23,5 @@ public interface ExpertService {
 
     void unbanUser(String token, long userId);
 
-    List<ResponseBanDto> getBans(String token);
+    List<ResponseBanDto> getBans(String token, long from, long count);
 }

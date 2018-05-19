@@ -74,28 +74,32 @@ public class BidDaoImpl implements BidDao {
     }
 
     @Override
-    public List<Bid> getExpertBids(String token) {
+    public List<Bid> getExpertBids(String token, long from, long count) {
         List<Bid> bids = em.createNativeQuery("SELECT b.* FROM " +
                 "(SELECT ex.ex_events_id FROM (SELECT id FROM g_user WHERE token = :token) u INNER JOIN " +
                 "g_user_ex_events ex ON ex.experts_id = u.id) e " +
                 "INNER JOIN pattern p ON p.event_id = e.ex_events_id " +
                 "INNER JOIN (SELECT * FROM bid WHERE status = 'ACTIVE') b ON b.pattern_id = p.id " +
-                "ORDER BY (b.id)", Bid.class)
+                "ORDER BY (b.id) LIMIT :count OFFSET :from", Bid.class)
                 .setParameter("token", token)
+                .setParameter("from", from)
+                .setParameter("count", count)
                 .getResultList();
         return bids;
     }
 
     @Override
-    public List<Bid> getExpertEventBids(String token, long eventId) {
+    public List<Bid> getExpertEventBids(String token, long eventId, long from, long count) {
         List<Bid> bids = em.createNativeQuery("SELECT b.* FROM " +
                 "(SELECT ex.ex_events_id FROM (SELECT id FROM g_user WHERE token = :token) u INNER JOIN " +
                 "(SELECT * FROM g_user_ex_events WHERE ex_events_id = :eventId) ex ON ex.experts_id = u.id) e " +
                 "INNER JOIN pattern p ON p.event_id = e.ex_events_id " +
                 "INNER JOIN (SELECT * FROM bid WHERE status = 'ACTIVE') b ON b.pattern_id = p.id " +
-                "ORDER BY (b.id)", Bid.class)
+                "ORDER BY (b.id) LIMIT :count OFFSET :from", Bid.class)
                 .setParameter("token", token)
                 .setParameter("eventId", eventId)
+                .setParameter("from", from)
+                .setParameter("count", count)
                 .getResultList();
         return bids;
     }

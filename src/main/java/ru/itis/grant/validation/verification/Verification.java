@@ -165,7 +165,7 @@ public class Verification {
 
     public void verifyUserIdExistence(long id) {
         if (!userDao.userExistenceById(id)) {
-            throw new IncorrectDataException("id", "Неверный идентификатор");
+            throw new IncorrectDataException("id", "Неверный идентификатор пользователя");
         }
     }
 
@@ -175,5 +175,9 @@ public class Verification {
         }
     }
 
-
+    public void verifyExpertBanExistence(String token, long banId) {
+        if (!userDao.expertBanExistence(token, banId)) {
+            throw new IncorrectDataException("id", "Бан с таким id не найден");
+        }
+    }
 }

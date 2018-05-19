@@ -19,11 +19,11 @@ public class Ban {
     @GenericGenerator(name = "ban_id", strategy = "increment")
     @GeneratedValue(generator = "ban_id")
     private long id;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
     private User user;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
     private User expert;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
     private Event event;
     private String comment;
 }

@@ -36,8 +36,10 @@ public class OrganizerController {
 
     @GetMapping(value = "/events")
     public ResponseEntity<List<ResponseEventDto>> organizerEvents(
-            @RequestHeader(value = "Auth-Token") String token) {
-        List<ResponseEventDto> patterns = organizerService.getOrganizerEvents(token);
+            @RequestHeader(value = "Auth-Token") String token,
+            @RequestParam(value = "from") long from,
+            @RequestParam(value = "count") long count) {
+        List<ResponseEventDto> patterns = organizerService.getOrganizerEvents(token, from, count);
         return ResponseEntity.ok(patterns);
     }
 
@@ -51,28 +53,28 @@ public class OrganizerController {
     }
 
     @PostMapping(value = "/events/{id}/delete")
-    public ResponseEntity<Boolean> deleteEvent(
+    public ResponseEntity<String> deleteEvent(
             @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id) {
         organizerService.deleteEvent(id, token);
-        return ResponseEntity.ok(true);
+        return ResponseEntity.ok("Event deleted");
     }
 
     @PostMapping(value = "/events/{eventId}/experts/add")
-    public ResponseEntity<Boolean> addExpertToEvent(
+    public ResponseEntity<String> addExpertToEvent(
             @PathVariable(value = "eventId") long eventId,
             @RequestParam long expertId,
             @RequestHeader(value = "Auth-Token") String token) {
         organizerService.addExpertToEvent(expertId, eventId, token);
-        return ResponseEntity.ok(true);
+        return ResponseEntity.ok("Expert added");
     }
 
     @PostMapping(value = "/events/{eventId}/experts/{expertId}/delete")
-    public ResponseEntity<Boolean> deleteExpertFromEvent(
+    public ResponseEntity<String> deleteExpertFromEvent(
             @PathVariable(value = "eventId") long eventId,
             @PathVariable(value = "expertId") long expertId,
             @RequestHeader(value = "Auth-Token") String token) {
         organizerService.deleteExpertFromEvent(expertId, eventId, token);
-        return ResponseEntity.ok(true);
+        return ResponseEntity.ok("Expert deleted from event");
     }
 }

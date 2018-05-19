@@ -27,7 +27,7 @@ public interface EventDao {
 
     List<Event> getUserEvents(long userId);
 
-    List<Event> getExpertEvents(String token);
+    List<Event> getExpertEvents(String token, long from, long count);
 
     boolean eventExistenceById(long id);
 
@@ -37,9 +37,11 @@ public interface EventDao {
 
     boolean organizerEventExistence(long eventId, String token);
 
-    List<Event> getOrganizerEvents(String token);
+    List<Event> getOrganizerEvents(String token, long from, long count);
 
     void addExpertToEvent(long eventId, long expertId);
+
+    void deleteExpertFromEvent(long eventId, long expertId);
 
     boolean eventExpertExistence(long eventId, long expertId);
 

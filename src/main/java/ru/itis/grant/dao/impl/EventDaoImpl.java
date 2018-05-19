@@ -82,11 +82,14 @@ public class EventDaoImpl implements EventDao {
     }
 
     @Override
-    public List<Event> getExpertEvents(String token) {
+    public List<Event> getExpertEvents(String token, long from, long count) {
         List<Event> events = em.createNativeQuery("SELECT * FROM g_event WHERE id IN " +
                 "(SELECT ex.ex_events_id FROM (SELECT id FROM g_user WHERE token = :token) u " +
-                "INNER JOIN g_user_ex_events ex ON ex.experts_id = u.id)", Event.class)
+                "INNER JOIN g_user_ex_events ex ON ex.experts_id = u.id) " +
+                "ORDER BY (id) LIMIT :count OFFSET :from", Event.class)
                 .setParameter("token", token)
+                .setParameter("from", from)
+                .setParameter("count", count)
                 .getResultList();
         return events;
     }
@@ -133,9 +136,11 @@ public class EventDaoImpl implements EventDao {
     }
 
     @Override
-    public List<Event> getOrganizerEvents(String token) {
-        List<Event> events = em.createQuery("from Event e where e.owner.token = :token")
+    public List<Event> getOrganizerEvents(String token, long from, long count) {
+        List<Event> events = em.createQuery("from Event e where e.owner.token = :token ")
                 .setParameter("token", token)
+                .setFirstResult((int) from)
+                .setMaxResults((int) count)
                 .getResultList();
         return events;
     }
@@ -144,20 +149,29 @@ public class EventDaoImpl implements EventDao {
     public void addExpertToEvent(long eventId, long expertId) {
         em.createNativeQuery("INSERT INTO g_user_ex_events (experts_id, ex_events_id)" +
                 " VALUES (:expertId, :eventId);")
-                .setParameter("expertId", expertId)
                 .setParameter("eventId", eventId)
+                .setParameter("expertId", expertId)
+                .executeUpdate();
+    }
+
+    @Override
+    public void deleteExpertFromEvent(long eventId, long expertId) {
+        em.createNativeQuery("DELETE FROM g_user_ex_events" +
+                " WHERE (experts_id = :expertId AND ex_events_id = :eventId);")
+                .setParameter("eventId", eventId)
+                .setParameter("expertId", expertId)
                 .executeUpdate();
     }
 
     @Override
     public boolean eventExpertExistence(long eventId, long expertId) {
-        return (boolean) em.createNativeQuery("SELECT CASE WHEN EXISTS " +
-                "(SELECT 1 FROM g_user_ex_events g WHERE" +
-                "g.ex_events_id = :eventId AND g.experts_id = :expertId)" +
-                "THEN TRUE ELSE FALSE END;", boolean.class)
+        return !em.createNativeQuery("SELECT 1 FROM g_user_ex_events " +
+                "WHERE ex_events_id = :eventId AND experts_id = :expertId")
                 .setParameter("expertId", expertId)
                 .setParameter("eventId", eventId)
-                .getSingleResult();
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
     }
 
     @Override

@@ -69,9 +69,9 @@ public class OrganizerServiceImpl implements OrganizerService {
     }
 
     @Override
-    public List<ResponseEventDto> getOrganizerEvents(String token) {
+    public List<ResponseEventDto> getOrganizerEvents(String token, long from, long count) {
         verification.verifyTokenExistence(token);
-        List<Event> events = eventDao.getOrganizerEvents(token);
+        List<Event> events = eventDao.getOrganizerEvents(token, from, count);
         return conversionListFactory.eventsToResponseEventDtos(events);
     }
 
@@ -109,6 +109,6 @@ public class OrganizerServiceImpl implements OrganizerService {
         verification.verifyOrganizerEventExistence(eventId, token);
         verification.verifyUserIdExistence(expertId);
         verification.verifyEventExpertExistence(eventId, expertId);
-        eventDao.deleteEvent(eventId);
+        eventDao.deleteExpertFromEvent(eventId, expertId);
     }
 }

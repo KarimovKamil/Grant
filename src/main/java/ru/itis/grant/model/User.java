@@ -42,4 +42,6 @@ public class User {
     private List<Event> events;
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Event> exEvents;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<Ban> bans;
 }

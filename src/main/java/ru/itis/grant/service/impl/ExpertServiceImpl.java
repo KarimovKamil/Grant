@@ -39,26 +39,26 @@ public class ExpertServiceImpl implements ExpertService {
     Verification verification;
 
     @Override
-    public List<ResponseEventDto> getExpertEvents(String token) {
+    public List<ResponseEventDto> getExpertEvents(String token, long from, long count) {
         verification.verifyTokenExistence(token);
-        List<Event> events = eventDao.getExpertEvents(token);
+        List<Event> events = eventDao.getExpertEvents(token, from, count);
         List<ResponseEventDto> responseEventDtos = conversionListResultFactory.eventsToResponseEventDtos(events);
         return responseEventDtos;
     }
 
     @Override
-    public List<ResponseBidDto> getExpertBids(String token) {
+    public List<ResponseBidDto> getExpertBids(String token, long from, long count) {
         verification.verifyTokenExistence(token);
-        List<Bid> bids = bidDao.getExpertBids(token);
+        List<Bid> bids = bidDao.getExpertBids(token, from, count);
         List<ResponseBidDto> responseBidDtos = conversionListResultFactory.bidsToResponseBidDtos(bids);
         return responseBidDtos;
     }
 
     @Override
-    public List<ResponseBidDto> getExpertEventBids(String token, long eventId) {
+    public List<ResponseBidDto> getExpertEventBids(String token, long eventId, long from, long count) {
         verification.verifyTokenExistence(token);
         verification.verifyExpertEventExistence(token, eventId);
-        List<Bid> bids = bidDao.getExpertEventBids(token, eventId);
+        List<Bid> bids = bidDao.getExpertEventBids(token, eventId, from, count);
         List<ResponseBidDto> responseBidDtos = conversionListResultFactory.bidsToResponseBidDtos(bids);
         return responseBidDtos;
     }
@@ -104,16 +104,16 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public void unbanUser(String token, long userId) {
+    public void unbanUser(String token, long banId) {
         verification.verifyTokenExistence(token);
-        verification.verifyUserIdExistence(userId);
-        userDao.unbanUser(token, userId);
+        verification.verifyExpertBanExistence(token, banId);
+        userDao.unbanUser(banId);
     }
 
     @Override
-    public List<ResponseBanDto> getBans(String token) {
+    public List<ResponseBanDto> getBans(String token, long from, long count) {
         verification.verifyTokenExistence(token);
-        List<Ban> bans = userDao.getBans(token);
+        List<Ban> bans = userDao.getBans(token, from, count);
         List<ResponseBanDto> responseBanDtos = conversionListResultFactory.bansToResponseBanDtos(bans);
         return responseBanDtos;
     }

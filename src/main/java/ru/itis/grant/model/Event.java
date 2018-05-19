@@ -34,4 +34,6 @@ public class Event {
     private Pattern pattern;
     @ManyToMany(mappedBy = "exEvents", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<User> experts;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    List<Ban> bans;
 }
