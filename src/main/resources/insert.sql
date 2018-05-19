@@ -26,6 +26,16 @@ INSERT INTO g_event VALUES (3, 'Event desc 3', 'Event name 3', 'https://steamcom
 
 INSERT INTO g_event VALUES (4, 'Event desc 4', 'Event name 4', 'https://vk.com/', 3);
 
+-- EXPERT EVENTS
+
+INSERT INTO g_user_ex_events VALUES (3, 1);
+
+INSERT INTO g_user_ex_events VALUES (3, 2);
+
+INSERT INTO g_user_ex_events VALUES (3, 3);
+
+INSERT INTO g_user_ex_events VALUES (3, 4);
+
 -- PATTERNS
 
 INSERT INTO pattern VALUES (1, 'Bid name 1', 'Pattern desc 1',

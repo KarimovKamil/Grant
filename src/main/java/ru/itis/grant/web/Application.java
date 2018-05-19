@@ -41,7 +41,7 @@ public class Application {
     }
 
     private static void ping() {
-        String url = "https://grant-sys.herokuapp.com";
+        String url = "https://grant-sys.herokuapp.com/swagger-ui.html";
         try {
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
