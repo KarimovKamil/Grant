@@ -66,7 +66,7 @@ public class ExpertController {
         return ResponseEntity.ok(responseBanDto);
     }
 
-    @GetMapping(value = "/users")
+    @GetMapping(value = "/users/bans")
     public ResponseEntity<List<ResponseBanDto>> getBans(@RequestHeader("Auth-token") String token,
                                                         @RequestParam(value = "from") long from,
                                                         @RequestParam(value = "count") long count) {
@@ -74,7 +74,7 @@ public class ExpertController {
         return ResponseEntity.ok(bans);
     }
 
-    @PostMapping(value = "/users/{banId}/unban")
+    @PostMapping(value = "/users/bans/{banId}/unban")
     public ResponseEntity<Boolean> unbanUser(@RequestHeader("Auth-token") String token,
                                              @PathVariable("banId") long banId) {
         expertService.unbanUser(token, banId);
