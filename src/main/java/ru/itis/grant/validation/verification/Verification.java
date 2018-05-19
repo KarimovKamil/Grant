@@ -178,6 +178,12 @@ public class Verification {
         }
     }
 
+    public void verifyEventExpertAddingCase(long eventId, long expertId) {
+        if (eventDao.eventExpertExistence(eventId, expertId)) {
+            throw new IncorrectDataException("id", "Такая связь уже есть");
+        }
+    }
+
     public void verifyExpertBanExistence(String token, long banId) {
         if (!userDao.expertBanExistence(token, banId)) {
             throw new IncorrectDataException("id", "Бан с таким id не найден");
