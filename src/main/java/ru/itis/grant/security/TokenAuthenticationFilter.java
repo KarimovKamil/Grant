@@ -1,17 +1,16 @@
 package ru.itis.grant.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.GenericFilterBean;
 import ru.itis.grant.security.entry.PermissionEntryPoint;
-import ru.itis.grant.security.entry.TokenAuthenticationEntryPoint;
 import ru.itis.grant.security.exception.IncorrectDataException;
 import ru.itis.grant.security.exception.PermissionException;
 import ru.itis.grant.validation.verification.Verification;
@@ -24,14 +23,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
+@Order(2)
 public class TokenAuthenticationFilter extends GenericFilterBean {
 
     @Autowired
     private final UserDetailsService userDetailsService;
-    @Autowired
-    private TokenAuthenticationEntryPoint tokenAuthenticationEntryPoint;
     @Autowired
     private PermissionEntryPoint permissionEntryPoint;
     @Autowired

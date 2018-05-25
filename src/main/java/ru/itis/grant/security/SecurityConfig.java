@@ -42,4 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
     }
+
+    @Bean
+    public Filter simpleCORSFilter(){
+        return new CORSFilter();
+    }
 }
