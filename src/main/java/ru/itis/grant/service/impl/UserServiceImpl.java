@@ -230,7 +230,7 @@ public class UserServiceImpl implements UserService {
     public boolean deleteBid(String token, long bidId) {
         verification.verifyTokenExistence(token);
         verification.verifyUserBidExistenceById(token, bidId);
-        bidDao.deleteBid(bidId);
+        bidDao.deleteBid(bidDao.getBidById(bidId));
         return true;
     }
 }
