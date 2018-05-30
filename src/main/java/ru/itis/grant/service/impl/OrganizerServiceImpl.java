@@ -5,14 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.itis.grant.conversion.ConversionListResultFactory;
 import ru.itis.grant.conversion.ConversionResultFactory;
-import ru.itis.grant.dao.interfaces.BidDao;
-import ru.itis.grant.dao.interfaces.EventDao;
-import ru.itis.grant.dao.interfaces.PatternDao;
-import ru.itis.grant.dao.interfaces.UserDao;
+import ru.itis.grant.dao.interfaces.*;
 import ru.itis.grant.dto.request.RequestEventDto;
 import ru.itis.grant.dto.request.RequestPatternDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.dto.response.ResponsePatternDto;
+import ru.itis.grant.model.Element;
 import ru.itis.grant.model.Event;
 import ru.itis.grant.model.Pattern;
 import ru.itis.grant.model.User;
@@ -45,6 +43,8 @@ public class OrganizerServiceImpl implements OrganizerService {
     PatternDao patternDao;
     @Autowired
     BidDao bidDao;
+    @Autowired
+    ElementDao elementDao;
 
     @Override
     public ResponseEventDto createEvent(RequestEventDto eventDto, String token) {
@@ -65,6 +65,10 @@ public class OrganizerServiceImpl implements OrganizerService {
         Pattern pattern = conversionFactory.requestPatternDtoToPattern(patternDto);
         pattern.setEvent(eventDao.getEvent(patternDto.getEventId()));
         patternDao.addPattern(pattern);
+        for (Element element : pattern.getElements()) {
+            element.setPattern(pattern);
+            elementDao.addElement(element);
+        }
         return conversionFactory.patternToResponsePatternDto(pattern);
     }
 

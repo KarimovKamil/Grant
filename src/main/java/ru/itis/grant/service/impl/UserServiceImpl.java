@@ -177,6 +177,7 @@ public class UserServiceImpl implements UserService {
         bid.setPattern(pattern);
         bidDao.addBid(bid);
         for (ElementValue elementValue : bid.getValueList()) {
+            elementValue.setBid(bid);
             elementValueDao.addElementValue(elementValue);
         }
         Bid bidFromDB = bidDao.getBidById(bid.getId());

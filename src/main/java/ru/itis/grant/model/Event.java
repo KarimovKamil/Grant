@@ -26,7 +26,6 @@ public class Event {
     @Type(type = "text")
     private String description;
     @Column(name = "site_url")
-    @URL
     private String siteUrl;
     @ManyToOne
     private User owner;

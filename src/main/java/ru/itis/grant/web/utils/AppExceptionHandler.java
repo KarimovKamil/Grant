@@ -12,8 +12,8 @@ import ru.itis.grant.security.exception.IncorrectDataException;
 public class AppExceptionHandler {
 
     @ExceptionHandler(value = IncorrectDataException.class)
-    public ResponseEntity<JsonResponse> handleException(IncorrectDataException e) {
-        return new ResponseEntity<JsonResponse>(new JsonResponse(e.getFieldName(), e.getMessage()),
+    public ResponseEntity<JsonResponse> handleIncorrectDataException(IncorrectDataException e) {
+        return new ResponseEntity<>(new JsonResponse(e.getFieldName(), e.getMessage()),
                 HttpStatus.BAD_REQUEST);
     }
 }
