@@ -16,5 +16,6 @@ public class ResponseElementDto {
     private String description;
     private int layoutX;
     private int layoutY;
+    private boolean required;
     private String[] selectableValue;
 }

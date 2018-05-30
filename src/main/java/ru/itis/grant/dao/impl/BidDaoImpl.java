@@ -158,4 +158,14 @@ public class BidDaoImpl implements BidDao {
                 .getResultList()
                 .isEmpty();
     }
+
+    @Override
+    public Bid getBidByEventUser(long eventId, long userId) {
+        Bid bid = (Bid) em.createQuery("from Bid b where b.user.id = :userId " +
+                "and b.pattern.event.id = :eventId")
+                .setParameter("eventId", eventId)
+                .setParameter("userId", userId)
+                .getSingleResult();
+        return bid;
+    }
 }

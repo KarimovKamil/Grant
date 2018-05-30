@@ -33,7 +33,9 @@ public interface UserDao {
 
     Ban banUser(Ban ban);
 
-    void unbanUser(long banId);
+    void unbanUser(Ban ban);
+
+    Ban getBanById(long id);
 
     List<Ban> getBans(String token, long from, long count);
 

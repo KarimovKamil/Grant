@@ -27,6 +27,7 @@ public class ElementToResponseElementDtoConverter {
                 .description(element.getDescription())
                 .layoutX(element.getLayoutX())
                 .layoutY(element.getLayoutY())
+                .required(element.isRequired())
                 .selectableValue(element.getSelectableValue())
                 .build();
     }

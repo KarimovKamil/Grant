@@ -22,7 +22,6 @@ public class ElementValueToResponseElementValueDtoConverter {
     public ResponseElementValueDto convert(ElementValue elementValue) {
         return ResponseElementValueDto.builder()
                 .id(elementValue.getId())
-                .element(ElementToResponseElementDtoConverter.getInstance().convert(elementValue.getElement()))
                 .filledValue(elementValue.getFilledValue())
                 .build();
     }

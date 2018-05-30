@@ -26,6 +26,7 @@ public class RequestElementDtoToElementConverter {
                 .name(requestElementDto.getName())
                 .layoutX(requestElementDto.getLayoutX())
                 .layoutY(requestElementDto.getLayoutY())
+                .required(requestElementDto.isRequired())
                 .selectableValue(requestElementDto.getSelectableValue())
                 .build();
     }

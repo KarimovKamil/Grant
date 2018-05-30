@@ -108,10 +108,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void unbanUser(long banId) {
-        em.createQuery("delete from Ban b where b.id = :banId")
-                .setParameter("banId", banId)
-                .executeUpdate();
+    public void unbanUser(Ban ban) {
+        em.remove(ban);
+    }
+
+    @Override
+    public Ban getBanById(long id) {
+        return em.find(Ban.class, id);
     }
 
     @Override
