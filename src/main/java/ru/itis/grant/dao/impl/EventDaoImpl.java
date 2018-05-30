@@ -136,6 +136,15 @@ public class EventDaoImpl implements EventDao {
     }
 
     @Override
+    public boolean verifyPatternEventExistence(long eventId) {
+        return !em.createNativeQuery("SELECT 1 FROM pattern WHERE event_id = :eventId")
+                .setParameter("eventId", eventId)
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
+
+    @Override
     public boolean expertEventExistence(String token, long eventId) {
         return !em.createNativeQuery("SELECT 1 FROM g_user_ex_events " +
                 "WHERE ex_events_id = :eventId AND experts_id = " +

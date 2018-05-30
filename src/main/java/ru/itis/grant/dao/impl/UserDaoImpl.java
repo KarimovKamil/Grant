@@ -59,6 +59,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public List<User> getAllUsersFromCount(int from, int count) {
+        List<User> users = em.createQuery("from User")
+                .setFirstResult(from)
+                .setMaxResults(count)
+                .getResultList();
+        return users;
+    }
+
+
+    @Override
     public List<User> getAllUsers() {
         List<User> users = em.createQuery("from User")
                 .getResultList();

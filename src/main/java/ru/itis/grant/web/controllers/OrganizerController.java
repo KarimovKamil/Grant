@@ -7,6 +7,7 @@ import ru.itis.grant.dto.request.RequestEventDto;
 import ru.itis.grant.dto.request.RequestPatternDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.dto.response.ResponsePatternDto;
+import ru.itis.grant.dto.response.ResponseUserDto;
 import ru.itis.grant.service.interfaces.OrganizerService;
 
 import java.util.List;
@@ -76,5 +77,13 @@ public class OrganizerController {
             @RequestHeader(value = "Auth-Token") String token) {
         organizerService.deleteExpertFromEvent(expertId, eventId, token);
         return ResponseEntity.ok("Expert deleted from event");
+    }
+
+    @PostMapping(value = "/users")
+    public ResponseEntity<List<ResponseUserDto>> allUsers(
+            @RequestParam(value = "from") int from,
+            @RequestParam(value = "count") int count) {
+        List<ResponseUserDto> users = organizerService.getUsers(from, count);
+        return ResponseEntity.ok(users);
     }
 }

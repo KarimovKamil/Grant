@@ -10,6 +10,7 @@ import ru.itis.grant.dto.request.RequestEventDto;
 import ru.itis.grant.dto.request.RequestPatternDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.dto.response.ResponsePatternDto;
+import ru.itis.grant.dto.response.ResponseUserDto;
 import ru.itis.grant.model.Element;
 import ru.itis.grant.model.Event;
 import ru.itis.grant.model.Pattern;
@@ -62,6 +63,7 @@ public class OrganizerServiceImpl implements OrganizerService {
         verification.verifyTokenExistence(token);
         verification.verifyPatternDto(patternDto);
         verification.verifyOrganizerEventExistence(patternDto.getEventId(), token);
+        verification.verifyPatternAddingCase(patternDto.getEventId());
         Pattern pattern = conversionFactory.requestPatternDtoToPattern(patternDto);
         pattern.setEvent(eventDao.getEvent(patternDto.getEventId()));
         patternDao.addPattern(pattern);
@@ -96,7 +98,7 @@ public class OrganizerServiceImpl implements OrganizerService {
     public void deleteEvent(long id, String token) {
         verification.verifyTokenExistence(token);
         verification.verifyOrganizerEventExistence(id, token);
-        eventDao.deleteEvent(id);
+        eventDao.deleteEvent(eventDao.getEvent(id));
     }
 
     @Override
@@ -115,5 +117,10 @@ public class OrganizerServiceImpl implements OrganizerService {
         verification.verifyUserIdExistence(expertId);
         verification.verifyEventExpertExistence(eventId, expertId);
         eventDao.deleteExpertFromEvent(eventId, expertId);
+    }
+
+    @Override
+    public List<ResponseUserDto> getUsers(int from, int count) {
+        return conversionListFactory.usersToResponseUserDtos(userDao.getAllUsersFromCount(from, count));
     }
 }

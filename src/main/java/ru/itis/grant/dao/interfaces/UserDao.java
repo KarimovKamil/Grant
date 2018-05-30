@@ -23,6 +23,8 @@ public interface UserDao {
 
     List<User> getAllUsers();
 
+    List<User> getAllUsersFromCount(int from, int count);
+
     boolean userExistenceByToken(String token);
 
     boolean userExistenceByEmail(String email);
