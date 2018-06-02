@@ -22,36 +22,36 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping(value = "/login")
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<String> login(
             @RequestBody AuthDto authDto) {
         String token = userService.login(authDto);
         return ResponseEntity.ok(token);
     }
 
-    @PostMapping(value = "/registration")
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ResponseEntity<String> registration(
             @RequestBody RequestUserDto requestUserDto) {
         String token = userService.register(requestUserDto);
         return ResponseEntity.ok(token);
     }
 
-    @GetMapping(value = "/profile")
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public ResponseEntity<ResponseUserDto> profile(
             @RequestHeader(value = "Auth-Token") String token) {
         ResponseUserDto responseUserDto = userService.userInfo(token);
         return ResponseEntity.ok(responseUserDto);
     }
 
-    @PostMapping(value = "/profile/update")
-    public ResponseEntity<ResponseUserDto> createBid(
+    @RequestMapping(value = "/profile", method = RequestMethod.PUT)
+    public ResponseEntity<ResponseUserDto> updateInfo(
             @RequestHeader(value = "Auth-Token") String token,
             @RequestBody UserUpdateDto userUpdateDto) {
         ResponseUserDto responseUserDto = userService.updateUserInfo(token, userUpdateDto);
         return ResponseEntity.ok(responseUserDto);
     }
 
-    @GetMapping(value = "/events")
+    @RequestMapping(value = "/events", method = RequestMethod.GET)
     public ResponseEntity<List<ResponseEventDto>> events(
             @RequestParam int from,
             @RequestParam int count) {
@@ -59,7 +59,7 @@ public class UserController {
         return ResponseEntity.ok(requestEventDto);
     }
 
-    @GetMapping(value = "/events/active")
+    @RequestMapping(value = "/events/active", method = RequestMethod.GET)
     public ResponseEntity<List<ResponseEventDto>> activeEvents(
             @RequestParam int from,
             @RequestParam int count) {
@@ -67,7 +67,7 @@ public class UserController {
         return ResponseEntity.ok(requestEventDto);
     }
 
-    @GetMapping(value = "/events/activeWithPattern")
+    @RequestMapping(value = "/events/activeWithPattern", method = RequestMethod.GET)
     public ResponseEntity<List<ResponseEventDto>> activeEventsWithPattern(
             @RequestParam int from,
             @RequestParam int count) {
@@ -75,20 +75,20 @@ public class UserController {
         return ResponseEntity.ok(requestEventDto);
     }
 
-    @GetMapping(value = "/events/{id}")
+    @RequestMapping(value = "/events/{id}", method = RequestMethod.GET)
     public ResponseEntity<ResponseEventDto> eventById(@PathVariable(value = "id") long id) {
         ResponseEventDto requestEventDto = userService.getEvent(id);
         return ResponseEntity.ok(requestEventDto);
     }
 
-    @GetMapping(value = "/events/{eventId}/pattern")
+    @RequestMapping(value = "/events/{eventId}/pattern", method = RequestMethod.GET)
     public ResponseEntity<ResponsePatternDto> eventPattern(
             @PathVariable(value = "eventId") long eventId) {
         ResponsePatternDto patternDto = userService.getEventPattern(eventId);
         return ResponseEntity.ok(patternDto);
     }
 
-    @PostMapping(value = "/bids/add")
+    @RequestMapping(value = "/bids", method = RequestMethod.POST)
     public ResponseEntity<ResponseBidDto> createBid(
             @RequestHeader(value = "Auth-Token") String token,
             @RequestBody RequestBidDto requestBidDto) {
@@ -96,7 +96,7 @@ public class UserController {
         return ResponseEntity.ok(createdBid);
     }
 
-    @GetMapping(value = "/bids")
+    @RequestMapping(value = "/bids", method = RequestMethod.GET)
     public ResponseEntity<List<ResponseBidDto>> userBids(
             @RequestHeader(value = "Auth-Token") String token,
             @RequestParam int from,
@@ -105,7 +105,7 @@ public class UserController {
         return ResponseEntity.ok(bids);
     }
 
-    @GetMapping(value = "/bids/{id}")
+    @RequestMapping(value = "/bids/{id}", method = RequestMethod.GET)
     public ResponseEntity<ResponseBidDto> userBid(
             @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id) {
@@ -113,7 +113,7 @@ public class UserController {
         return ResponseEntity.ok(bid);
     }
 
-    @PostMapping(value = "/bids/{id}/update")
+    @RequestMapping(value = "/bids/{id}", method = RequestMethod.PUT)
     public ResponseEntity<ResponseBidDto> updateBid(
             @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id,
@@ -122,7 +122,7 @@ public class UserController {
         return ResponseEntity.ok(updatedBid);
     }
 
-    @PostMapping(value = "/bids/{id}/delete")
+    @RequestMapping(value = "/bids/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Boolean> deleteBid(
             @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id) {
