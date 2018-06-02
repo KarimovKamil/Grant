@@ -79,7 +79,7 @@ public class OrganizerController {
         return ResponseEntity.ok("Expert deleted from event");
     }
 
-    @PostMapping(value = "/users")
+    @GetMapping(value = "/users")
     public ResponseEntity<List<ResponseUserDto>> allUsers(
             @RequestParam(value = "from") int from,
             @RequestParam(value = "count") int count) {
