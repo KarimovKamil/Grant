@@ -99,7 +99,9 @@ public class ExpertServiceImpl implements ExpertService {
                 .build();
         Ban addedBan = userDao.banUser(ban);
         ResponseBanDto responseBanDto = conversionResultFactory.banToResponseBanDto(addedBan);
-        bidDao.deleteBid(bidId);
+        Bid bid = bidDao.getBidById(bidId);
+        bid.setStatus("BANNED");
+        bidDao.updateBid(bid);
         return responseBanDto;
     }
 
@@ -107,7 +109,11 @@ public class ExpertServiceImpl implements ExpertService {
     public void unbanUser(String token, long banId) {
         verification.verifyTokenExistence(token);
         verification.verifyExpertBanExistence(token, banId);
-        userDao.unbanUser(banId);
+        Ban ban = userDao.getBanById(banId);
+        Bid bid = bidDao.getBidByEventUser(ban.getEvent().getId(), ban.getUser().getId());
+        bid.setStatus("ACTIVE");
+        bidDao.updateBid(bid);
+        userDao.unbanUser(ban);
     }
 
     @Override

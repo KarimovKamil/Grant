@@ -4,6 +4,7 @@ import ru.itis.grant.dto.request.RequestEventDto;
 import ru.itis.grant.dto.request.RequestPatternDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.dto.response.ResponsePatternDto;
+import ru.itis.grant.dto.response.ResponseUserDto;
 
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface OrganizerService {
     void addExpertToEvent(long expertId, long eventId, String token);
 
     void deleteExpertFromEvent(long expertId, long eventId, String token);
+
+    List<ResponseUserDto> getUsers(int from, int count);
 }

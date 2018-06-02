@@ -184,6 +184,12 @@ public class Verification {
         }
     }
 
+    public void verifyPatternAddingCase(long eventId) {
+        if (eventDao.verifyPatternEventExistence(eventId)) {
+            throw new IncorrectDataException("id", "Шаблон для этого события уже существует");
+        }
+    }
+
     public void verifyExpertBanExistence(String token, long banId) {
         if (!userDao.expertBanExistence(token, banId)) {
             throw new IncorrectDataException("id", "Бан с таким id не найден");

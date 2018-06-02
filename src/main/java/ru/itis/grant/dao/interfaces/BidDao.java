@@ -37,4 +37,6 @@ public interface BidDao {
     boolean userPatternBidExistence(String token, long bidId);
 
     boolean expertBidExistence(String token, long bidId);
+
+    Bid getBidByEventUser(long eventId, long userId);
 }

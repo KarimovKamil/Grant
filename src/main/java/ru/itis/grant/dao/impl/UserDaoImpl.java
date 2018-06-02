@@ -59,6 +59,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public List<User> getAllUsersFromCount(int from, int count) {
+        List<User> users = em.createQuery("from User")
+                .setFirstResult(from)
+                .setMaxResults(count)
+                .getResultList();
+        return users;
+    }
+
+
+    @Override
     public List<User> getAllUsers() {
         List<User> users = em.createQuery("from User")
                 .getResultList();
@@ -108,10 +118,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void unbanUser(long banId) {
-        em.createQuery("delete from Ban b where b.id = :banId")
-                .setParameter("banId", banId)
-                .executeUpdate();
+    public void unbanUser(Ban ban) {
+        em.remove(ban);
+    }
+
+    @Override
+    public Ban getBanById(long id) {
+        return em.find(Ban.class, id);
     }
 
     @Override

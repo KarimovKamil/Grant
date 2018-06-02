@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ResponseElementValueDto {
     private long id;
-    private ResponseElementDto element;
     private String filledValue;
 }

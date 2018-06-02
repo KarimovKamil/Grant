@@ -23,6 +23,8 @@ public interface UserDao {
 
     List<User> getAllUsers();
 
+    List<User> getAllUsersFromCount(int from, int count);
+
     boolean userExistenceByToken(String token);
 
     boolean userExistenceByEmail(String email);
@@ -33,7 +35,9 @@ public interface UserDao {
 
     Ban banUser(Ban ban);
 
-    void unbanUser(long banId);
+    void unbanUser(Ban ban);
+
+    Ban getBanById(long id);
 
     List<Ban> getBans(String token, long from, long count);
 
