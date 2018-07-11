@@ -19,7 +19,7 @@ public class OrganizerController {
     @Autowired
     OrganizerService organizerService;
 
-    @PostMapping(value = "/events/create")
+    @RequestMapping(value = "/events", method = RequestMethod.POST)
     public ResponseEntity<ResponseEventDto> createEvent(
             @RequestBody RequestEventDto requestEventDto,
             @RequestHeader(value = "Auth-Token") String token) {
@@ -27,7 +27,7 @@ public class OrganizerController {
         return ResponseEntity.ok(eventDto);
     }
 
-    @PostMapping(value = "/events/pattern/create")
+    @RequestMapping(value = "/events/pattern", method = RequestMethod.POST)
     public ResponseEntity<ResponsePatternDto> createPattern(
             @RequestBody RequestPatternDto patternDto,
             @RequestHeader(value = "Auth-Token") String token) {
@@ -35,7 +35,7 @@ public class OrganizerController {
         return ResponseEntity.ok(createdPattern);
     }
 
-    @GetMapping(value = "/events")
+    @RequestMapping(value = "/events", method = RequestMethod.GET)
     public ResponseEntity<List<ResponseEventDto>> organizerEvents(
             @RequestHeader(value = "Auth-Token") String token,
             @RequestParam(value = "from") long from,
@@ -44,7 +44,7 @@ public class OrganizerController {
         return ResponseEntity.ok(patterns);
     }
 
-    @PostMapping(value = "/events/{id}/update")
+    @RequestMapping(value = "/events/{id}", method = RequestMethod.PUT)
     public ResponseEntity<ResponseEventDto> updateEvent(
             @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id,
@@ -53,7 +53,7 @@ public class OrganizerController {
         return ResponseEntity.ok(responseEventDto);
     }
 
-    @PostMapping(value = "/events/{id}/delete")
+    @RequestMapping(value = "/events/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteEvent(
             @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id) {
@@ -61,16 +61,16 @@ public class OrganizerController {
         return ResponseEntity.ok("Event deleted");
     }
 
-    @PostMapping(value = "/events/{eventId}/experts/add")
+    @RequestMapping(value = "/events/{eventId}/experts/{expertId}", method = RequestMethod.POST)
     public ResponseEntity<String> addExpertToEvent(
             @PathVariable(value = "eventId") long eventId,
-            @RequestParam long expertId,
+            @PathVariable(value = "expertId") long expertId,
             @RequestHeader(value = "Auth-Token") String token) {
         organizerService.addExpertToEvent(expertId, eventId, token);
         return ResponseEntity.ok("Expert added");
     }
 
-    @PostMapping(value = "/events/{eventId}/experts/{expertId}/delete")
+    @RequestMapping(value = "/events/{eventId}/experts/{expertId}", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteExpertFromEvent(
             @PathVariable(value = "eventId") long eventId,
             @PathVariable(value = "expertId") long expertId,
@@ -79,7 +79,7 @@ public class OrganizerController {
         return ResponseEntity.ok("Expert deleted from event");
     }
 
-    @GetMapping(value = "/users")
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ResponseEntity<List<ResponseUserDto>> allUsers(
             @RequestParam(value = "from") int from,
             @RequestParam(value = "count") int count) {
