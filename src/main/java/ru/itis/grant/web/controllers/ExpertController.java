@@ -18,66 +18,48 @@ public class ExpertController {
     @Autowired
     ExpertService expertService;
 
-    @GetMapping(value = "/events")
-    public ResponseEntity<List<ResponseEventDto>> getExpertEvents(@RequestHeader("Auth-token") String token,
-                                                                  @RequestParam(value = "from") long from,
-                                                                  @RequestParam(value = "count") long count) {
+    @RequestMapping(value = "/events", method = RequestMethod.GET)
+    public ResponseEntity<List<ResponseEventDto>> getExpertEvents(
+            @RequestHeader("Auth-token") String token,
+            @RequestParam(value = "from") long from,
+            @RequestParam(value = "count") long count) {
         List<ResponseEventDto> responseEventDtos = expertService.getExpertEvents(token, from, count);
         return ResponseEntity.ok(responseEventDtos);
     }
 
-    @GetMapping(value = "/bids")
-    public ResponseEntity<List<ResponseBidDto>> getExpertBids(@RequestHeader("Auth-token") String token,
-                                                              @RequestParam(value = "from") long from,
-                                                              @RequestParam(value = "count") long count) {
+    @RequestMapping(value = "/bids", method = RequestMethod.GET)
+    public ResponseEntity<List<ResponseBidDto>> getExpertBids(
+            @RequestHeader("Auth-token") String token,
+            @RequestParam(value = "from") long from,
+            @RequestParam(value = "count") long count) {
         List<ResponseBidDto> responseBidDtos = expertService.getExpertBids(token, from, count);
         return ResponseEntity.ok(responseBidDtos);
     }
 
-    @GetMapping(value = "/bids/{bidId}")
-    public ResponseEntity<ResponseBidDto> getExpertBid(@RequestHeader("Auth-token") String token,
-                                                       @PathVariable("bidId") long bidId) {
+    @RequestMapping(value = "/bids/{bidId}", method = RequestMethod.GET)
+    public ResponseEntity<ResponseBidDto> getExpertBid(
+            @RequestHeader("Auth-token") String token,
+            @PathVariable("bidId") long bidId) {
         ResponseBidDto responseBidDto = expertService.getExpertBid(token, bidId);
         return ResponseEntity.ok(responseBidDto);
     }
 
-    @GetMapping(value = "/events/{eventId}/bids")
-    public ResponseEntity<List<ResponseBidDto>> getExpertEventBids(@RequestHeader("Auth-token") String token,
-                                                                   @PathVariable("eventId") long eventId,
-                                                                   @RequestParam(value = "from") long from,
-                                                                   @RequestParam(value = "count") long count) {
+    @RequestMapping(value = "/events/{eventId}/bids", method = RequestMethod.GET)
+    public ResponseEntity<List<ResponseBidDto>> getExpertEventBids(
+            @RequestHeader("Auth-token") String token,
+            @PathVariable("eventId") long eventId,
+            @RequestParam(value = "from") long from,
+            @RequestParam(value = "count") long count) {
         List<ResponseBidDto> responseBidDtos = expertService.getExpertEventBids(token, eventId, from, count);
         return ResponseEntity.ok(responseBidDtos);
     }
 
-    @PostMapping(value = "/bids/{bidId}/validate")
-    public ResponseEntity<ResponseBidDto> validate(@RequestHeader("Auth-token") String token,
-                                                   @PathVariable("bidId") long bidId,
-                                                   @RequestBody ValidateDto validateDto) {
+    @RequestMapping(value = "/bids/{bidId}", method = RequestMethod.PUT)
+    public ResponseEntity<ResponseBidDto> validate(
+            @RequestHeader("Auth-token") String token,
+            @PathVariable("bidId") long bidId,
+            @RequestBody ValidateDto validateDto) {
         ResponseBidDto responseBidDto = expertService.validate(token, bidId, validateDto);
         return ResponseEntity.ok(responseBidDto);
-    }
-
-    @PostMapping(value = "/bids/{bidId}/ban")
-    public ResponseEntity<ResponseBanDto> banUser(@RequestHeader("Auth-token") String token,
-                                                  @PathVariable("bidId") long bidId,
-                                                  @RequestParam("comment") String comment) {
-        ResponseBanDto responseBanDto = expertService.banUser(token, bidId, comment);
-        return ResponseEntity.ok(responseBanDto);
-    }
-
-    @GetMapping(value = "/users/bans")
-    public ResponseEntity<List<ResponseBanDto>> getBans(@RequestHeader("Auth-token") String token,
-                                                        @RequestParam(value = "from") long from,
-                                                        @RequestParam(value = "count") long count) {
-        List<ResponseBanDto> bans = expertService.getBans(token, from, count);
-        return ResponseEntity.ok(bans);
-    }
-
-    @PostMapping(value = "/users/bans/{banId}/unban")
-    public ResponseEntity<Boolean> unbanUser(@RequestHeader("Auth-token") String token,
-                                             @PathVariable("banId") long banId) {
-        expertService.unbanUser(token, banId);
-        return ResponseEntity.ok(true);
     }
 }
