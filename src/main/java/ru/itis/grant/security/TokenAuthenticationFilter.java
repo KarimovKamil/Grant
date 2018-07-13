@@ -49,11 +49,11 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
 
         String token = request.getHeader("Auth-Token");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
-        System.out.println("time: " + simpleDateFormat.format(new Date()) + " token: " + token);
-        boolean isSecured = isSecuredMethod(request);
-        System.out.println("Защищенный? " + isSecured);
         String uri = request.getRequestURI();
-        System.out.println(uri);
+        if (!isSwagger(request)) {
+            System.out.println("[uri: " + uri + ", time: " + simpleDateFormat.format(new Date()) + ", token: " + token + "]");
+        }
+        boolean isSecured = isSecuredMethod(request);
         if (!isSecured) {
             filterChain.doFilter(request, response);
         } else {
