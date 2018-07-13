@@ -207,9 +207,9 @@ public class EventDaoImpl implements EventDao {
     }
 
     @Override
-    public Event getEventByBidId(long bidId) {
-        Event event = (Event) em.createQuery("select b.pattern.event from Bid b where b.id = :id")
-                .setParameter("id", bidId)
+    public Event getEventByApplicationId(long applicationId) {
+        Event event = (Event) em.createQuery("select b.pattern.event from Application b where b.id = :id")
+                .setParameter("id", applicationId)
                 .getSingleResult();
         return event;
     }

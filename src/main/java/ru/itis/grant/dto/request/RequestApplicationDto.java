@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RequestBidDto {
+public class RequestApplicationDto {
     private List<RequestElementValueDto> values;
     private long patternId;
 }

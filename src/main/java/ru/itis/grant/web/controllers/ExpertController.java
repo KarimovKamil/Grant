@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.grant.dto.ValidateDto;
-import ru.itis.grant.dto.response.ResponseBanDto;
-import ru.itis.grant.dto.response.ResponseBidDto;
+import ru.itis.grant.dto.response.ResponseApplicationDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.service.interfaces.ExpertService;
 
@@ -27,39 +26,39 @@ public class ExpertController {
         return ResponseEntity.ok(responseEventDtos);
     }
 
-    @RequestMapping(value = "/bids", method = RequestMethod.GET)
-    public ResponseEntity<List<ResponseBidDto>> getExpertBids(
+    @RequestMapping(value = "/applications", method = RequestMethod.GET)
+    public ResponseEntity<List<ResponseApplicationDto>> getExpertApplications(
             @RequestHeader("Auth-token") String token,
             @RequestParam(value = "from") long from,
             @RequestParam(value = "count") long count) {
-        List<ResponseBidDto> responseBidDtos = expertService.getExpertBids(token, from, count);
-        return ResponseEntity.ok(responseBidDtos);
+        List<ResponseApplicationDto> responseApplicationDtos = expertService.getExpertApplications(token, from, count);
+        return ResponseEntity.ok(responseApplicationDtos);
     }
 
-    @RequestMapping(value = "/bids/{bidId}", method = RequestMethod.GET)
-    public ResponseEntity<ResponseBidDto> getExpertBid(
+    @RequestMapping(value = "/applications/{applicationId}", method = RequestMethod.GET)
+    public ResponseEntity<ResponseApplicationDto> getExpertApplication(
             @RequestHeader("Auth-token") String token,
-            @PathVariable("bidId") long bidId) {
-        ResponseBidDto responseBidDto = expertService.getExpertBid(token, bidId);
-        return ResponseEntity.ok(responseBidDto);
+            @PathVariable("applicationId") long applicationId) {
+        ResponseApplicationDto responseApplicationDto = expertService.getExpertApplication(token, applicationId);
+        return ResponseEntity.ok(responseApplicationDto);
     }
 
-    @RequestMapping(value = "/events/{eventId}/bids", method = RequestMethod.GET)
-    public ResponseEntity<List<ResponseBidDto>> getExpertEventBids(
+    @RequestMapping(value = "/events/{eventId}/applications", method = RequestMethod.GET)
+    public ResponseEntity<List<ResponseApplicationDto>> getExpertEventApplications(
             @RequestHeader("Auth-token") String token,
             @PathVariable("eventId") long eventId,
             @RequestParam(value = "from") long from,
             @RequestParam(value = "count") long count) {
-        List<ResponseBidDto> responseBidDtos = expertService.getExpertEventBids(token, eventId, from, count);
-        return ResponseEntity.ok(responseBidDtos);
+        List<ResponseApplicationDto> responseApplicationDtos = expertService.getExpertEventApplications(token, eventId, from, count);
+        return ResponseEntity.ok(responseApplicationDtos);
     }
 
-    @RequestMapping(value = "/bids/{bidId}", method = RequestMethod.PUT)
-    public ResponseEntity<ResponseBidDto> validate(
+    @RequestMapping(value = "/applications/{applicationId}", method = RequestMethod.PUT)
+    public ResponseEntity<ResponseApplicationDto> validate(
             @RequestHeader("Auth-token") String token,
-            @PathVariable("bidId") long bidId,
+            @PathVariable("applicationId") long applicationId,
             @RequestBody ValidateDto validateDto) {
-        ResponseBidDto responseBidDto = expertService.validate(token, bidId, validateDto);
-        return ResponseEntity.ok(responseBidDto);
+        ResponseApplicationDto responseApplicationDto = expertService.validate(token, applicationId, validateDto);
+        return ResponseEntity.ok(responseApplicationDto);
     }
 }

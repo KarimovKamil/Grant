@@ -15,13 +15,13 @@ public class ConversionListResultFactory {
     @Autowired
     ConversionResultFactory conversionResultFactory;
 
-    public List<ResponseBidDto> bidsToResponseBidDtos(List<Bid> bids) {
-        List<ResponseBidDto> responseBidDtos = new ArrayList<>();
-        for (Bid bid : bids) {
-            ResponseBidDto responseBidDto = conversionResultFactory.bidToResponseBidDto(bid);
-            responseBidDtos.add(responseBidDto);
+    public List<ResponseApplicationDto> applicationsToResponseApplicationDtos(List<Application> applications) {
+        List<ResponseApplicationDto> responseApplicationDtos = new ArrayList<>();
+        for (Application application : applications) {
+            ResponseApplicationDto responseApplicationDto = conversionResultFactory.applicationToResponseApplicationDto(application);
+            responseApplicationDtos.add(responseApplicationDto);
         }
-        return responseBidDtos;
+        return responseApplicationDtos;
     }
 
     public List<ResponseElementDto> elementsToResponseElementDtos(List<Element> elements) {

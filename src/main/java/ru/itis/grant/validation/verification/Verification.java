@@ -2,14 +2,14 @@ package ru.itis.grant.validation.verification;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.itis.grant.dao.interfaces.BidDao;
+import ru.itis.grant.dao.interfaces.ApplicationDao;
 import ru.itis.grant.dao.interfaces.EventDao;
 import ru.itis.grant.dao.interfaces.PatternDao;
 import ru.itis.grant.dao.interfaces.UserDao;
 import ru.itis.grant.dto.request.*;
 import ru.itis.grant.model.Pattern;
 import ru.itis.grant.security.exception.IncorrectDataException;
-import ru.itis.grant.validation.dto.BidDtoValidator;
+import ru.itis.grant.validation.dto.ApplicationDtoValidator;
 import ru.itis.grant.validation.dto.UserDtoValidator;
 
 import java.util.Arrays;
@@ -22,7 +22,7 @@ public class Verification {
     @Autowired
     UserDao userDao;
     @Autowired
-    BidDao bidDao;
+    ApplicationDao applicationDao;
     @Autowired
     EventDao eventDao;
     @Autowired
@@ -52,14 +52,14 @@ public class Verification {
         }
     }
 
-    public void verifyBidExistenceById(long id) {
-        if (!bidDao.bidExistenceById(id)) {
+    public void verifyApplicationExistenceById(long id) {
+        if (!applicationDao.applicationExistenceById(id)) {
             throw new IncorrectDataException("id", "Неверный id заявки");
         }
     }
 
-    public void verifyUserBidExistenceById(String token, long id) {
-        if (!bidDao.userBidExistence(token, id)) {
+    public void verifyUserApplicationExistenceById(String token, long id) {
+        if (!applicationDao.userApplicationExistence(token, id)) {
             throw new IncorrectDataException("id", "Неверный id заявки");
         }
     }
@@ -70,8 +70,8 @@ public class Verification {
         }
     }
 
-    public void verifyUserPatternBidExistence(String token, long patternId) {
-        if (bidDao.userPatternBidExistence(token, patternId)) {
+    public void verifyUserPatternApplicationExistence(String token, long patternId) {
+        if (applicationDao.userPatternApplicationExistence(token, patternId)) {
             throw new IncorrectDataException("id", "Вы уже подали заявку на это мероприятие");
         }
     }
@@ -89,14 +89,14 @@ public class Verification {
         }
     }
 
-    public void verifyUserBidExistence(String token, long bidId) {
-        if (!bidDao.userBidExistence(token, bidId)) {
+    public void verifyUserApplicationExistence(String token, long applicationId) {
+        if (!applicationDao.userApplicationExistence(token, applicationId)) {
             throw new IncorrectDataException("id", "Заявка с таким id не найдена");
         }
     }
 
-    public void verifyExpertBidExistence(String token, long bidId) {
-        if (!bidDao.expertBidExistence(token, bidId)) {
+    public void verifyExpertApplicationExistence(String token, long applicationId) {
+        if (!applicationDao.expertApplicationExistence(token, applicationId)) {
             throw new IncorrectDataException("id", "Заявка с таким id не найдена");
         }
     }
@@ -120,8 +120,8 @@ public class Verification {
         }
     }
 
-    public void verifyBidDto(RequestBidDto bidDto, Pattern pattern) {
-        if (!BidDtoValidator.getInstance().verify(bidDto, pattern)) {
+    public void verifyApplicationDto(RequestApplicationDto applicationDto, Pattern pattern) {
+        if (!ApplicationDtoValidator.getInstance().verify(applicationDto, pattern)) {
             throw new IncorrectDataException("values", "Неверно введены значения");
         }
     }
@@ -135,7 +135,7 @@ public class Verification {
     }
 
     public void verifyPatternDto(RequestPatternDto patternDto) {
-        if (null != patternDto.getBidName() && null != patternDto.getDescription()
+        if (null != patternDto.getApplicationName() && null != patternDto.getDescription()
                 && null != patternDto.getElements() && null != patternDto.getEndDate()
                 && null != patternDto.getStartDate() && 0 != patternDto.getEventId()) {
             List<RequestElementDto> elementDtos = patternDto.getElements();

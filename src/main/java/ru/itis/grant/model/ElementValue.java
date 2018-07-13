@@ -20,7 +20,7 @@ public class ElementValue {
     @GeneratedValue(generator = "elv_id")
     private long id;
     @ManyToOne
-    private Bid bid;
+    private Application application;
     @ManyToOne
     private Element element;
     @Column(name = "filled_value")

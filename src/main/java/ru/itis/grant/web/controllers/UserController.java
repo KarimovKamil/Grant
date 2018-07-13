@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.grant.dto.request.AuthDto;
-import ru.itis.grant.dto.request.RequestBidDto;
+import ru.itis.grant.dto.request.RequestApplicationDto;
 import ru.itis.grant.dto.request.RequestUserDto;
 import ru.itis.grant.dto.request.UserUpdateDto;
-import ru.itis.grant.dto.response.ResponseBidDto;
+import ru.itis.grant.dto.response.ResponseApplicationDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.dto.response.ResponsePatternDto;
 import ru.itis.grant.dto.response.ResponseUserDto;
@@ -88,45 +88,45 @@ public class UserController {
         return ResponseEntity.ok(patternDto);
     }
 
-    @RequestMapping(value = "/bids", method = RequestMethod.POST)
-    public ResponseEntity<ResponseBidDto> createBid(
+    @RequestMapping(value = "/applications", method = RequestMethod.POST)
+    public ResponseEntity<ResponseApplicationDto> createApplication(
             @RequestHeader(value = "Auth-Token") String token,
-            @RequestBody RequestBidDto requestBidDto) {
-        ResponseBidDto createdBid = userService.createBid(token, requestBidDto);
-        return ResponseEntity.ok(createdBid);
+            @RequestBody RequestApplicationDto requestApplicationDto) {
+        ResponseApplicationDto createdApplication = userService.createApplication(token, requestApplicationDto);
+        return ResponseEntity.ok(createdApplication);
     }
 
-    @RequestMapping(value = "/bids", method = RequestMethod.GET)
-    public ResponseEntity<List<ResponseBidDto>> userBids(
+    @RequestMapping(value = "/applications", method = RequestMethod.GET)
+    public ResponseEntity<List<ResponseApplicationDto>> userApplications(
             @RequestHeader(value = "Auth-Token") String token,
             @RequestParam int from,
             @RequestParam int count) {
-        List<ResponseBidDto> bids = userService.getUserBids(token, from, count);
-        return ResponseEntity.ok(bids);
+        List<ResponseApplicationDto> applications = userService.getUserApplications(token, from, count);
+        return ResponseEntity.ok(applications);
     }
 
-    @RequestMapping(value = "/bids/{id}", method = RequestMethod.GET)
-    public ResponseEntity<ResponseBidDto> userBid(
+    @RequestMapping(value = "/applications/{id}", method = RequestMethod.GET)
+    public ResponseEntity<ResponseApplicationDto> userApplication(
             @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id) {
-        ResponseBidDto bid = userService.getBid(token, id);
-        return ResponseEntity.ok(bid);
+        ResponseApplicationDto application = userService.getApplication(token, id);
+        return ResponseEntity.ok(application);
     }
 
-    @RequestMapping(value = "/bids/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<ResponseBidDto> updateBid(
+    @RequestMapping(value = "/applications/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<ResponseApplicationDto> updateApplication(
             @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id,
-            @RequestBody RequestBidDto requestBidDto) {
-        ResponseBidDto updatedBid = userService.updateBid(id, token, requestBidDto);
-        return ResponseEntity.ok(updatedBid);
+            @RequestBody RequestApplicationDto requestApplicationDto) {
+        ResponseApplicationDto updatedApplication = userService.updateApplication(id, token, requestApplicationDto);
+        return ResponseEntity.ok(updatedApplication);
     }
 
-    @RequestMapping(value = "/bids/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Boolean> deleteBid(
+    @RequestMapping(value = "/applications/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Boolean> deleteApplication(
             @RequestHeader(value = "Auth-Token") String token,
             @PathVariable(value = "id") long id) {
-        boolean success = userService.deleteBid(token, id);
+        boolean success = userService.deleteApplication(token, id);
         return ResponseEntity.ok(success);
     }
 }

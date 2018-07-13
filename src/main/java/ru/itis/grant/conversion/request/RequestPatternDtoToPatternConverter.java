@@ -34,7 +34,7 @@ public class RequestPatternDtoToPatternConverter {
             elementList.add(RequestElementDtoToElementConverter.getInstance().convert(requestElementDto));
         }
         return Pattern.builder()
-                .bidName(requestPatternDto.getBidName())
+                .applicationName(requestPatternDto.getApplicationName())
                 .description(requestPatternDto.getDescription())
                 .endDate(requestPatternDto.getEndDate())
                 .startDate(requestPatternDto.getStartDate())

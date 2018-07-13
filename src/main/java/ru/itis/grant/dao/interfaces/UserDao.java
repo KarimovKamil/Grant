@@ -31,7 +31,7 @@ public interface UserDao {
 
     boolean userExistenceById(long id);
 
-    User getUserByBidId(long bidId);
+    User getUserByApplicationId(long applicationId);
 
     Ban banUser(Ban ban);
 

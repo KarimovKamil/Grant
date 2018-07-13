@@ -12,11 +12,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ResponseBidDto {
+public class ResponseApplicationDto {
     private long id;
     private ResponseUserDto user;
     private ResponsePatternDto pattern;
-    private Date bidDate;
+    private Date applicationDate;
     private String status;
     private List<ResponseElementValueDto> values;
     private String comment;

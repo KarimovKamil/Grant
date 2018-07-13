@@ -31,7 +31,7 @@ public class PatternToResponsePatternDtoConverter {
         }
         return ResponsePatternDto.builder()
                 .id(pattern.getId())
-                .bidName(pattern.getBidName())
+                .applicationName(pattern.getApplicationName())
                 .description(pattern.getDescription())
                 .startDate(pattern.getStartDate())
                 .endDate(pattern.getEndDate())

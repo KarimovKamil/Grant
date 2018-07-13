@@ -5,15 +5,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.itis.grant.conversion.ConversionListResultFactory;
 import ru.itis.grant.conversion.ConversionResultFactory;
-import ru.itis.grant.dao.interfaces.BidDao;
+import ru.itis.grant.dao.interfaces.ApplicationDao;
 import ru.itis.grant.dao.interfaces.EventDao;
 import ru.itis.grant.dao.interfaces.UserDao;
 import ru.itis.grant.dto.ValidateDto;
 import ru.itis.grant.dto.response.ResponseBanDto;
-import ru.itis.grant.dto.response.ResponseBidDto;
+import ru.itis.grant.dto.response.ResponseApplicationDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.model.Ban;
-import ru.itis.grant.model.Bid;
+import ru.itis.grant.model.Application;
 import ru.itis.grant.model.Event;
 import ru.itis.grant.model.User;
 import ru.itis.grant.service.interfaces.ExpertService;
@@ -28,7 +28,7 @@ public class ExpertServiceImpl implements ExpertService {
     @Autowired
     UserDao userDao;
     @Autowired
-    BidDao bidDao;
+    ApplicationDao applicationDao;
     @Autowired
     EventDao eventDao;
     @Autowired
@@ -47,50 +47,50 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public List<ResponseBidDto> getExpertBids(String token, long from, long count) {
+    public List<ResponseApplicationDto> getExpertApplications(String token, long from, long count) {
         verification.verifyTokenExistence(token);
-        List<Bid> bids = bidDao.getExpertBids(token, from, count);
-        List<ResponseBidDto> responseBidDtos = conversionListResultFactory.bidsToResponseBidDtos(bids);
-        return responseBidDtos;
+        List<Application> applications = applicationDao.getExpertApplications(token, from, count);
+        List<ResponseApplicationDto> responseApplicationDtos = conversionListResultFactory.applicationsToResponseApplicationDtos(applications);
+        return responseApplicationDtos;
     }
 
     @Override
-    public List<ResponseBidDto> getExpertEventBids(String token, long eventId, long from, long count) {
+    public List<ResponseApplicationDto> getExpertEventApplications(String token, long eventId, long from, long count) {
         verification.verifyTokenExistence(token);
         verification.verifyExpertEventExistence(token, eventId);
-        List<Bid> bids = bidDao.getExpertEventBids(token, eventId, from, count);
-        List<ResponseBidDto> responseBidDtos = conversionListResultFactory.bidsToResponseBidDtos(bids);
-        return responseBidDtos;
+        List<Application> applications = applicationDao.getExpertEventApplications(token, eventId, from, count);
+        List<ResponseApplicationDto> responseApplicationDtos = conversionListResultFactory.applicationsToResponseApplicationDtos(applications);
+        return responseApplicationDtos;
     }
 
     @Override
-    public ResponseBidDto getExpertBid(String token, long bidId) {
+    public ResponseApplicationDto getExpertApplication(String token, long applicationId) {
         verification.verifyTokenExistence(token);
-        verification.verifyExpertBidExistence(token, bidId);
-        Bid bid = bidDao.getBidById(bidId);
-        ResponseBidDto responseBidDto = conversionResultFactory.bidToResponseBidDto(bid);
-        return responseBidDto;
+        verification.verifyExpertApplicationExistence(token, applicationId);
+        Application application = applicationDao.getApplicationById(applicationId);
+        ResponseApplicationDto responseApplicationDto = conversionResultFactory.applicationToResponseApplicationDto(application);
+        return responseApplicationDto;
     }
 
     @Override
-    public ResponseBidDto validate(String token, long bidId, ValidateDto validateDto) {
+    public ResponseApplicationDto validate(String token, long applicationId, ValidateDto validateDto) {
         verification.verifyTokenExistence(token);
-        verification.verifyExpertBidExistence(token, bidId);
-        Bid bid = bidDao.getBidById(bidId);
-        bid.setStatus(validateDto.getStatus());
-        bid.setComment(validateDto.getComment());
-        Bid updatedBid = bidDao.updateBid(bid);
-        ResponseBidDto responseBidDto = conversionResultFactory.bidToResponseBidDto(updatedBid);
-        return responseBidDto;
+        verification.verifyExpertApplicationExistence(token, applicationId);
+        Application application = applicationDao.getApplicationById(applicationId);
+        application.setStatus(validateDto.getStatus());
+        application.setComment(validateDto.getComment());
+        Application updatedApplication = applicationDao.updateApplication(application);
+        ResponseApplicationDto responseApplicationDto = conversionResultFactory.applicationToResponseApplicationDto(updatedApplication);
+        return responseApplicationDto;
     }
 
     @Override
-    public ResponseBanDto banUser(String token, long bidId, String comment) {
+    public ResponseBanDto banUser(String token, long applicationId, String comment) {
         verification.verifyTokenExistence(token);
-        verification.verifyExpertBidExistence(token, bidId);
-        Event event = eventDao.getEventByBidId(bidId);
+        verification.verifyExpertApplicationExistence(token, applicationId);
+        Event event = eventDao.getEventByApplicationId(applicationId);
         User expert = userDao.getUserByToken(token);
-        User user = userDao.getUserByBidId(bidId);
+        User user = userDao.getUserByApplicationId(applicationId);
         Ban ban = Ban.builder()
                 .event(event)
                 .expert(expert)
@@ -99,9 +99,9 @@ public class ExpertServiceImpl implements ExpertService {
                 .build();
         Ban addedBan = userDao.banUser(ban);
         ResponseBanDto responseBanDto = conversionResultFactory.banToResponseBanDto(addedBan);
-        Bid bid = bidDao.getBidById(bidId);
-        bid.setStatus("BANNED");
-        bidDao.updateBid(bid);
+        Application application = applicationDao.getApplicationById(applicationId);
+        application.setStatus("BANNED");
+        applicationDao.updateApplication(application);
         return responseBanDto;
     }
 
@@ -110,9 +110,9 @@ public class ExpertServiceImpl implements ExpertService {
         verification.verifyTokenExistence(token);
         verification.verifyExpertBanExistence(token, banId);
         Ban ban = userDao.getBanById(banId);
-        Bid bid = bidDao.getBidByEventUser(ban.getEvent().getId(), ban.getUser().getId());
-        bid.setStatus("ACTIVE");
-        bidDao.updateBid(bid);
+        Application application = applicationDao.getApplicationByEventUser(ban.getEvent().getId(), ban.getUser().getId());
+        application.setStatus("ACTIVE");
+        applicationDao.updateApplication(application);
         userDao.unbanUser(ban);
     }
 

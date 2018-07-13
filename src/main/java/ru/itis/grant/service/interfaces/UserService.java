@@ -1,10 +1,10 @@
 package ru.itis.grant.service.interfaces;
 
 import ru.itis.grant.dto.request.AuthDto;
-import ru.itis.grant.dto.request.RequestBidDto;
+import ru.itis.grant.dto.request.RequestApplicationDto;
 import ru.itis.grant.dto.request.RequestUserDto;
 import ru.itis.grant.dto.request.UserUpdateDto;
-import ru.itis.grant.dto.response.ResponseBidDto;
+import ru.itis.grant.dto.response.ResponseApplicationDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.dto.response.ResponsePatternDto;
 import ru.itis.grant.dto.response.ResponseUserDto;
@@ -37,15 +37,15 @@ public interface UserService {
 
     ResponsePatternDto getEventPattern(long eventId);
 
-    ResponseBidDto createBid(String token, RequestBidDto requestBidDto);
+    ResponseApplicationDto createApplication(String token, RequestApplicationDto requestApplicationDto);
 
-    List<ResponseBidDto> getUserBids(String token);
+    List<ResponseApplicationDto> getUserApplications(String token);
 
-    List<ResponseBidDto> getUserBids(String token, int from, int count);
+    List<ResponseApplicationDto> getUserApplications(String token, int from, int count);
 
-    ResponseBidDto getBid(String token, long bidId);
+    ResponseApplicationDto getApplication(String token, long applicationId);
 
-    ResponseBidDto updateBid(long id, String token, RequestBidDto requestBidDto);
+    ResponseApplicationDto updateApplication(long id, String token, RequestApplicationDto requestApplicationDto);
 
-    boolean deleteBid(String token, long bidId);
+    boolean deleteApplication(String token, long applicationId);
 }

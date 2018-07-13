@@ -35,9 +35,9 @@ public class ConversionResultFactory {
         return element;
     }
 
-    public Bid requestBidDtoToBid(RequestBidDto requestBidDto) {
-        Bid bid = RequestBidDtoToBidConverter.getInstance().convert(requestBidDto);
-        return bid;
+    public Application requestApplicationDtoToApplication(RequestApplicationDto requestApplicationDto) {
+        Application application = RequestApplicationDtoToApplicationConverter.getInstance().convert(requestApplicationDto);
+        return application;
     }
 
     public ResponseUserDto userToResponseUserDto(User user) {
@@ -65,9 +65,9 @@ public class ConversionResultFactory {
         return responseElementDto;
     }
 
-    public ResponseBidDto bidToResponseBidDto(Bid bid) {
-        ResponseBidDto responseBidDto = BidToResponseBidDtoConverter.getInstance().convert(bid);
-        return responseBidDto;
+    public ResponseApplicationDto applicationToResponseApplicationDto(Application application) {
+        ResponseApplicationDto responseApplicationDto = ApplicationToResponseApplicationDtoConverter.getInstance().convert(application);
+        return responseApplicationDto;
     }
 
     public ResponseBanDto banToResponseBanDto(Ban ban) {

@@ -22,8 +22,8 @@ public class Pattern {
     @GenericGenerator(name = "pt_id", strategy = "increment")
     @GeneratedValue(generator = "pt_id")
     private long id;
-    @Column(name = "bid_name")
-    private String bidName;
+    @Column(name = "application_name")
+    private String applicationName;
     @OneToOne
     private Event event;
     private String description;
@@ -36,5 +36,5 @@ public class Pattern {
     @OneToMany(mappedBy = "pattern", cascade = CascadeType.ALL)
     private List<Element> elements;
     @OneToMany(mappedBy = "pattern", cascade = CascadeType.ALL)
-    private List<Bid> bids;
+    private List<Application> applications;
 }

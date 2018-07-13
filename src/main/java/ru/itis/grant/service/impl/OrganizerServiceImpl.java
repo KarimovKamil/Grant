@@ -43,7 +43,7 @@ public class OrganizerServiceImpl implements OrganizerService {
     @Autowired
     PatternDao patternDao;
     @Autowired
-    BidDao bidDao;
+    ApplicationDao applicationDao;
     @Autowired
     ElementDao elementDao;
 

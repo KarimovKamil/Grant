@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class ResponsePatternDto {
     private long id;
-    private String bidName;
+    private String applicationName;
     private String description;
     private Date startDate;
     private Date endDate;

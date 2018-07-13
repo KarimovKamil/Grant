@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class RequestPatternDto {
     private long eventId;
-    private String bidName;
+    private String applicationName;
     private String description;
     private List<RequestElementDto> elements;
     private Date startDate;

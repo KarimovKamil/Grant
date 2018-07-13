@@ -103,10 +103,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUserByBidId(long bidId) {
+    public User getUserByApplicationId(long applicationId) {
         User user = (User) em.createNativeQuery("SELECT u.* FROM g_user u " +
-                "INNER JOIN (SELECT * FROM bid WHERE id = :bidId) b ON b.user_id = u.id", User.class)
-                .setParameter("bidId", bidId)
+                "INNER JOIN (SELECT * FROM application WHERE id = :applicationId) b ON b.user_id = u.id", User.class)
+                .setParameter("applicationId", applicationId)
                 .getSingleResult();
         return user;
     }

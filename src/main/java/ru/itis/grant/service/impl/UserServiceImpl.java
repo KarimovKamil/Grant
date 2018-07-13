@@ -7,10 +7,10 @@ import ru.itis.grant.conversion.ConversionListResultFactory;
 import ru.itis.grant.conversion.ConversionResultFactory;
 import ru.itis.grant.dao.interfaces.*;
 import ru.itis.grant.dto.request.AuthDto;
-import ru.itis.grant.dto.request.RequestBidDto;
+import ru.itis.grant.dto.request.RequestApplicationDto;
 import ru.itis.grant.dto.request.RequestUserDto;
 import ru.itis.grant.dto.request.UserUpdateDto;
-import ru.itis.grant.dto.response.ResponseBidDto;
+import ru.itis.grant.dto.response.ResponseApplicationDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.dto.response.ResponsePatternDto;
 import ru.itis.grant.dto.response.ResponseUserDto;
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     PatternDao patternDao;
     @Autowired
-    BidDao bidDao;
+    ApplicationDao applicationDao;
     @Autowired
     ElementValueDao elementValueDao;
 
@@ -161,76 +161,76 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseBidDto createBid(String token, RequestBidDto requestBidDto) {
+    public ResponseApplicationDto createApplication(String token, RequestApplicationDto requestApplicationDto) {
         Date currentDate = new Date(System.currentTimeMillis());
         verification.verifyTokenExistence(token);
-        verification.verifyPatternExistence(requestBidDto.getPatternId());
-        verification.verifyUserPatternBidExistence(token, requestBidDto.getPatternId());
-        verification.verifyPatternTimeLimit(requestBidDto.getPatternId(), currentDate);
-        Pattern pattern = patternDao.getPattern(requestBidDto.getPatternId());
-        verification.verifyBidDto(requestBidDto, pattern);
-        Bid bid = conversionFactory.requestBidDtoToBid(requestBidDto);
+        verification.verifyPatternExistence(requestApplicationDto.getPatternId());
+        verification.verifyUserPatternApplicationExistence(token, requestApplicationDto.getPatternId());
+        verification.verifyPatternTimeLimit(requestApplicationDto.getPatternId(), currentDate);
+        Pattern pattern = patternDao.getPattern(requestApplicationDto.getPatternId());
+        verification.verifyApplicationDto(requestApplicationDto, pattern);
+        Application application = conversionFactory.requestApplicationDtoToApplication(requestApplicationDto);
         User user = userDao.getUserByToken(token);
-        bid.setBidDate(currentDate);
-        bid.setStatus("ACTIVE");
-        bid.setUser(user);
-        bid.setPattern(pattern);
-        bidDao.addBid(bid);
-        for (ElementValue elementValue : bid.getValueList()) {
-            elementValue.setBid(bid);
+        application.setApplicationDate(currentDate);
+        application.setStatus("ACTIVE");
+        application.setUser(user);
+        application.setPattern(pattern);
+        applicationDao.addApplication(application);
+        for (ElementValue elementValue : application.getValueList()) {
+            elementValue.setApplication(application);
             elementValueDao.addElementValue(elementValue);
         }
-        Bid bidFromDB = bidDao.getBidById(bid.getId());
-        ResponseBidDto responseBidDto = conversionFactory.bidToResponseBidDto(bidFromDB);
-        return responseBidDto;
+        Application applicationFromDB = applicationDao.getApplicationById(application.getId());
+        ResponseApplicationDto responseApplicationDto = conversionFactory.applicationToResponseApplicationDto(applicationFromDB);
+        return responseApplicationDto;
     }
 
     @Override
-    public List<ResponseBidDto> getUserBids(String token) {
+    public List<ResponseApplicationDto> getUserApplications(String token) {
         verification.verifyTokenExistence(token);
-        List<Bid> bids = bidDao.getUserBids(token);
-        List<ResponseBidDto> bidDtoList = conversionListFactory.bidsToResponseBidDtos(bids);
-        return bidDtoList;
+        List<Application> applications = applicationDao.getUserApplications(token);
+        List<ResponseApplicationDto> applicationDtoList = conversionListFactory.applicationsToResponseApplicationDtos(applications);
+        return applicationDtoList;
     }
 
     @Override
-    public List<ResponseBidDto> getUserBids(String token, int from, int count) {
+    public List<ResponseApplicationDto> getUserApplications(String token, int from, int count) {
         verification.verifyTokenExistence(token);
-        List<Bid> bids = bidDao.getUserBids(token, from, count);
-        List<ResponseBidDto> bidDtoList = conversionListFactory.bidsToResponseBidDtos(bids);
-        return bidDtoList;
+        List<Application> applications = applicationDao.getUserApplications(token, from, count);
+        List<ResponseApplicationDto> applicationDtoList = conversionListFactory.applicationsToResponseApplicationDtos(applications);
+        return applicationDtoList;
     }
 
     @Override
-    public ResponseBidDto getBid(String token, long bidId) {
+    public ResponseApplicationDto getApplication(String token, long applicationId) {
         verification.verifyTokenExistence(token);
-        verification.verifyUserBidExistence(token, bidId);
-        Bid bid = bidDao.getBidById(bidId);
-        ResponseBidDto responseBidDto = conversionFactory.bidToResponseBidDto(bid);
-        return responseBidDto;
+        verification.verifyUserApplicationExistence(token, applicationId);
+        Application application = applicationDao.getApplicationById(applicationId);
+        ResponseApplicationDto responseApplicationDto = conversionFactory.applicationToResponseApplicationDto(application);
+        return responseApplicationDto;
     }
 
     @Override
-    public ResponseBidDto updateBid(long id, String token, RequestBidDto requestBidDto) {
+    public ResponseApplicationDto updateApplication(long id, String token, RequestApplicationDto requestApplicationDto) {
         Date currentDate = new Date(System.currentTimeMillis());
         verification.verifyTokenExistence(token);
-        verification.verifyUserBidExistenceById(token, id);
-        Bid bid = bidDao.getBidById(id);
-        verification.verifyPatternTimeLimit(bid.getPattern().getId(), currentDate);
-        verification.verifyBidDto(requestBidDto, bid.getPattern());
-        bid.setBidDate(currentDate);
-        bid.setStatus("ACTIVE");
-        bid.setValueList(conversionListFactory.requestElementValueDtosToElementValues(requestBidDto.getValues()));
-        bidDao.updateBid(bid);
-        ResponseBidDto responseBidDto = conversionFactory.bidToResponseBidDto(bid);
-        return responseBidDto;
+        verification.verifyUserApplicationExistenceById(token, id);
+        Application application = applicationDao.getApplicationById(id);
+        verification.verifyPatternTimeLimit(application.getPattern().getId(), currentDate);
+        verification.verifyApplicationDto(requestApplicationDto, application.getPattern());
+        application.setApplicationDate(currentDate);
+        application.setStatus("ACTIVE");
+        application.setValueList(conversionListFactory.requestElementValueDtosToElementValues(requestApplicationDto.getValues()));
+        applicationDao.updateApplication(application);
+        ResponseApplicationDto responseApplicationDto = conversionFactory.applicationToResponseApplicationDto(application);
+        return responseApplicationDto;
     }
 
     @Override
-    public boolean deleteBid(String token, long bidId) {
+    public boolean deleteApplication(String token, long applicationId) {
         verification.verifyTokenExistence(token);
-        verification.verifyUserBidExistenceById(token, bidId);
-        bidDao.deleteBid(bidDao.getBidById(bidId));
+        verification.verifyUserApplicationExistenceById(token, applicationId);
+        applicationDao.deleteApplication(applicationDao.getApplicationById(applicationId));
         return true;
     }
 }

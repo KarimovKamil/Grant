@@ -1,30 +1,30 @@
 package ru.itis.grant.validation.dto;
 
-import ru.itis.grant.dto.request.RequestBidDto;
+import ru.itis.grant.dto.request.RequestApplicationDto;
 import ru.itis.grant.dto.request.RequestElementValueDto;
 import ru.itis.grant.model.Element;
 import ru.itis.grant.model.Pattern;
 
-public class BidDtoValidator {
-    private static volatile BidDtoValidator instance;
+public class ApplicationDtoValidator {
+    private static volatile ApplicationDtoValidator instance;
 
-    public static BidDtoValidator getInstance() {
-        BidDtoValidator localInstance = instance;
+    public static ApplicationDtoValidator getInstance() {
+        ApplicationDtoValidator localInstance = instance;
         if (localInstance == null) {
-            synchronized (BidDtoValidator.class) {
+            synchronized (ApplicationDtoValidator.class) {
                 localInstance = instance;
                 if (localInstance == null) {
-                    instance = localInstance = new BidDtoValidator();
+                    instance = localInstance = new ApplicationDtoValidator();
                 }
             }
         }
         return localInstance;
     }
 
-    public boolean verify(RequestBidDto bidDto, Pattern pattern) {
+    public boolean verify(RequestApplicationDto applicationDto, Pattern pattern) {
         next:
         for (Element element : pattern.getElements()) {
-            for (RequestElementValueDto value : bidDto.getValues()) {
+            for (RequestElementValueDto value : applicationDto.getValues()) {
                 if (value.getElementId() == element.getId()) {
                     if (!ElementValueDtoValidator.getInstance().verify(value, element)) {
                         return false;

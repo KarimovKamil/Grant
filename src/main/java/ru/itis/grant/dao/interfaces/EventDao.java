@@ -51,5 +51,5 @@ public interface EventDao {
 
     boolean eventExpertExistence(long eventId, long expertId);
 
-    Event getEventByBidId(long bidId);
+    Event getEventByApplicationId(long applicationId);
 }
