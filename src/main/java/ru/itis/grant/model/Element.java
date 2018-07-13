@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Arrays;
 
 @Data
 @NoArgsConstructor
@@ -31,4 +32,12 @@ public class Element {
     private boolean required;
     @Column(name = "selectable_value")
     private String[] selectableValue;
+
+    @Override
+    public String toString() {
+        return "{" +
+                "Тип: '" + type + '\'' +
+                ", Выбираемые значения: " + Arrays.toString(selectableValue) +
+                '}';
+    }
 }

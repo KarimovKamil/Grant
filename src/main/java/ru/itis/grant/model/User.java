@@ -44,4 +44,13 @@ public class User {
     private List<Event> exEvents;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Ban> bans;
+
+    @Override
+    public String toString() {
+        return "{" +
+                "Имя: '" + firstName + '\'' +
+                ", фамилия: '" + secondName + '\'' +
+                ", email: '" + email + '\'' +
+                '}';
+    }
 }

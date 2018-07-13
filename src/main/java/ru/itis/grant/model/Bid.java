@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -33,4 +34,16 @@ public class Bid {
     private Date bidDate;
     private String status;
     private String comment;
+
+    @Override
+    public String toString() {
+        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+        StringBuilder sb = new StringBuilder();
+        sb.append("Заявка №").append(id).append(", отправитель: ").append(user.toString())
+                .append(", дата отправки: ").append(simpleDate.format(bidDate)).append(",\r\n");
+        for (ElementValue elementValue : valueList) {
+            sb.append("Элемент: ").append(elementValue.toString()).append("\r\n");
+        }
+        return sb.toString();
+    }
 }

@@ -25,4 +25,12 @@ public class ElementValue {
     private Element element;
     @Column(name = "filled_value")
     private String filledValue;
+
+    @Override
+    public String toString() {
+        return "{" +
+                element.toString() + ",\r\n" +
+                "Значение: '" + filledValue + '\'' +
+                '}';
+    }
 }

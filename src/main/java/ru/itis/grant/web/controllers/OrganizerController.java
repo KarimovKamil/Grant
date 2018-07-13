@@ -5,9 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.grant.dto.request.RequestEventDto;
 import ru.itis.grant.dto.request.RequestPatternDto;
+import ru.itis.grant.dto.response.ResponseBidDto;
 import ru.itis.grant.dto.response.ResponseEventDto;
 import ru.itis.grant.dto.response.ResponsePatternDto;
 import ru.itis.grant.dto.response.ResponseUserDto;
+import ru.itis.grant.service.interfaces.BidService;
 import ru.itis.grant.service.interfaces.OrganizerService;
 
 import java.util.List;
@@ -18,6 +20,8 @@ public class OrganizerController {
 
     @Autowired
     OrganizerService organizerService;
+    @Autowired
+    BidService bidService;
 
     @RequestMapping(value = "/events", method = RequestMethod.POST)
     public ResponseEntity<ResponseEventDto> createEvent(
@@ -85,5 +89,13 @@ public class OrganizerController {
             @RequestParam(value = "count") int count) {
         List<ResponseUserDto> users = organizerService.getUsers(from, count);
         return ResponseEntity.ok(users);
+    }
+
+    @RequestMapping(value = "/bids/{id}", method = RequestMethod.GET)
+    public ResponseEntity<String> getBidString(
+            @RequestHeader(value = "Auth-Token") String token,
+            @PathVariable(value = "id") long id) {
+        String bidString = bidService.getBidInString(id);
+        return ResponseEntity.ok(bidString);
     }
 }
