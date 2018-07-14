@@ -31,11 +31,11 @@ public class ElementValueDtoValidator {
                 case "COMBOBOX":
                     return verifyRadiobutton(elementValueDto, element);
                 case "CHECKBOX":
-                    return verifyCheckbox(elementValueDto);
+                    return verifyCheckbox(elementValueDto, element);
                 case "RADIOBUTTON":
                     return verifyRadiobutton(elementValueDto, element);
-                case "MULTISELECT":
-                    return verifyMultiSelect(elementValueDto, element);
+//                case "MULTISELECT":
+//                    return verifyMultiSelect(elementValueDto, element);
                 default:
                     return false;
             }
@@ -52,7 +52,7 @@ public class ElementValueDtoValidator {
         return false;
     }
 
-    private boolean verifyMultiSelect(RequestElementValueDto elementValueDto, Element element) {
+    private boolean verifyCheckbox(RequestElementValueDto elementValueDto, Element element) {
         String[] values = elementValueDto.getFilledValue().split(", ");
         next:
         for (String value : values) {
@@ -66,8 +66,8 @@ public class ElementValueDtoValidator {
         return true;
     }
 
-    private boolean verifyCheckbox(RequestElementValueDto elementValueDto) {
-        String valueCB = elementValueDto.getFilledValue().toLowerCase().intern();
-        return "true" == valueCB || "false" == valueCB;
-    }
+//    private boolean verifyCheckbox(RequestElementValueDto elementValueDto) {
+//        String valueCB = elementValueDto.getFilledValue().toLowerCase().intern();
+//        return "true" == valueCB || "false" == valueCB;
+//    }
 }
