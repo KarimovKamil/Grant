@@ -25,6 +25,8 @@ public class EventToResponseEventDtoConverter {
                 .owner(UserToResponseUserDtoConverter.getInstance().convert(event.getOwner()))
                 .name(event.getName())
                 .description(event.getDescription())
+                .startDate(event.getStartDate())
+                .endDate(event.getEndDate())
                 .siteUrl(event.getSiteUrl())
                 .build();
     }

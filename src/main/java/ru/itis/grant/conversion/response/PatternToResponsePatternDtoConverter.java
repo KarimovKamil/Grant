@@ -32,8 +32,6 @@ public class PatternToResponsePatternDtoConverter {
         return ResponsePatternDto.builder()
                 .id(pattern.getId())
                 .applicationName(pattern.getApplicationName())
-                .startDate(pattern.getStartDate())
-                .endDate(pattern.getEndDate())
                 .event(EventToResponseEventDtoConverter.getInstance().convert(pattern.getEvent()))
                 .elements(responseElementDtoList)
                 .build();

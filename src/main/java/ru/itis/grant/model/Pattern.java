@@ -26,13 +26,6 @@ public class Pattern {
     private String applicationName;
     @OneToOne
     private Event event;
-    private String description;
-    @DateTimeFormat
-    @Column(name = "end_date")
-    private Date endDate;
-    @DateTimeFormat
-    @Column(name = "start_date")
-    private Date startDate;
     @OneToMany(mappedBy = "pattern", cascade = CascadeType.ALL)
     private List<Element> elements;
     @OneToMany(mappedBy = "pattern", cascade = CascadeType.ALL)

@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,4 +17,6 @@ public class ResponseEventDto {
     private String name;
     private String description;
     private String siteUrl;
+    private Date startDate;
+    private Date endDate;
 }

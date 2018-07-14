@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.URL;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -27,6 +29,12 @@ public class Event {
     private String description;
     @Column(name = "site_url")
     private String siteUrl;
+    @DateTimeFormat
+    @Column(name = "end_date")
+    private Date endDate;
+    @DateTimeFormat
+    @Column(name = "start_date")
+    private Date startDate;
     @ManyToOne
     private User owner;
     @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)

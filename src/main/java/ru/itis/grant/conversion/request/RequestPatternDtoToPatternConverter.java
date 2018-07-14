@@ -32,8 +32,6 @@ public class RequestPatternDtoToPatternConverter {
         }
         return Pattern.builder()
                 .applicationName(requestPatternDto.getApplicationName())
-                .endDate(requestPatternDto.getEndDate())
-                .startDate(requestPatternDto.getStartDate())
                 .elements(elementList)
                 .build();
     }

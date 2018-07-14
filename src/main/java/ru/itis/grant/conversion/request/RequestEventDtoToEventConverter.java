@@ -24,6 +24,8 @@ public class RequestEventDtoToEventConverter {
                 .description(requestEventDto.getDescription())
                 .name(requestEventDto.getName())
                 .siteUrl(requestEventDto.getSiteUrl())
+                .startDate(requestEventDto.getStartDate())
+                .endDate(requestEventDto.getEndDate())
                 .build();
     }
 }

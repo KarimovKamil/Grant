@@ -15,6 +15,4 @@ import java.util.List;
 public class RequestPatternDto {
     private String applicationName;
     private List<RequestElementDto> elements;
-    private Date startDate;
-    private Date endDate;
 }

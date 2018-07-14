@@ -127,16 +127,18 @@ public class Verification {
     }
 
     public void verifyEventDto(RequestEventDto eventDto) {
-        if (null != eventDto.getName() && null != eventDto.getDescription()
-                && null != eventDto.getSiteUrl()) {
-        } else {
+        if (null == eventDto.getName() || null == eventDto.getDescription()
+                || null == eventDto.getSiteUrl()) {
             throw new IncorrectDataException("values", "Неверно введены значения");
+        }
+        if (null == eventDto.getEndDate() || null == eventDto.getStartDate()
+                || !eventDto.getEndDate().after(eventDto.getStartDate()) || !eventDto.getEndDate().after(new Date())) {
+            throw new IncorrectDataException("dates", "Неверно введены даты начала и окончания подачи заявок");
         }
     }
 
     public void verifyPatternDto(RequestPatternDto patternDto) {
-        if (null != patternDto.getApplicationName() && null != patternDto.getElements()
-                && null != patternDto.getEndDate() && null != patternDto.getStartDate()) {
+        if (null != patternDto.getApplicationName() && null != patternDto.getElements()) {
             List<RequestElementDto> elementDtos = patternDto.getElements();
             for (RequestElementDto elementDto : elementDtos) {
                 String type = elementDto.getType();
