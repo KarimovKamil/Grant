@@ -59,13 +59,13 @@ public class OrganizerServiceImpl implements OrganizerService {
     }
 
     @Override
-    public ResponsePatternDto createPattern(RequestPatternDto patternDto, String token) {
+    public ResponsePatternDto createPattern(long eventId, RequestPatternDto patternDto, String token) {
         verification.verifyTokenExistence(token);
         verification.verifyPatternDto(patternDto);
-        verification.verifyOrganizerEventExistence(patternDto.getEventId(), token);
-        verification.verifyPatternAddingCase(patternDto.getEventId());
+        verification.verifyOrganizerEventExistence(eventId, token);
+        verification.verifyPatternAddingCase(eventId);
         Pattern pattern = conversionFactory.requestPatternDtoToPattern(patternDto);
-        pattern.setEvent(eventDao.getEvent(patternDto.getEventId()));
+        pattern.setEvent(eventDao.getEvent(eventId));
         patternDao.addPattern(pattern);
         for (Element element : pattern.getElements()) {
             element.setPattern(pattern);

@@ -135,9 +135,8 @@ public class Verification {
     }
 
     public void verifyPatternDto(RequestPatternDto patternDto) {
-        if (null != patternDto.getApplicationName() && null != patternDto.getDescription()
-                && null != patternDto.getElements() && null != patternDto.getEndDate()
-                && null != patternDto.getStartDate() && 0 != patternDto.getEventId()) {
+        if (null != patternDto.getApplicationName() && null != patternDto.getElements()
+                && null != patternDto.getEndDate() && null != patternDto.getStartDate()) {
             List<RequestElementDto> elementDtos = patternDto.getElements();
             for (RequestElementDto elementDto : elementDtos) {
                 String type = elementDto.getType();

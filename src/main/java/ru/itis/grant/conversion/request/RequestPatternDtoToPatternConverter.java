@@ -26,19 +26,14 @@ public class RequestPatternDtoToPatternConverter {
     }
 
     public Pattern convert(RequestPatternDto requestPatternDto) {
-        Event event = Event.builder()
-                .id(requestPatternDto.getEventId())
-                .build();
         List<Element> elementList = new ArrayList<>();
         for (RequestElementDto requestElementDto : requestPatternDto.getElements()) {
             elementList.add(RequestElementDtoToElementConverter.getInstance().convert(requestElementDto));
         }
         return Pattern.builder()
                 .applicationName(requestPatternDto.getApplicationName())
-                .description(requestPatternDto.getDescription())
                 .endDate(requestPatternDto.getEndDate())
                 .startDate(requestPatternDto.getStartDate())
-                .event(event)
                 .elements(elementList)
                 .build();
     }

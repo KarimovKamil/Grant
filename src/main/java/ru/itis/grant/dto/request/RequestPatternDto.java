@@ -13,9 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class RequestPatternDto {
-    private long eventId;
     private String applicationName;
-    private String description;
     private List<RequestElementDto> elements;
     private Date startDate;
     private Date endDate;

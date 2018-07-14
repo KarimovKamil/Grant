@@ -30,11 +30,12 @@ public class OrganizerController {
         return ResponseEntity.ok(eventDto);
     }
 
-    @RequestMapping(value = "/events/pattern", method = RequestMethod.POST)
+    @RequestMapping(value = "/events/{id}/pattern", method = RequestMethod.POST)
     public ResponseEntity<ResponsePatternDto> createPattern(
+            @PathVariable(value = "id") long id,
             @RequestBody RequestPatternDto patternDto,
             @RequestHeader(value = "Auth-Token") String token) {
-        ResponsePatternDto createdPattern = organizerService.createPattern(patternDto, token);
+        ResponsePatternDto createdPattern = organizerService.createPattern(id, patternDto, token);
         return ResponseEntity.ok(createdPattern);
     }
 

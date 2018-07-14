@@ -5,10 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Data
@@ -34,7 +33,6 @@ public class User {
     private String token;
     @Column(name = "hash_password", nullable = false)
     private String hashPassword;
-    @DateTimeFormat
     @Column(name = "birth_date")
     private Date birthDate;
     private String role;

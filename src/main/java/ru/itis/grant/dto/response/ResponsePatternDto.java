@@ -15,7 +15,6 @@ import java.util.List;
 public class ResponsePatternDto {
     private long id;
     private String applicationName;
-    private String description;
     private Date startDate;
     private Date endDate;
     private ResponseEventDto event;
