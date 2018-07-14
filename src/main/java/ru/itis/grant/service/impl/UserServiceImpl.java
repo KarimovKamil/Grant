@@ -117,14 +117,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ResponseEventDto> getActiveEvents() {
-        List<Event> events = eventDao.getActiveEvents(new Date(System.currentTimeMillis()));
+        List<Event> events = eventDao.getActiveEventsWithPattern(new Date(System.currentTimeMillis()));
         List<ResponseEventDto> eventDtoList = conversionListFactory.eventsToResponseEventDtos(events);
         return eventDtoList;
     }
 
     @Override
     public List<ResponseEventDto> getActiveEvents(int from, int count) {
-        List<Event> events = eventDao.getActiveEvents(new Date(System.currentTimeMillis()), from, count);
+        List<Event> events = eventDao.getActiveEventsWithPattern(new Date(System.currentTimeMillis()), from, count);
         List<ResponseEventDto> eventDtoList = conversionListFactory.eventsToResponseEventDtos(events);
         return eventDtoList;
     }

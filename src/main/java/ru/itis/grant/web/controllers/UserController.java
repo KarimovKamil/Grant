@@ -67,13 +67,13 @@ public class UserController {
         return ResponseEntity.ok(requestEventDto);
     }
 
-    @RequestMapping(value = "/events/activeWithPattern", method = RequestMethod.GET)
-    public ResponseEntity<List<ResponseEventDto>> activeEventsWithPattern(
-            @RequestParam int from,
-            @RequestParam int count) {
-        List<ResponseEventDto> requestEventDto = userService.getActiveEventsWithPattern(from, count);
-        return ResponseEntity.ok(requestEventDto);
-    }
+//    @RequestMapping(value = "/events/activeWithPattern", method = RequestMethod.GET)
+//    public ResponseEntity<List<ResponseEventDto>> activeEventsWithPattern(
+//            @RequestParam int from,
+//            @RequestParam int count) {
+//        List<ResponseEventDto> requestEventDto = userService.getActiveEventsWithPattern(from, count);
+//        return ResponseEntity.ok(requestEventDto);
+//    }
 
     @RequestMapping(value = "/events/{id}", method = RequestMethod.GET)
     public ResponseEntity<ResponseEventDto> eventById(@PathVariable(value = "id") long id) {
