@@ -18,6 +18,8 @@ public interface OrganizerService {
 
     ResponseEventDto updateEvent(RequestEventDto eventDto, long id, String token);
 
+    ResponseEventDto getEvent(String token, long id);
+
     void deleteEvent(long id, String token);
 
     void addExpertToEvent(long expertId, long eventId, String token);

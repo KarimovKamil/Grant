@@ -95,6 +95,14 @@ public class OrganizerServiceImpl implements OrganizerService {
     }
 
     @Override
+    public ResponseEventDto getEvent(String token, long id) {
+        verification.verifyTokenExistence(token);
+        verification.verifyOrganizerEventExistence(id, token);
+        Event event = eventDao.getEvent(id);
+        return conversionFactory.eventToResponseEventDto(event);
+    }
+
+    @Override
     public void deleteEvent(long id, String token) {
         verification.verifyTokenExistence(token);
         verification.verifyOrganizerEventExistence(id, token);

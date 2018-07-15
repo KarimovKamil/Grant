@@ -48,6 +48,14 @@ public class OrganizerController {
         return ResponseEntity.ok(patterns);
     }
 
+    @RequestMapping(value = "/events/{id}", method = RequestMethod.GET)
+    public ResponseEntity<ResponseEventDto> eventById(
+            @RequestHeader(value = "Auth-Token") String token,
+            @PathVariable(value = "id") long id) {
+        ResponseEventDto requestEventDto = organizerService.getEvent(token, id);
+        return ResponseEntity.ok(requestEventDto);
+    }
+
     @RequestMapping(value = "/events/{id}", method = RequestMethod.PUT)
     public ResponseEntity<ResponseEventDto> updateEvent(
             @RequestHeader(value = "Auth-Token") String token,
