@@ -6,15 +6,17 @@ import ru.itis.grant.dao.interfaces.ApplicationDao;
 import ru.itis.grant.dao.interfaces.EventDao;
 import ru.itis.grant.dao.interfaces.PatternDao;
 import ru.itis.grant.dao.interfaces.UserDao;
-import ru.itis.grant.dto.request.*;
+import ru.itis.grant.dto.request.RequestApplicationDto;
+import ru.itis.grant.dto.request.RequestEventDto;
+import ru.itis.grant.dto.request.RequestPatternDto;
+import ru.itis.grant.dto.request.RequestUserDto;
 import ru.itis.grant.model.Pattern;
 import ru.itis.grant.security.exception.IncorrectDataException;
 import ru.itis.grant.validation.dto.ApplicationDtoValidator;
+import ru.itis.grant.validation.dto.PatternDtoValidator;
 import ru.itis.grant.validation.dto.UserDtoValidator;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 @Component
 public class Verification {
@@ -138,27 +140,7 @@ public class Verification {
     }
 
     public void verifyPatternDto(RequestPatternDto patternDto) {
-        if (null != patternDto.getApplicationName() && null != patternDto.getElements()) {
-            List<RequestElementDto> elementDtos = patternDto.getElements();
-            for (RequestElementDto elementDto : elementDtos) {
-                String type = elementDto.getType();
-                List<String> existantTypes = Arrays.asList("TEXT", "COMBOBOX",
-                        "CHECKBOX", "RADIOBUTTON", "MULTISELECT");
-                if (!existantTypes.contains(type)) {
-                    throw new IncorrectDataException("values", "Неверны значения массива элементов");
-                } else {
-                    List<String> moreThanTwo = Arrays.asList("COMBOBOX",
-                            "RADIOBUTTON", "MULTISELECT");
-                    if (moreThanTwo.contains(type)) {
-                        if (null == elementDto.getSelectableValue() || elementDto.getSelectableValue().length < 2) {
-                            throw new IncorrectDataException("values", "Неверны значения массива элементов");
-                        }
-                    }
-                }
-            }
-        } else {
-            throw new IncorrectDataException("values", "Неверно введены значения");
-        }
+        PatternDtoValidator.getInstance().verify(patternDto);
     }
 
     public void verifyOrganizerEventExistence(long eventId, String token) {

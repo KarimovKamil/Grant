@@ -22,7 +22,7 @@ public class ElementValueDtoValidator {
     }
 
     public boolean verify(RequestElementValueDto elementValueDto, Element element) {
-        if (Objects.isNull(elementValueDto.getFilledValue())) {
+        if (element.getType().intern() != "CHECKBOX" && Objects.isNull(elementValueDto.getFilledValue())) {
             return false;
         } else {
             switch (element.getType()) {
