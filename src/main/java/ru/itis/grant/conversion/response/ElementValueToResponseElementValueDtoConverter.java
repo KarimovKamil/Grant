@@ -21,8 +21,8 @@ public class ElementValueToResponseElementValueDtoConverter {
         return localInstance;
     }
 
-    public ResponseElementValueDto convert(ElementValue elementValue, Element element) {
-        ResponseElementDto responseElementDto = ElementToResponseElementDtoConverter.getInstance().convert(element);
+    public ResponseElementValueDto convert(ElementValue elementValue) {
+        ResponseElementDto responseElementDto = ElementToResponseElementDtoConverter.getInstance().convert(elementValue.getElement());
         return ResponseElementValueDto.builder()
                 .id(elementValue.getId())
                 .filledValue(elementValue.getFilledValue())
