@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class ResponseElementValueDto {
     private long id;
     private String filledValue;
+    private ResponseElementDto element;
 }

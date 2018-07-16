@@ -14,8 +14,6 @@ import java.util.List;
 @Builder
 public class ResponseApplicationDto {
     private long id;
-    private ResponseUserDto user;
-    private ResponsePatternDto pattern;
     private Date applicationDate;
     private String status;
     private List<ResponseElementValueDto> values;
