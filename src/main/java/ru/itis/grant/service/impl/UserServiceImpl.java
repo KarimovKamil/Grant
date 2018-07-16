@@ -212,6 +212,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseApplicationDto getApplicationByEvent(String token, long eventId) {
+        verification.verifyTokenExistence(token);
+        verification.verifyUserEventApplicationExistence(token, eventId);
+        Application application = applicationDao.getApplicationByEventId(token, eventId);
+        return conversionFactory.applicationToResponseApplicationDto(application);
+    }
+
+    @Override
     public ResponseApplicationDto updateApplication(long id, String token, RequestApplicationDto requestApplicationDto) {
         Date currentDate = new Date(System.currentTimeMillis());
         verification.verifyTokenExistence(token);

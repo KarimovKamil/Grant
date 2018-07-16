@@ -45,6 +45,8 @@ public interface UserService {
 
     ResponseApplicationDto getApplication(String token, long applicationId);
 
+    ResponseApplicationDto getApplicationByEvent(String token, long eventId);
+
     ResponseApplicationDto updateApplication(long id, String token, RequestApplicationDto requestApplicationDto);
 
     boolean deleteApplication(String token, long applicationId);

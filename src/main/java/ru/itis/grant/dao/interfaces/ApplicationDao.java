@@ -16,6 +16,8 @@ public interface ApplicationDao {
 
     Application getApplicationById(long id);
 
+    Application getApplicationByEventId(String token, long eventId);
+
     List<Application> getUserApplications(long userId);
 
     List<Application> getUserApplications(String token);
@@ -34,7 +36,9 @@ public interface ApplicationDao {
 
     boolean userApplicationExistence(String token, long applicationId);
 
-    boolean userPatternApplicationExistence(String token, long applicationId);
+    boolean userPatternApplicationExistence(String token, long patternId);
+
+    boolean userEventApplicationExistence(String token, long eventId);
 
     boolean expertApplicationExistence(String token, long applicationId);
 

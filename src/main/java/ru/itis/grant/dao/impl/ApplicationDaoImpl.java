@@ -43,6 +43,16 @@ public class ApplicationDaoImpl implements ApplicationDao {
     }
 
     @Override
+    public Application getApplicationByEventId(String token, long eventId) {
+        Application application = (Application) em.createQuery("from Application b where b.pattern.event.id = :eventId " +
+                "and b.user.token = :token")
+                .setParameter("token", token)
+                .setParameter("eventId", eventId)
+                .getSingleResult();
+        return application;
+    }
+
+    @Override
     public List<Application> getUserApplications(long userId) {
         List<Application> applications = em.createQuery("from Application b where b.user.id = :userId")
                 .setParameter("userId", userId)
@@ -140,6 +150,17 @@ public class ApplicationDaoImpl implements ApplicationDao {
                 "and b.user.token = :token")
                 .setParameter("token", token)
                 .setParameter("patternId", patternId)
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
+
+    @Override
+    public boolean userEventApplicationExistence(String token, long eventId) {
+        return !em.createQuery("select b.id from Application b where b.pattern.event.id = :eventId " +
+                "and b.user.token = :token")
+                .setParameter("token", token)
+                .setParameter("eventId", eventId)
                 .setMaxResults(1)
                 .getResultList()
                 .isEmpty();

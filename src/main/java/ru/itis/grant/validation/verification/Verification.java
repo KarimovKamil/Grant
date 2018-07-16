@@ -78,6 +78,12 @@ public class Verification {
         }
     }
 
+    public void verifyUserEventApplicationExistence(String token, long patternId) {
+        if (applicationDao.userPatternApplicationExistence(token, patternId)) {
+            throw new IncorrectDataException("id", "Вы уже подали заявку на это мероприятие");
+        }
+    }
+
     public void verifyEventExistenceById(long id) {
         if (!eventDao.eventExistenceById(id)) {
             throw new IncorrectDataException("id", "Неверный id конкурса");

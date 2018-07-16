@@ -92,8 +92,8 @@ public class DataLoader implements ApplicationListener<ApplicationReadyEvent> {
                             "воспитателей, педагогов и методистов образовательных организаций автономная некоммерческая " +
                             "организация «Центр научного творчества «Вектор» проводит Всероссийский дистанционный заочный " +
                             "конкурс «ВЕКТОРИАДА-2018».")
-                    .startDate(dateFormat.parse("5/5/2019 10:00"))
-                    .endDate(dateFormat.parse("10/12/2019 10:00"))
+                    .startDate(dateFormat.parse("5/5/2018 10:00"))
+                    .endDate(dateFormat.parse("10/12/2018 10:00"))
                     .name("Всероссийский дистанционный заочный конкурс «ВЕКТОРИАДА-2018»")
                     .siteUrl("http://prodod.moscow/archives/event/vserossijskij-distantsionnyj-zaochnyj-konkurs-vektoriada-2018")
                     .owner(userDao.getUserById(2))

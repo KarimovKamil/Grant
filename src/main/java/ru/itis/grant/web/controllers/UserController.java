@@ -88,6 +88,14 @@ public class UserController {
         return ResponseEntity.ok(patternDto);
     }
 
+    @RequestMapping(value = "/events/{eventId}/pattern/application", method = RequestMethod.GET)
+    public ResponseEntity<ResponseApplicationDto> eventPatternApplication(
+            @RequestHeader(value = "Auth-Token") String token,
+            @PathVariable(value = "eventId") long eventId) {
+        ResponseApplicationDto applicationDto = userService.getApplicationByEvent(token, eventId);
+        return ResponseEntity.ok(applicationDto);
+    }
+
     @RequestMapping(value = "/applications", method = RequestMethod.POST)
     public ResponseEntity<ResponseApplicationDto> createApplication(
             @RequestHeader(value = "Auth-Token") String token,
