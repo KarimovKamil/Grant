@@ -39,8 +39,8 @@ public class Application {
     public String toString() {
         SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
         StringBuilder sb = new StringBuilder();
-        sb.append("Заявка №").append(id).append(", отправитель: ").append(user.toString())
-                .append(", дата отправки: ").append(simpleDate.format(applicationDate)).append(",\r\n");
+        sb.append("Заявка №").append(id).append(",\r\nОтправитель: ").append(user.toString())
+                .append(",\r\nДата отправки: ").append(simpleDate.format(applicationDate)).append(",\r\n");
         for (ElementValue elementValue : valueList) {
             sb.append("Элемент: ").append(elementValue.toString()).append("\r\n");
         }

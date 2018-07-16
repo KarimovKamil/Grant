@@ -166,7 +166,8 @@ public class UserServiceImpl implements UserService {
         verification.verifyTokenExistence(token);
         verification.verifyPatternExistence(requestApplicationDto.getPatternId());
         verification.verifyUserPatternApplicationExistence(token, requestApplicationDto.getPatternId());
-        verification.verifyPatternTimeLimit(requestApplicationDto.getPatternId(), currentDate);
+        //TODO:РАСКОММЕНТИТЬ!
+//        verification.verifyPatternTimeLimit(requestApplicationDto.getPatternId(), currentDate);
         Pattern pattern = patternDao.getPattern(requestApplicationDto.getPatternId());
         verification.verifyApplicationDto(requestApplicationDto, pattern);
         Application application = conversionFactory.requestApplicationDtoToApplication(requestApplicationDto);
