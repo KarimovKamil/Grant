@@ -28,7 +28,7 @@ public class ApplicationToResponseApplicationDtoConverter {
         List<ResponseElementValueDto> responseElementValueDtoList = new ArrayList<>();
         for (ElementValue elementValue : application.getValueList()) {
             responseElementValueDtoList.add(ElementValueToResponseElementValueDtoConverter.getInstance()
-                    .convert(elementValue, elementValue.getElement()));
+                    .convert(elementValue));
         }
         return ResponseApplicationDto.builder()
                 .id(application.getId())
