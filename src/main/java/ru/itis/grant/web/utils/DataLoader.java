@@ -17,14 +17,13 @@ import ru.itis.grant.model.User;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 
 @Transactional
 @Component
 public class DataLoader implements ApplicationListener<ApplicationReadyEvent> {
 
     @Autowired
-    private UserDao userDao;
+    UserDao userDao;
     @Autowired
     private EventDao eventDao;
     @Autowired
@@ -81,8 +80,8 @@ public class DataLoader implements ApplicationListener<ApplicationReadyEvent> {
                             "создание условий молодым российским ученым для обмена результатами исследований, выявление " +
                             "тенденций научных исследований по направлениям, в том числе поддерживаемым Фондом, привлечение " +
                             "молодых ученых к фундаментальным исследованиям по актуальным научным тематикам.")
-                    .startDate(dateFormat.parse("2018/07/15 10:00"))
-                    .endDate(dateFormat.parse("2019/07/15 10:00"))
+                    .startDate(dateFormat.parse("15/07/2018 10:00"))
+                    .endDate(dateFormat.parse("15/07/2019 10:00"))
                     .name("Конкурс проектов 2018 года организации российских и международных молодежных научных " +
                             "мероприятий, проводимый РФФИ")
                     .siteUrl("http://www.rfbr.ru/rffi/ru/contest/o_2052209")
@@ -93,8 +92,8 @@ public class DataLoader implements ApplicationListener<ApplicationReadyEvent> {
                             "воспитателей, педагогов и методистов образовательных организаций автономная некоммерческая " +
                             "организация «Центр научного творчества «Вектор» проводит Всероссийский дистанционный заочный " +
                             "конкурс «ВЕКТОРИАДА-2018».")
-                    .startDate(dateFormat.parse("2018/07/15 10:00"))
-                    .endDate(dateFormat.parse("2019/1/1 10:00"))
+                    .startDate(dateFormat.parse("5/5/2019 10:00"))
+                    .endDate(dateFormat.parse("10/12/2019 10:00"))
                     .name("Всероссийский дистанционный заочный конкурс «ВЕКТОРИАДА-2018»")
                     .siteUrl("http://prodod.moscow/archives/event/vserossijskij-distantsionnyj-zaochnyj-konkurs-vektoriada-2018")
                     .owner(userDao.getUserById(2))
@@ -103,8 +102,8 @@ public class DataLoader implements ApplicationListener<ApplicationReadyEvent> {
                     .description("Задача Конкурса – организация взаимодействия российских и зарубежных ученых в формате " +
                             "научных мероприятий, с целью создания условий для долгосрочного сотрудничества по проведению " +
                             "фундаментальных научных исследований в области молекулярной биологии.")
-                    .startDate(dateFormat.parse("2017/1/1 10:00"))
-                    .endDate(dateFormat.parse("2018/1/1 10:00:00"))
+                    .startDate(dateFormat.parse("1/1/2017 10:00"))
+                    .endDate(dateFormat.parse("1/1/2018 10:00:00"))
                     .name("Конкурс на лучший проект организации на территории России международных научных мероприятий " +
                             "в области молекулярной биологии")
                     .siteUrl("http://www.rfbr.ru/rffi/ru/contest/o_2074065")
