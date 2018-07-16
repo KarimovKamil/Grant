@@ -69,7 +69,7 @@ public class PatternDaoImpl implements PatternDao {
     @Override
     public boolean patternTimeCorrect(long id, Date date) {
         return !em.createQuery("select p.id from Pattern p where p.id = :id and" +
-                " p.startDate < :date and p.endDate > :date")
+                " p.event.startDate < :date and p.event.endDate > :date")
                 .setParameter("id", id)
                 .setParameter("date", date)
                 .setMaxResults(1)
