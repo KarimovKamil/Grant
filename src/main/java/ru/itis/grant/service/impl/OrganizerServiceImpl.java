@@ -60,10 +60,9 @@ public class OrganizerServiceImpl implements OrganizerService {
 
     @Override
     public ResponsePatternDto createPattern(long eventId, RequestPatternDto patternDto, String token) {
-        verification.verifyTokenExistence(token);
-        verification.verifyPatternDto(patternDto);
         verification.verifyOrganizerEventExistence(eventId, token);
         verification.verifyPatternAddingCase(eventId);
+        verification.verifyPatternDto(patternDto);
         Pattern pattern = conversionFactory.requestPatternDtoToPattern(patternDto);
         pattern.setEvent(eventDao.getEvent(eventId));
         patternDao.addPattern(pattern);
@@ -83,7 +82,6 @@ public class OrganizerServiceImpl implements OrganizerService {
 
     @Override
     public ResponseEventDto updateEvent(RequestEventDto eventDto, long id, String token) {
-        verification.verifyTokenExistence(token);
         verification.verifyOrganizerEventExistence(id, token);
         verification.verifyEventDto(eventDto);
         Event event = eventDao.getEvent(id);
@@ -96,7 +94,6 @@ public class OrganizerServiceImpl implements OrganizerService {
 
     @Override
     public ResponseEventDto getEvent(String token, long id) {
-        verification.verifyTokenExistence(token);
         verification.verifyOrganizerEventExistence(id, token);
         Event event = eventDao.getEvent(id);
         return conversionFactory.eventToResponseEventDto(event);
@@ -104,14 +101,12 @@ public class OrganizerServiceImpl implements OrganizerService {
 
     @Override
     public void deleteEvent(long id, String token) {
-        verification.verifyTokenExistence(token);
         verification.verifyOrganizerEventExistence(id, token);
         eventDao.deleteEvent(eventDao.getEvent(id));
     }
 
     @Override
     public void addExpertToEvent(long expertId, long eventId, String token) {
-        verification.verifyTokenExistence(token);
         verification.verifyOrganizerEventExistence(eventId, token);
         verification.verifyEventExpertAddingCase(eventId, expertId);
         verification.verifyUserIdExistence(expertId);
@@ -120,7 +115,6 @@ public class OrganizerServiceImpl implements OrganizerService {
 
     @Override
     public void deleteExpertFromEvent(long expertId, long eventId, String token) {
-        verification.verifyTokenExistence(token);
         verification.verifyOrganizerEventExistence(eventId, token);
         verification.verifyUserIdExistence(expertId);
         verification.verifyEventExpertExistence(eventId, expertId);

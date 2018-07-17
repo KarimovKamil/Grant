@@ -153,7 +153,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponsePatternDto getEventPattern(long eventId) {
-        verification.verifyEventExistenceById(eventId);
         verification.verifyEventPatternExistence(eventId);
         Pattern pattern = patternDao.getEventPattern(eventId);
         ResponsePatternDto responsePatternDto = conversionFactory.patternToResponsePatternDto(pattern);
@@ -203,7 +202,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseApplicationDto getApplication(String token, long applicationId) {
-        verification.verifyTokenExistence(token);
         verification.verifyUserApplicationExistence(token, applicationId);
         Application application = applicationDao.getApplicationById(applicationId);
         ResponseApplicationDto responseApplicationDto = conversionFactory.applicationToResponseApplicationDto(application);
@@ -212,7 +210,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseApplicationDto getApplicationByEvent(String token, long eventId) {
-        verification.verifyTokenExistence(token);
         verification.verifyUserEventApplicationExistence(token, eventId);
         Application application = applicationDao.getApplicationByEventId(token, eventId);
         return conversionFactory.applicationToResponseApplicationDto(application);
@@ -221,7 +218,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseApplicationDto updateApplication(long id, String token, RequestApplicationDto requestApplicationDto) {
         Date currentDate = new Date(System.currentTimeMillis());
-        verification.verifyTokenExistence(token);
         verification.verifyUserApplicationExistenceById(token, id);
         Application application = applicationDao.getApplicationById(id);
         verification.verifyPatternTimeLimit(application.getPattern().getId(), currentDate);
@@ -236,7 +232,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean deleteApplication(String token, long applicationId) {
-        verification.verifyTokenExistence(token);
         verification.verifyUserApplicationExistenceById(token, applicationId);
         applicationDao.deleteApplication(applicationDao.getApplicationById(applicationId));
         return true;
