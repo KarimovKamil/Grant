@@ -47,13 +47,13 @@ public class OrganizerController {
         return ResponseEntity.ok(responsePatternDto);
     }
 
-//    @RequestMapping(value = "/events/{id}/pattern", method = RequestMethod.DELETE)
-//    public ResponseEntity<ResponseEventDto> deletePatternByEventId(
-//            @RequestHeader(value = "Auth-Token") String token,
-//            @PathVariable(value = "id") long id) {
-//        ResponseEventDto responseEventDto = organizerService.deletePatternByEventId(token, id);
-//        return ResponseEntity.ok(responseEventDto);
-//    }
+    @RequestMapping(value = "/events/{id}/pattern", method = RequestMethod.DELETE)
+    public ResponseEntity<ResponseEventDto> deletePatternByEventId(
+            @RequestHeader(value = "Auth-Token") String token,
+            @PathVariable(value = "id") long id) {
+        ResponseEventDto responseEventDto = organizerService.deletePatternByEventId(token, id);
+        return ResponseEntity.ok(responseEventDto);
+    }
 
     @RequestMapping(value = "/events", method = RequestMethod.GET)
     public ResponseEntity<List<ResponseEventDto>> organizerEvents(

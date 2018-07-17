@@ -128,15 +128,6 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public boolean verifyEventPatternExistence(long eventId) {
-        return !em.createQuery("select e.id from Event e where e.id = :eventId and e.pattern is not null")
-                .setParameter("eventId", eventId)
-                .setMaxResults(1)
-                .getResultList()
-                .isEmpty();
-    }
-
-    @Override
-    public boolean verifyPatternEventExistence(long eventId) {
         return !em.createNativeQuery("SELECT 1 FROM pattern WHERE event_id = :eventId")
                 .setParameter("eventId", eventId)
                 .setMaxResults(1)

@@ -85,8 +85,10 @@ public class OrganizerServiceImpl implements OrganizerService {
     public ResponseEventDto deletePatternByEventId(String token, long eventId) {
         verification.verifyOrganizerEventExistence(eventId, token);
         verification.verifyEventPatternExistence(eventId);
-        patternDao.deletePattern(patternDao.getEventPattern(eventId));
-        return conversionFactory.eventToResponseEventDto(eventDao.getEvent(eventId));
+        Event event = eventDao.getEvent(eventId);
+        patternDao.deletePattern(event.getPattern());
+        event.setPattern(null);
+        return conversionFactory.eventToResponseEventDto(event);
     }
 
     @Override

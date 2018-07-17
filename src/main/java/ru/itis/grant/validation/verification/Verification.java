@@ -164,7 +164,7 @@ public class Verification {
     }
 
     public void verifyPatternAddingCase(long eventId) {
-        if (eventDao.verifyPatternEventExistence(eventId)) {
+        if (eventDao.verifyEventPatternExistence(eventId)) {
             throw new IncorrectDataException("id", "Шаблон для этого события уже существует");
         }
     }
