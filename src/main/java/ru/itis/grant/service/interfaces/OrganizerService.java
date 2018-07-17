@@ -12,7 +12,11 @@ public interface OrganizerService {
 
     ResponseEventDto createEvent(RequestEventDto eventDto, String token);
 
+    ResponsePatternDto getPatternByEventId(String token, long eventId);
+
     ResponsePatternDto createPattern(long eventId, RequestPatternDto patternDto, String token);
+
+    ResponseEventDto deletePatternByEventId(String token, long eventId);
 
     List<ResponseEventDto> getOrganizerEvents(String token, long from, long count);
 

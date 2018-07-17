@@ -59,6 +59,14 @@ public class OrganizerServiceImpl implements OrganizerService {
     }
 
     @Override
+    public ResponsePatternDto getPatternByEventId(String token, long eventId) {
+        verification.verifyOrganizerEventExistence(eventId, token);
+        verification.verifyEventPatternExistence(eventId);
+        Pattern pattern = patternDao.getEventPattern(eventId);
+        return conversionFactory.patternToResponsePatternDto(pattern);
+    }
+
+    @Override
     public ResponsePatternDto createPattern(long eventId, RequestPatternDto patternDto, String token) {
         verification.verifyOrganizerEventExistence(eventId, token);
         verification.verifyPatternAddingCase(eventId);
@@ -71,6 +79,14 @@ public class OrganizerServiceImpl implements OrganizerService {
             elementDao.addElement(element);
         }
         return conversionFactory.patternToResponsePatternDto(pattern);
+    }
+
+    @Override
+    public ResponseEventDto deletePatternByEventId(String token, long eventId) {
+        verification.verifyOrganizerEventExistence(eventId, token);
+        verification.verifyEventPatternExistence(eventId);
+        patternDao.deletePattern(patternDao.getEventPattern(eventId));
+        return conversionFactory.eventToResponseEventDto(eventDao.getEvent(eventId));
     }
 
     @Override
