@@ -13,6 +13,7 @@ import ru.itis.grant.dto.request.RequestUserDto;
 import ru.itis.grant.model.Pattern;
 import ru.itis.grant.security.exception.IncorrectDataException;
 import ru.itis.grant.validation.dto.ApplicationDtoValidator;
+import ru.itis.grant.validation.dto.EventDtoValidator;
 import ru.itis.grant.validation.dto.PatternDtoValidator;
 import ru.itis.grant.validation.dto.UserDtoValidator;
 
@@ -118,31 +119,20 @@ public class Verification {
     public void verifyPatternTimeLimit(long patternId, Date date) {
         if (!patternDao.patternTimeCorrect(patternId, date)) {
             throw new IncorrectDataException("date",
-                    "Заявка с таким id не существует либо некорректное время подачи заявки");
+                    "Шаблон с таким id не существует либо некорректное время подачи заявки");
         }
     }
 
     public void verifyUserDto(RequestUserDto userDto) {
-        if (!UserDtoValidator.getInstance().verify(userDto)) {
-            throw new IncorrectDataException("userDto", "Неверно введены значения");
-        }
+        UserDtoValidator.getInstance().verify(userDto);
     }
 
     public void verifyApplicationDto(RequestApplicationDto applicationDto, Pattern pattern) {
-        if (!ApplicationDtoValidator.getInstance().verify(applicationDto, pattern)) {
-            throw new IncorrectDataException("values", "Неверно введены значения");
-        }
+        ApplicationDtoValidator.getInstance().verify(applicationDto, pattern);
     }
 
     public void verifyEventDto(RequestEventDto eventDto) {
-        if (null == eventDto.getName() || null == eventDto.getDescription()
-                || null == eventDto.getSiteUrl()) {
-            throw new IncorrectDataException("values", "Неверно введены значения");
-        }
-        if (null == eventDto.getEndDate() || null == eventDto.getStartDate()
-                || !eventDto.getEndDate().after(eventDto.getStartDate()) || !eventDto.getEndDate().after(new Date())) {
-            throw new IncorrectDataException("dates", "Неверно введены даты начала и окончания подачи заявок");
-        }
+        EventDtoValidator.getInstance().verify(eventDto);
     }
 
     public void verifyPatternDto(RequestPatternDto patternDto) {

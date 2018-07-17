@@ -24,7 +24,7 @@ public class UserDtoValidator {
         return localInstance;
     }
 
-    public boolean verify(RequestUserDto userDto) {
+    public void verify(RequestUserDto userDto) {
         if (!verifyPassword(userDto.getPassword())) {
             throw new IncorrectDataException("password", "Неверно введен пароль");
         }
@@ -34,7 +34,6 @@ public class UserDtoValidator {
         if (!verifyBirthDate(userDto.getBirthDate())) {
             throw new IncorrectDataException("birthDate", "Неверно введена дата рождения");
         }
-        return true;
     }
 
     public boolean verifyEmail(String email) {
