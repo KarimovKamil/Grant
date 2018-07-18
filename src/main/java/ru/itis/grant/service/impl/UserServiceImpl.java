@@ -1,11 +1,15 @@
 package ru.itis.grant.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import ru.itis.grant.conversion.ConversionListResultFactory;
 import ru.itis.grant.conversion.ConversionResultFactory;
 import ru.itis.grant.dao.interfaces.*;
+import ru.itis.grant.dto.MailDto;
 import ru.itis.grant.dto.request.AuthDto;
 import ru.itis.grant.dto.request.RequestApplicationDto;
 import ru.itis.grant.dto.request.RequestUserDto;
@@ -20,6 +24,7 @@ import ru.itis.grant.service.interfaces.UserService;
 import ru.itis.grant.service.utils.generators.HashGenerator;
 import ru.itis.grant.service.utils.generators.TokenGenerator;
 import ru.itis.grant.validation.verification.Verification;
+import ru.itis.grant.web.utils.RestHttpEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -48,6 +53,13 @@ public class UserServiceImpl implements UserService {
     ApplicationDao applicationDao;
     @Autowired
     ElementValueDao elementValueDao;
+    @Autowired
+    RestTemplate restTemplate;
+    @Autowired
+    RestHttpEntity restHttpEntity;
+
+    @Value("${restnotification.api.url}")
+    private String restNotificationApiUrl;
 
     @Override
     public String login(AuthDto authDto) {
@@ -73,6 +85,14 @@ public class UserServiceImpl implements UserService {
                 userDto);
         user.setRole("USER");
         userDao.addUser(user);
+
+        MailDto mailDto = MailDto.builder()
+                .recipientAddress(userDto.getEmail())
+                .subject("Registration")
+                .text("You have been successfully registered.")
+                .build();
+        restTemplate.exchange(restNotificationApiUrl + "/email", HttpMethod.POST,
+                restHttpEntity.entity(mailDto), String.class);
         return user.getToken();
     }
 
