@@ -16,4 +16,4 @@ ping 127.0.0.1 -n 6 > nul
 REM Create container for our app
 docker build -t grant_app_container .
 REM Run a new container which contains database container and app container. In links both containers. Prints logs into 'log.txt' and errors into 'error.txt' 
-docker run --name grant_app_with_postger_container --link grant_postgres_container -p 8080:8080 grant_app_container 1>logs/log.txt 2>logs/error.txt
+docker run --name grant_app_with_postger_container --link grant_postgres_container -p 8080:8080 grant_app_container 2>logs/error.txt
