@@ -33,7 +33,7 @@ public class ApplicationDtoValidator {
                     continue next;
                 }
             }
-            if (element.isRequired()) {
+            if (element.isRequired() && element.getType().intern() != "CHECKBOX") {
                 throw new IncorrectDataException("values", "Обязательные поля не заполнены");
             }
         }

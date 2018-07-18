@@ -34,8 +34,6 @@ public class ElementValueDtoValidator {
                     return verifyCheckbox(elementValueDto, element);
                 case "RADIOBUTTON":
                     return verifyRadiobutton(elementValueDto, element);
-//                case "MULTISELECT":
-//                    return verifyMultiSelect(elementValueDto, element);
                 default:
                     return false;
             }
@@ -65,9 +63,4 @@ public class ElementValueDtoValidator {
         }
         return true;
     }
-
-//    private boolean verifyCheckbox(RequestElementValueDto elementValueDto) {
-//        String valueCB = elementValueDto.getFilledValue().toLowerCase().intern();
-//        return "true" == valueCB || "false" == valueCB;
-//    }
 }

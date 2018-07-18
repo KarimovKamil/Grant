@@ -2,7 +2,6 @@ package ru.itis.grant.conversion.response;
 
 import ru.itis.grant.dto.response.ResponseElementDto;
 import ru.itis.grant.dto.response.ResponseElementValueDto;
-import ru.itis.grant.model.Element;
 import ru.itis.grant.model.ElementValue;
 
 public class ElementValueToResponseElementValueDtoConverter {
@@ -22,7 +21,8 @@ public class ElementValueToResponseElementValueDtoConverter {
     }
 
     public ResponseElementValueDto convert(ElementValue elementValue) {
-        ResponseElementDto responseElementDto = ElementToResponseElementDtoConverter.getInstance().convert(elementValue.getElement());
+        ResponseElementDto responseElementDto = ElementToResponseElementDtoConverter.getInstance()
+                .convert(elementValue.getElement());
         return ResponseElementValueDto.builder()
                 .id(elementValue.getId())
                 .filledValue(elementValue.getFilledValue())

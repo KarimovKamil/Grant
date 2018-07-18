@@ -177,10 +177,14 @@ public class UserServiceImpl implements UserService {
         applicationDao.addApplication(application);
         for (ElementValue elementValue : application.getValueList()) {
             elementValue.setApplication(application);
+            for (Element element : pattern.getElements()) {
+                if (element.getId() == elementValue.getId()) {
+                    elementValue.setElement(element);
+                }
+            }
             elementValueDao.addElementValue(elementValue);
         }
-        Application applicationFromDB = applicationDao.getApplicationById(application.getId());
-        ResponseApplicationDto responseApplicationDto = conversionFactory.applicationToResponseApplicationDto(applicationFromDB);
+        ResponseApplicationDto responseApplicationDto = conversionFactory.applicationToResponseApplicationDto(application);
         return responseApplicationDto;
     }
 
