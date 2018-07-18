@@ -80,8 +80,8 @@ public class Verification {
     }
 
     public void verifyUserEventApplicationExistence(String token, long patternId) {
-        if (applicationDao.userPatternApplicationExistence(token, patternId)) {
-            throw new IncorrectDataException("id", "Вы уже подали заявку на это мероприятие");
+        if (!applicationDao.userPatternApplicationExistence(token, patternId)) {
+            throw new IncorrectDataException("id", "Вы не подавали заявку на это мероприятие");
         }
     }
 

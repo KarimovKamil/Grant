@@ -44,8 +44,8 @@ public class ApplicationDaoImpl implements ApplicationDao {
 
     @Override
     public Application getApplicationByEventId(String token, long eventId) {
-        Application application = (Application) em.createQuery("from Application b where b.pattern.event.id = :eventId " +
-                "and b.user.token = :token")
+        Application application = (Application) em.createQuery("from Application b " +
+                "where b.pattern.event.id = :eventId and b.user.token = :token")
                 .setParameter("token", token)
                 .setParameter("eventId", eventId)
                 .getSingleResult();
