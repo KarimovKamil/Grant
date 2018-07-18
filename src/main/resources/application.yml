@@ -2,12 +2,12 @@ eureka:
   name: GRANT
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URL:http://user:password@localhost:5000}/eureka/
+      defaultZone: https://user:gnm123Bc@grant-discovery-service.herokuapp.com/eureka/
 ---
 spring:
   profiles: heroku
 eureka:
   instance:
-    hostname: ${DOMAIN_NAME}
+    hostname: https://grant-sys.herokuapp.com/
     nonSecurePort: 80
   password: ${USER_PASSWORD:password}
