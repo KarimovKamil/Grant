@@ -87,7 +87,7 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public List<Event> getActiveEventsWithPattern(Date date, int from, int count) {
-        List<Event> events = em.createQuery("from Event e where e.pattern is not null " +
+        List<Event> events = em.createQuery("from Event e where e.pattern.id is not null " +
                 "and e.endDate > :date and e.startDate < :date")
                 .setParameter("date", date)
                 .setFirstResult(from)
@@ -128,7 +128,7 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public boolean verifyEventPatternExistence(long eventId) {
-        return !em.createNativeQuery("SELECT 1 FROM pattern WHERE event_id = :eventId")
+        return !em.createQuery("select e.id from Event e where e.id = :eventId and e.pattern.id is not null")
                 .setParameter("eventId", eventId)
                 .setMaxResults(1)
                 .getResultList()

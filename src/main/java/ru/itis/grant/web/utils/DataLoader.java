@@ -120,9 +120,6 @@ public class DataLoader implements ApplicationListener<ApplicationReadyEvent> {
                         "молодежных научных мероприятий")
                 .event(eventDao.getEvent(1)).build());
         patternDao.addPattern(Pattern.builder()
-                .applicationName("Заявка на \"Всероссийский дистанционный заочный конкурс «ВЕКТОРИАДА-2018»\".")
-                .event(eventDao.getEvent(2)).build());
-        patternDao.addPattern(Pattern.builder()
                 .applicationName("Заявка на \"Конкурс на лучший проект организации на территории России международных " +
                         "научных мероприятий в области молекулярной биологии\".")
                 .event(eventDao.getEvent(3)).build());
@@ -166,6 +163,15 @@ public class DataLoader implements ApplicationListener<ApplicationReadyEvent> {
                 .required(true)
                 .type("COMBOBOX")
                 .pattern(patternDao.getPattern(1))
+                .build());
+        elementDao.addElement(Element.builder()
+                .description("Введите вашу почту")
+                .layoutX(1)
+                .layoutY(0)
+                .name("Email")
+                .required(true)
+                .type("TEXT")
+                .pattern(patternDao.getPattern(2))
                 .build());
     }
 }
