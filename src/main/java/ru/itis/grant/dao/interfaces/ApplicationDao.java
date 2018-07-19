@@ -28,9 +28,9 @@ public interface ApplicationDao {
 
     List<Application> getAllApplications();
 
-    List<Application> getExpertApplications(String token, long from, long count);
+    List<Application> getExpertApplications(String token, int from, int count);
 
-    List<Application> getExpertEventApplications(String token, long eventId, long from, long count);
+    List<Application> getExpertEventApplications(String token, long eventId, int from, int count);
 
     boolean applicationExistenceById(long id);
 

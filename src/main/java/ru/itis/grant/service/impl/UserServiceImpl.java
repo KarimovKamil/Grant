@@ -130,6 +130,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ResponseEventDto> getEvents(int from, int count) {
+        verification.verifyFromCount(from, count);
         List<Event> events = eventDao.getEvents(from, count);
         List<ResponseEventDto> eventDtoList = conversionListFactory.eventsToResponseEventDtos(events);
         return eventDtoList;
@@ -144,6 +145,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ResponseEventDto> getActiveEvents(int from, int count) {
+        verification.verifyFromCount(from, count);
         List<Event> events = eventDao.getActiveEventsWithPattern(new Date(System.currentTimeMillis()), from, count);
         List<ResponseEventDto> eventDtoList = conversionListFactory.eventsToResponseEventDtos(events);
         return eventDtoList;
@@ -158,6 +160,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ResponseEventDto> getActiveEventsWithPattern(int from, int count) {
+        verification.verifyFromCount(from, count);
         List<Event> events = eventDao.getActiveEventsWithPattern(new Date(System.currentTimeMillis()), from, count);
         List<ResponseEventDto> eventDtoList = conversionListFactory.eventsToResponseEventDtos(events);
         return eventDtoList;
@@ -219,6 +222,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<ResponseApplicationDto> getUserApplications(String token, int from, int count) {
         verification.verifyTokenExistence(token);
+        verification.verifyFromCount(from, count);
         List<Application> applications = applicationDao.getUserApplications(token, from, count);
         List<ResponseApplicationDto> applicationDtoList = conversionListFactory.applicationsToResponseApplicationDtos(applications);
         return applicationDtoList;

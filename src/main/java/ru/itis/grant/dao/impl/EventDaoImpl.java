@@ -105,7 +105,7 @@ public class EventDaoImpl implements EventDao {
     }
 
     @Override
-    public List<Event> getExpertEvents(String token, long from, long count) {
+    public List<Event> getExpertEvents(String token, int from, int count) {
         List<Event> events = em.createNativeQuery("SELECT * FROM g_event WHERE id IN " +
                 "(SELECT ex.ex_events_id FROM (SELECT id FROM g_user WHERE token = :token) u " +
                 "INNER JOIN g_user_ex_events ex ON ex.experts_id = u.id) " +
@@ -159,11 +159,11 @@ public class EventDaoImpl implements EventDao {
     }
 
     @Override
-    public List<Event> getOrganizerEvents(String token, long from, long count) {
+    public List<Event> getOrganizerEvents(String token, int from, int count) {
         List<Event> events = em.createQuery("from Event e where e.owner.token = :token ")
                 .setParameter("token", token)
-                .setFirstResult((int) from)
-                .setMaxResults((int) count)
+                .setFirstResult(from)
+                .setMaxResults(count)
                 .getResultList();
         return events;
     }

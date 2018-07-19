@@ -94,7 +94,7 @@ public class ApplicationDaoImpl implements ApplicationDao {
     }
 
     @Override
-    public List<Application> getExpertApplications(String token, long from, long count) {
+    public List<Application> getExpertApplications(String token, int from, int count) {
         List<Application> applications = em.createNativeQuery("SELECT b.* FROM " +
                 "(SELECT ex.ex_events_id FROM (SELECT id FROM g_user WHERE token = :token) u INNER JOIN " +
                 "g_user_ex_events ex ON ex.experts_id = u.id) e " +
@@ -109,7 +109,7 @@ public class ApplicationDaoImpl implements ApplicationDao {
     }
 
     @Override
-    public List<Application> getExpertEventApplications(String token, long eventId, long from, long count) {
+    public List<Application> getExpertEventApplications(String token, long eventId, int from, int count) {
         List<Application> applications = em.createNativeQuery("SELECT b.* FROM " +
                 "(SELECT ex.ex_events_id FROM (SELECT id FROM g_user WHERE token = :token) u INNER JOIN " +
                 "(SELECT * FROM g_user_ex_events WHERE ex_events_id = :eventId) ex ON ex.experts_id = u.id) e " +

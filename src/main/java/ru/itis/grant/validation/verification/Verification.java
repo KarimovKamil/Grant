@@ -174,4 +174,10 @@ public class Verification {
             throw new IncorrectDataException("id", "Бан с таким id не найден");
         }
     }
+
+    public void verifyFromCount(long from, long count) {
+        if (from < 0 || count < 1) {
+            throw new IncorrectDataException("from, count", "Неверно введены значения");
+        }
+    }
 }

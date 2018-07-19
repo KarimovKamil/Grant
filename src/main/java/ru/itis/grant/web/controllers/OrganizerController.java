@@ -58,8 +58,8 @@ public class OrganizerController {
     @RequestMapping(value = "/events", method = RequestMethod.GET)
     public ResponseEntity<List<ResponseEventDto>> organizerEvents(
             @RequestHeader(value = "Auth-Token") String token,
-            @RequestParam(value = "from") long from,
-            @RequestParam(value = "count") long count) {
+            @RequestParam(value = "from") int from,
+            @RequestParam(value = "count") int count) {
         List<ResponseEventDto> patterns = organizerService.getOrganizerEvents(token, from, count);
         return ResponseEntity.ok(patterns);
     }

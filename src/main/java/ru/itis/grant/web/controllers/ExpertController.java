@@ -20,8 +20,8 @@ public class ExpertController {
     @RequestMapping(value = "/events", method = RequestMethod.GET)
     public ResponseEntity<List<ResponseEventDto>> getExpertEvents(
             @RequestHeader("Auth-token") String token,
-            @RequestParam(value = "from") long from,
-            @RequestParam(value = "count") long count) {
+            @RequestParam(value = "from") int from,
+            @RequestParam(value = "count") int count) {
         List<ResponseEventDto> responseEventDtos = expertService.getExpertEvents(token, from, count);
         return ResponseEntity.ok(responseEventDtos);
     }
@@ -29,8 +29,8 @@ public class ExpertController {
     @RequestMapping(value = "/applications", method = RequestMethod.GET)
     public ResponseEntity<List<ResponseApplicationDto>> getExpertApplications(
             @RequestHeader("Auth-token") String token,
-            @RequestParam(value = "from") long from,
-            @RequestParam(value = "count") long count) {
+            @RequestParam(value = "from") int from,
+            @RequestParam(value = "count") int count) {
         List<ResponseApplicationDto> responseApplicationDtos = expertService.getExpertApplications(token, from, count);
         return ResponseEntity.ok(responseApplicationDtos);
     }
@@ -47,9 +47,10 @@ public class ExpertController {
     public ResponseEntity<List<ResponseApplicationDto>> getExpertEventApplications(
             @RequestHeader("Auth-token") String token,
             @PathVariable("eventId") long eventId,
-            @RequestParam(value = "from") long from,
-            @RequestParam(value = "count") long count) {
-        List<ResponseApplicationDto> responseApplicationDtos = expertService.getExpertEventApplications(token, eventId, from, count);
+            @RequestParam(value = "from") int from,
+            @RequestParam(value = "count") int count) {
+        List<ResponseApplicationDto> responseApplicationDtos = expertService
+                .getExpertEventApplications(token, eventId, from, count);
         return ResponseEntity.ok(responseApplicationDtos);
     }
 

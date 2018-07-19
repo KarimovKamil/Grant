@@ -18,7 +18,7 @@ public interface OrganizerService {
 
     ResponseEventDto deletePatternByEventId(String token, long eventId);
 
-    List<ResponseEventDto> getOrganizerEvents(String token, long from, long count);
+    List<ResponseEventDto> getOrganizerEvents(String token, int from, int count);
 
     ResponseEventDto updateEvent(RequestEventDto eventDto, long id, String token);
 

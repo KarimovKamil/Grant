@@ -92,8 +92,9 @@ public class OrganizerServiceImpl implements OrganizerService {
     }
 
     @Override
-    public List<ResponseEventDto> getOrganizerEvents(String token, long from, long count) {
+    public List<ResponseEventDto> getOrganizerEvents(String token, int from, int count) {
         verification.verifyTokenExistence(token);
+        verification.verifyFromCount(from, count);
         List<Event> events = eventDao.getOrganizerEvents(token, from, count);
         return conversionListFactory.eventsToResponseEventDtos(events);
     }
@@ -141,6 +142,7 @@ public class OrganizerServiceImpl implements OrganizerService {
 
     @Override
     public List<ResponseUserDto> getUsers(int from, int count) {
+        verification.verifyFromCount(from, count);
         return conversionListFactory.usersToResponseUserDtos(userDao.getAllUsersFromCount(from, count));
     }
 }
