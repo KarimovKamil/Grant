@@ -10,6 +10,7 @@ import ru.itis.grant.conversion.ConversionListResultFactory;
 import ru.itis.grant.conversion.ConversionResultFactory;
 import ru.itis.grant.dao.interfaces.*;
 import ru.itis.grant.dto.MailDto;
+import ru.itis.grant.dto.TokenDto;
 import ru.itis.grant.dto.request.AuthDto;
 import ru.itis.grant.dto.request.RequestApplicationDto;
 import ru.itis.grant.dto.request.RequestUserDto;
@@ -62,14 +63,16 @@ public class UserServiceImpl implements UserService {
     private String restNotificationApiUrl;
 
     @Override
-    public String login(AuthDto authDto) {
+    public TokenDto login(AuthDto authDto) {
         verification.verifyEmailExistence(authDto.getEmail());
         User userFromDB = userDao.getUserByEmail(authDto.getEmail());
         if (hashGenerator.match(authDto.getPassword(), userFromDB.getHashPassword())) {
             String token = tokenGenerator.generateToken();
             userFromDB.setToken(token);
             userDao.updateUser(userFromDB);
-            return token;
+            return TokenDto.builder()
+                    .token(token)
+                    .build();
         } else {
             throw new IncorrectDataException("email and password", "Неверный email или пароль");
         }

@@ -3,6 +3,7 @@ package ru.itis.grant.web.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.itis.grant.dto.TokenDto;
 import ru.itis.grant.dto.request.AuthDto;
 import ru.itis.grant.dto.request.RequestApplicationDto;
 import ru.itis.grant.dto.request.RequestUserDto;
@@ -23,9 +24,9 @@ public class UserController {
     UserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<String> login(
+    public ResponseEntity<TokenDto> login(
             @RequestBody AuthDto authDto) {
-        String token = userService.login(authDto);
+        TokenDto token = userService.login(authDto);
         return ResponseEntity.ok(token);
     }
 

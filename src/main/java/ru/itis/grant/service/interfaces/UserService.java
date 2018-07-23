@@ -1,5 +1,6 @@
 package ru.itis.grant.service.interfaces;
 
+import ru.itis.grant.dto.TokenDto;
 import ru.itis.grant.dto.request.AuthDto;
 import ru.itis.grant.dto.request.RequestApplicationDto;
 import ru.itis.grant.dto.request.RequestUserDto;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public interface UserService {
 
-    String login(AuthDto authDto);
+    TokenDto login(AuthDto authDto);
 
     String register(RequestUserDto authDto);
 
